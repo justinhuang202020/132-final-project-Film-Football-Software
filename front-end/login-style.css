@@ -1,0 +1,58 @@
+.jumbotron {
+	color: navy;
+	/*color: white;*/
+	background-color: #b3d9ff; 
+	background: -webkit-linear-gradient(left, #b3d9ff, #e6e6ff); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(right, #b3d9ff, #e6e6ff); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(right, #b3d9ff, #e6e6ff); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to right, #b3d9ff, #e6e6ff); /* Standard syntax */
+	font-family: sans-serif;
+}
+
+#small-lock {
+    font-size: 10px;
+}
+
+#small-user {
+	font-size: 10px; 
+}
+
+.jumbotron {
+	padding-left: 20px;
+}
+
+h2 {
+	color: navy;
+}
+
+h4 {
+	padding-bottom: 10px; 
+}
+
+.panel-heading {
+	text-align: center; 
+}
+
+.panel-heading a {
+	font-weight: bold;
+	font-size: 15px; 
+	text-decoration: none; 
+}
+
+.panel-heading a.active{
+	color: gray;
+	font-size: 18px;
+}
+
+.panel-heading hr{
+	margin-top: 10px;
+	margin-bottom: 0px;
+	padding-bottom: 0px; 
+	height: 1px;
+	border-bottom-color: #c5c5c5; 
+	border-bottom-width: 1px; 
+}
+
+#login-header {
+	padding-top: 10px; 
+}

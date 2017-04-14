@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--jQuery-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<!-- Latest compiled and minified CSS for bootstrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!-- Optional theme for bootstrap-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		<!-- Latest compiled and minified JavaScript for bootstrap-->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<style>
+			body{
+				color: white;
+				background-color: #192231;
+			}
+			.play-details-list{
+				list-style-type:none;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 0px;
+			}
+			.play-details-list li{
+				display:inline;
+			}
+			.position-traits{
+				list-style-type:none;
+				padding:0px;
+				margin:0;
+				margin-bottom:15px;
+			}
+			.position-traits li{
+				display:inline;
+			}
+			.play-details-margin{
+				margin-left:25px;
+			}
+			.opponent-name{
+				font-size:24px;
+			}
+			.side-of-ball{
+				font-size:18px;
+			}
+			.play-location{
+				font-size:14px;
+			}
+			.score-sctn{
+				padding-left: 45px;
+				background-color: #494e6b;
+				padding-right: 45px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				border:2px solid rgb(49, 64, 90);
+			}
+			.play-score{
+				border-radius: 100%;
+				border: 1px solid #192231;
+				text-align: center;
+			}
+			.play-score-good{
+				background-color:green;
+			}
+			.play-score-avg{
+				background-color: yellow;
+				color: black;
+			}
+			.play-score-bad{
+				background-color:red;
+			}
+			.play-score-sm{
+				height:55px;
+				width:55px;
+				line-height:55px;
+				font-size:18px;
+			}
+			.play-score-md{
+				height: 75px;
+				width: 75px;
+				line-height: 75px;
+				font-size: 24px;
+			}
+			.play-score-sctn{
+				display:inline-block;
+				vertical-align:top;
+				margin-right:20px;
+			}
+			.attr-score-sctn{
+				display:inline-block;
+				height:75px;
+				vertical-align:top;
+				margin-right:20px;
+			}
+			.attr-score{
+				height: 55px;
+				margin-top: 20px;
+				width: 35px;
+				border:1px solid black;
+				margin-left:auto;
+				margin-right:auto;
+			}
+			.carat-sctn{
+				font-size:30px;
+				text-align:center;
+				cursor:pointer;
+				color:#98878f;
+			}
+			.vid-player-sctn div{
+				display:inline-block;
+				vertical-align:middle;
+			}
+			.play-select-sctn{
+				height:100%;
+				padding:2px;
+				overflow-y:scroll;
+			}
+			.play{
+				width: 100%;
+				margin-bottom: 2.5px;
+				padding-left: 10px;
+				padding-right: 10px;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				background-color: #494e6b;
+				border:2px solid rgb(49, 64, 90);
+			}
+			.play div{
+				display:inline-block;
+			}
+			.play-dd{
+				font-size:18px;
+				line-height:65px;
+			}
+			.position-player-dropdowns{
+			
+			}
+			.play-result{
+				font-size:14px;
+				line-height:55px;
+			}
+			.play-list{
+				list-style-type:none;
+				padding: 0px;
+				margin: 0px;
+			}
+			.play-list li{
+				display:inline;
+				padding: 0px;
+				margin: 0px;
+				margin-right:15px;
+			}
+			.position-trait{
+				display:inline-block;
+				text-align:center;
+				font-size:24px;
+				margin-right:30px;
+				cursor:pointer;
+			}
+			.position-trait-active{
+				color:#985e6d;
+			}
+			.active{
+				border:2px solid #98878f;
+			}
+			.form-group div{
+				padding:0px;
+			}
+			.position-player-dropdowns label{
+				line-height:34px;
+			}
+			#press{
+				background-color:green;
+				margin-top:5px;
+				height:50px;
+			}
+			#playRec{
+				background-color:red;
+				margin-top:30px;
+				height:25px;
+			}
+			#technique{
+				background-color:green;
+				margin-top:10px;
+				height:45px;
+			}
+			#discipline{
+				background-color:yellow;
+				margin-top:20px;
+				height:35px;
+			}
+			#effort{
+				background-color:yellow;
+				margin-top:15px;
+				height:40px;
+			}
+			.score-buttons{
+				text-align:center;
+				margin-bottom: 15px;
+			}
+			.score-buttons div{
+				display:inline-block;
+			}
+			.score-buttons div button{
+				height:60px;
+				width:60px;
+			}
+			.btn-custom {
+			  background-color: #985e6d;
+			  border-color: #985e6d;
+			}
+			.btn-custom:hover,
+			.btn-custom:focus,
+			.btn-custom:active,
+			.btn-custom.active {
+			  background-color: #885462;
+			  border-color: #784b56;
+			  outline:none;
+			}
+			.btn-custom.disabled:hover,
+			.btn-custom.disabled:focus,
+			.btn-custom.disabled:active,
+			.btn-custom.disabled.active,
+			.btn-custom[disabled]:hover,
+			.btn-custom[disabled]:focus,
+			.btn-custom[disabled]:active,
+			.btn-custom[disabled].active,
+			fieldset[disabled] .btn-custom:hover,
+			fieldset[disabled] .btn-custom:focus,
+			fieldset[disabled] .btn-custom:active,
+			fieldset[disabled] .btn-custom.active {
+			  background-color: #985e6d;
+			  border-color: #985e6d;
+			}
+			.hidden{
+				display:none;
+			}
+			.position-traits-sctn{
+				text-align:center;
+			}
+			.submit-player-grade-btn{
+				text-align:center;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span> 
+		      </button>
+		      <a class="navbar-brand" href="home.html">FFSoftware</a>
+		    </div>
+		    <div class="collapse navbar-collapse" id="myNavbar">
+		      <ul class="nav navbar-nav">
+		        <li class="active"><a href="home.html">Home</a></li>
+		        <li><a href="player_view.html">Games</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+		        <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-5">
+					<ul class="play-details-list">
+						<li class="opponent-name">
+							<span>vs. Eastlake<span>
+						</li>
+						<li class="side-of-ball play-details-margin">
+							<span>Defense</span>
+						</li>
+						<li class="play-location play-details-margin">
+							<span>Quarter 3<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+						                               Drive 2<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+						                               Play 7
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8 play-view-left-sctn">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="score-sctn">
+								<div class="form-group row position-player-dropdowns">
+									<div class="col-md-6 select-position-sctn">
+										<label id="select-position-label" for="select-position" class="col-md-3 col-form-label">Position:</label>
+										<div class="col-md-9">
+											<select class="form-control" id="select-position">
+												<option></option>
+												<option>QB</option>
+												<option>RB</option>
+												<option>WR</option>
+												<option>CB</option>
+												<option>FS</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6 select-player-sctn hidden">
+										<label id="select-player-label" for="select-player" class="col-md-3 col-form-label">Player:</label>
+										<div class="col-md-9">
+											<select class="form-control" id="select-player">
+												<option></option>
+												<option>Raymond Holden</option>
+												<option>Ricky Estevez</option>
+												<option>Richard Walker</option>
+												<option>Jevante Reed</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row position-traits-sctn hidden">
+									<div class="col-md-12">
+										<ul class="position-traits">
+											<li>
+												<div class="position-trait position-trait-active">
+													<div class="position-trait-score">
+													--
+													</div>
+													<div class="position-trait-text">
+													Strength
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="position-trait">
+													<div class="position-trait-score">
+													--
+													</div>
+													<div class="position-trait-text">
+													Vision
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="position-trait">
+													<div class="position-trait-score">
+													--
+													</div>
+													<div class="position-trait-text">
+													Patience
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="row score-buttons hidden">
+									<div class="col-md-12">
+										<div class="one">
+											<button type="button" class="btn-custom">1</button>
+										</div>
+										<div class="two">
+											<button type="button" class="btn-custom">2</button>
+										</div>
+										<div class="three">
+											<button type="button" class="btn-custom">3</button>
+										</div>
+										<div class="four">
+											<button type="button" class="btn-custom">4</button>
+										</div>
+										<div class="five">
+											<button type="button" class="btn-custom">5</button>
+										</div>
+									</div>
+								</div>
+								<div class="row submit-player-grade-btn hidden">
+									<div class="col-md-12">
+										<button type="button" class="btn-custom">Submit Player Grade</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="vid-player-sctn">
+								<div class="carat-sctn">
+									<span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+								</div>
+								<div class="vid-player">
+									<video controls>
+									Your browser does not support the video tag.
+									</video>
+								</div>
+								<div class="carat-sctn">
+									<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 play-view-right-sctn">
+					<div class="play-select-sctn">
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-avg play-score-sm">
+									71
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									3rd & 7	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-8 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-good play-score-sm">
+									85
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									1st & 10	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-8 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-good play-score-sm">
+									98
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									2nd & 8	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Incomplete Pass
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="active play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-avg play-score-sm">
+									74
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									3rd & 8	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Rush-9 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-bad play-score-sm">
+									45
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									1st & 10
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-8 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-good play-score-sm">
+									90
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									1st & 10	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Rush-12 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-avg play-score-sm">
+									76
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									2nd & 6
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-4 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-bad play-score-sm">
+									58
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									1st & 10	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-15 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-good play-score-sm">
+									85
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									2nd & 10	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Incomplete Pass
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-bad play-score-sm">
+									63
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									3rd & 2	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Rush-12 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			var $video  = $('video'),
+				$vidContainer = $('.vid-player-sctn:first'),
+				$leftSctn = $('.play-view-left-sctn'),
+				$rightSctn = $('.play-view-right-sctn'),
+				$window = $(window); 
+
+			$(window).resize(function(){
+				//set video player dimensions
+				var containerWidth = $vidContainer.parent().width();
+				var newWidth = containerWidth - 70;//subtract 100 bc width of carat section and container padding
+				var newHeight = newWidth*9/16;//16:9 aspect ratio
+				$video.css('width', newWidth);
+				$video.css('height',newHeight);
+				//set height of right section to be equal to left
+				var leftSctnHeight = $leftSctn.height();
+				console.log(leftSctnHeight);
+				$rightSctn.css('height',leftSctnHeight);
+			}).resize();
+			$(".score-buttons .btn-custom").on('click', function(e){
+				var buttonText = $(e.target).text();
+				var $activeTrait = $('.position-trait-active');
+				$activeTrait.find('.position-trait-score').text(buttonText);
+				$activeTrait.removeClass('position-trait-active');
+				if($activeTrait.parent().next().length > 0){
+					var $nextTrait = $activeTrait.parent().next().find('.position-trait');
+					$nextTrait.addClass('position-trait-active');
+				}
+				else{
+					$('.submit-player-grade-btn').removeClass('hidden');
+				}
+			});
+			$(".submit-player-grade-btn .btn-custom").on('click', function(){
+				console.log("push to server and refresh section");
+			});
+			$(".position-trait").on('click', function(e){
+				var $activeTrait = $('.position-trait-active');
+				var $newTrait = $(e.target).parent();
+				$activeTrait.removeClass('position-trait-active');
+				$newTrait.addClass('position-trait-active');
+			});
+			$("#select-position").change(function(e) {
+				$('.select-player-sctn').removeClass('hidden');
+			});
+			$("#select-player").change(function(e) {
+				$('.position-traits-sctn').removeClass('hidden');
+				$('.score-buttons').removeClass('hidden');
+			});
+		</script>
+	</body>
+</html>

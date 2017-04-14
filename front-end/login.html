@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>FFS</title>
+		<!-- add favicon -->
+		<script
+		  src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		  crossorigin="anonymous"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="login.js"></script>
+		<link rel="stylesheet" href="login-style.css" type="text/css"/>
+	</head>
+	<body>
+		<div class="jumbotron">
+			<h1>Football Film Software</h1>      
+			<p>The easier way to manage practice film and to provide individualized feedback to team players.</p>
+		</div>
+				
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-6">
+					<h2>Features</h2>
+					<p>-Upload practice video</p>
+					<p>-Provide customized scores for players</p>
+					<p>-Provide players with individualized feedback</p>
+					<p>-View a player's progress over time</p>
+					Register now! 
+				</div> 
+
+		        <div class="col-md-6">
+		        	<div class="panel-heading">
+			        	<div class="row">
+				        	<div class="col-xs-6">
+								<a href="#" class="active" id="login-form-link">
+									<i class="glyphicon glyphicon-log-in"></i>
+									 Login
+								</a>
+							</div>
+							<div class="col-xs-6">
+								<a href="#" id="register-form-link">
+									<i class="glyphicon glyphicon-user"></i>
+									 Register
+								</a>
+							</div>
+						</div>
+						<hr>
+					</div>
+				  <div style="padding: 20px;" id="form-olvidado">
+				  	<div class="social-box">
+			        	<div class="row mg-btm">
+				             <div class="col-md-6">
+				                <a href="http://www.facebook.com" class="btn btn-primary btn-block">
+				                  <i class="icon-facebook"></i>    
+				                  Login with Facebook
+				                </a>
+							</div>
+							<div class="col-md-6">
+				                <a href="http://mail.google.com" class="btn btn-danger btn-block" >
+				                  <i class="icon-twitter"></i>    
+				                  Login with Google+
+				                </a>
+				          </div>
+				      </div>
+					</div>
+				  <form accept-charset="UTF-8" role="form" id="login-form" method="post">
+				      <fieldset>
+				      	<h4 id="login-header">
+				      		Login to your account
+				      	</h4>
+				        <div class="form-group input-group">
+				          <span class="input-group-addon">
+				            <i class="glyphicon glyphicon-envelope"></i>
+				          </span>
+				          <input class="form-control" placeholder="Enter your email" name="email" type="email" required="" autofocus="">
+				        </div>
+				        <div class="form-group input-group">
+				          <span class="input-group-addon">
+				            <i class="glyphicon glyphicon-lock"></i>
+				          </span>
+				          <input class="form-control" placeholder="Password" name="password" type="password" value="" required="">
+				        </div>
+				        <div class="form-group">
+				          <button type="submit" class="btn btn-primary btn-block">
+				            Login
+				          </button>
+				          <p class="help-block">
+				            <a class="pull-right text-muted" href="#" id="olvidado">
+				            	<i class="glyphicon glyphicon-lock" id="small-lock"></i>
+				            	<small>Forgot your password?</small>
+				           	</a>
+				          </p>
+				        </div>
+				      </fieldset>
+				    </form>
+				  </div>
+				  <!-- Register -->
+				  <div style="padding: 20px;" id="form-register">
+					  <form accept-charset="UTF-8" role="form" id="register-form" method="post" style="display: none;">
+					      <fieldset>
+					      	<h4>
+					      		Register a new account
+					      	</h4>
+					        <div class="form-group input-group">
+					          <span class="input-group-addon">
+					            First Name
+					          </span>
+					          <input class="form-control" placeholder="Enter your first name" name="email" type="email" required="" autofocus="">
+					        </div>
+					        <div class="form-group input-group">
+					          <span class="input-group-addon">
+					            Last Name
+					          </span>
+					          <input class="form-control" placeholder="Enter your last name" name="email" type="email" required="" autofocus="">
+					        </div>
+					        <div class="form-group input-group">
+					          <span class="input-group-addon">
+					            School Name
+					          </span>
+					          <input class="form-control" placeholder="Enter your school name" name="school" type="email" required="" autofocus="">
+					        </div>
+					        <div class="form-group input-group">
+					          <span class="input-group-addon">
+					            Email
+					          </span>
+					          <input class="form-control" placeholder="Email" name="email" type="email" value="" required="">
+					        </div>
+					        <div class="form-group input-group">
+					          <span class="input-group-addon">
+					            Password
+					          </span>
+					          <input class="form-control" placeholder="Password" name="password" type="password" value="" required="">
+					        </div>
+					        <div class="form-group input-group">
+					          <span class="input-group-addon">
+					            Verify Password
+					          </span>
+					          <input class="form-control" placeholder="Verify Password" name="password" type="password" value="" required="">
+					        </div>
+					        <div class="form-group">
+					          <button type="submit" class="btn btn-primary btn-block">
+					            Register Account 
+					          </button>
+					        </div>
+					      </fieldset>
+					    </form>
+				  </div>
+				  <!-- Forgot password -->
+				  <div style="display: none;" id="form-olvidado">
+				    <h4 class="">
+				      Forgot your password?
+				    </h4>
+				    <form accept-charset="UTF-8" role="form" id="login-recordar" method="post">
+				      <fieldset>
+				        <span class="help-block">
+				          Please enter your email address
+				          <br>
+				          We will send you an email to verify that this is your account. 
+				        </span>
+				        <div class="form-group input-group">
+				          <span class="input-group-addon">
+				            <i class="glyphicon glyphicon-envelope"></i>
+				          </span>
+				          <input class="form-control" placeholder="Enter your email" name="email" type="email" required="">
+				        </div>
+				        <button type="submit" class="btn btn-primary btn-block" id="btn-olvidado">
+				          Continue 
+				        </button>
+				        <p class="help-block">
+				          <a class="pull-right text-muted" href="#" id="acceso">
+				          	<i class="glyphicon glyphicon-user" id="small-user"></i>
+				          	<small>Account Login</small>
+				          </a>
+				        </p>
+				      </fieldset>
+				    </form>
+				  </div>
+				</div>
+			</div>
+		</div>
+		<!-- footer -->
+		<div class="navbar navbar-default" id="footer">
+		    <div class="container">
+			    <p class="navbar-text pull-left">© 2017 - Site Built By CS132 FFS Group
+			        <a href="http://cs.brown.edu/courses/csci1320/" target="_blank">CS132 Site</a>
+			    </p>
+		    </div>
+		</div>
+	</body> 
+</html>
