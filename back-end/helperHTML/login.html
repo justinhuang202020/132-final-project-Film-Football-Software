@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script type="text/javascript" src="../login.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+	<script>
+  // Initialize Firebase
+  var config = {
+  	apiKey: "AIzaSyCcn-PMVozRa8Gkem8JImkEBBIIiancl5k",
+  	authDomain: "gamevue-c6394.firebaseapp.com",
+  	databaseURL: "https://gamevue-c6394.firebaseio.com",
+  	projectId: "gamevue-c6394",
+  	storageBucket: "gamevue-c6394.appspot.com",
+  	messagingSenderId: "351663205276"
+  };
+  firebase.initializeApp(config);
+  </script>
+  
+</head>
+<body>
+
+	<form>
+		Email Address<br>
+		<input type="text" id="email"><br>
+		Password<br>
+		<input type="text" id="password"> <br>
+	</form>
+
+	<button type="button" onclick="createAccount()">Create Account</button>
+
+
+</body> 
+</html> 

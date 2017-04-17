@@ -1,8 +1,9 @@
 var express = require('express')
 var app = express();
-app.get('/creatTeam', function(request, response) {
-	response.render('creatTeam.html');
+app.get('/createTeam', function(request, response) {
+	response.render('createTeam.html');
 });
+
 app.post('/createTeam/submit', submitTeam);
 function submitTeam(request, response) {
 	const password = request.body.password;
@@ -27,9 +28,9 @@ function setUpAccount(email, password, team, name) {
 	if (success) {
 		var user = firebase.auth().currentUser;
 		user.sendEmailVerification().then(function() {
-		createTeam(email, passowrd, team, name)
+			createTeam(email, passowrd, team, name)
   // Email sent.
-	}, function(error) {
+}, function(error) {
   // An error happened.
 });
 
