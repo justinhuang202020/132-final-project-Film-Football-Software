@@ -17,18 +17,13 @@ function createAccount() {
 		var errorCode = error.code;
 		var errorMessage = error.message;
 
-
+			console.log(errorCode);
+			console.log(errorMessage);
 			if(errorCode === undefined) {
 				sendEmailVerification();
 			}
-			else if (errorCode === "auth/weak-password"){
-				alert("weak password, try again");
-			}
-			else if (errorCode ==="auth/invalid-email") {
-				alert("invalid-email");
-			}
-			else if (errorCode ==="auth/email-already-in-use") {
-				alert("account already exists");
+			else {
+				alert(errorMessage);
 			}
 
 		});
