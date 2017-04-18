@@ -89,7 +89,7 @@ function createTeam(email, teamName, coachName, schoolName) {
 		teamName: teamName
 	};
 
-	let newTeamRef = firebase.database().ref().child('teams').push();
+	let newTeamRef = db.ref().child('teams').push();
 
 	newTeamRef.set(teamData, function(error) {
 		if (error) {
@@ -111,7 +111,7 @@ function addPlayer(teamId, email, name, positionId) {
 		positionId: positionId
 	};
 
-	let newPlayerRef = firebase.database().ref().child('players').push();
+	let newPlayerRef = db.ref().child('players').push();
 
 	newPlayerRef.set(playerData, function(error) {
 		if (error) {
