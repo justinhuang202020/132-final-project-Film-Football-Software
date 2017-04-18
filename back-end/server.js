@@ -68,26 +68,71 @@ app.post('/createTeam', function(request, response) {
 	let email = request.body.email;
 	let teamName = request.body.teamName;
 	let coachName = request.body.coachName;
+	let schoolName = request.body.schoolName;
 
-	createTeam(email,teamName, coachName);
+	createTeam(email,teamName, coachName, schoolName);
 
 	console.log(email);
 	console.log(teamName);
 	console.log(coachName);
+	console.log(schoolName);
+
 
 });
 
-function getTeam(teamName){
-	//var db = admin.database();
-	console.log(db);/* 
-	var ref = db.ref("teams");
-	ref.orderByChild("name").on("child_added", function(snapshot) {
-	  console.log(snapshot.key + " is " + snapshot.val().name + "!");
-	});
-	console.log(ref); */
-}
-
 //create a new team
-function createTeam(email, teamName, coachName) {
+function createTeam(email, teamName, coachName, schoolName) {
+
+	let teamData = {
+		admin: email,
+		schoolName: schoolName,
+		teamName: teamName
+	};
+
+	let newTeamRef = firebase.database().ref().child('teams').push();
+
+	newTeamRef.set(teamData, function(error) {
+		if (error) {
+			return new Boolean(true); 
+		} else {
+			return new Boolean(false);
+		}
+	});
 
 }
+
+
+function addPlayer(teamId, email, name, positionId) {
+
+	//adding the player data to the database
+	let playerData = {
+		email: email,
+		name: name,
+		positionId: positionId
+	};
+
+	let newPlayerRef = firebase.database().ref().child('players').push();
+
+	newPlayerRef.set(playerData, function(error) {
+		if (error) {
+			return new Boolean(true); 
+		} else {
+			return new Boolean(false);
+		}
+	});
+
+}
+
+function addCoach(teamId, email, name, posoitionId) {
+
+
+}
+
+function addGame(teamId) {
+
+}
+
+function addPlay(teamId, gameId){
+
+}
+
