@@ -15,6 +15,19 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+			<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+			<script>
+  // Initialize Firebase
+  var config = {
+  	apiKey: "AIzaSyCcn-PMVozRa8Gkem8JImkEBBIIiancl5k",
+  	authDomain: "gamevue-c6394.firebaseapp.com",
+  	databaseURL: "https://gamevue-c6394.firebaseio.com",
+  	projectId: "gamevue-c6394",
+  	storageBucket: "gamevue-c6394.appspot.com",
+  	messagingSenderId: "351663205276"
+  };
+  firebase.initializeApp(config);
+  </script>
 		<script type="text/javascript" src="../js/login.js"></script>
 		<link rel="stylesheet" href="../styles/login-style.css" type="text/css"/>
 	</head>
@@ -113,40 +126,52 @@
 					          <span class="input-group-addon">
 					            First Name
 					          </span>
-					          <input class="form-control" placeholder="Enter your first name" name="email" type="email" required="" autofocus="">
+					          <input id = "firstName" class="form-control" placeholder="Enter your first name" name="email" type="text" required="" autofocus="">
 					        </div>
 					        <div class="form-group input-group">
 					          <span class="input-group-addon">
 					            Last Name
 					          </span>
-					          <input class="form-control" placeholder="Enter your last name" name="email" type="email" required="" autofocus="">
+					          <input id = "lastName" class="form-control" placeholder="Enter your last name" name="email" type="text" required="" autofocus="">
 					        </div>
 					        <div class="form-group input-group">
 					          <span class="input-group-addon">
 					            School Name
 					          </span>
-					          <input class="form-control" placeholder="Enter your school name" name="school" type="email" required="" autofocus="">
+					          <input id = "schoolName" class="form-control" placeholder="Enter your school name" name="school" type="text" required="" autofocus="">
+					        </div>
+					        <div class="form-group input-group">
+					          <span class="input-group-addon">
+					            TeamName
+					          </span>
+					          <input id = "teamName" class="form-control" placeholder="Enter your team name" name="school" type="text" required="" autofocus="">
 					        </div>
 					        <div class="form-group input-group">
 					          <span class="input-group-addon">
 					            Email
 					          </span>
-					          <input class="form-control" placeholder="Email" name="email" type="email" value="" required="">
+					          <input id = "email"class="form-control" placeholder="Email" name="email" type="email" value="" required="">
+					        </div>
+					          <div class="form-group input-group">
+					          <span class="input-group-addon">
+					            Confirm Email
+					          </span>
+					          <input id = "confirmEmail"class="form-control" placeholder="Confirm Email" name="email" type="email" value="" required="">
 					        </div>
 					        <div class="form-group input-group">
 					          <span class="input-group-addon">
 					            Password
 					          </span>
-					          <input class="form-control" placeholder="Password" name="password" type="password" value="" required="">
+					          <input id = "password" class="form-control" placeholder="Password" name="password" type="password" value="" required="">
 					        </div>
 					        <div class="form-group input-group">
 					          <span class="input-group-addon">
 					            Verify Password
 					          </span>
-					          <input class="form-control" placeholder="Verify Password" name="password" type="password" value="" required="">
+					          <input id = "confirmPassword" class="form-control" placeholder="Verify Password" name="password" type="password" value="" required="">
 					        </div>
 					        <div class="form-group">
-					          <button type="submit" class="btn btn-primary btn-block">
+					          <button type="submit" onclick="createAccount()" class="btn btn-primary btn-block">
 					            Register Account 
 					          </button>
 					        </div>
