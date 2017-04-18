@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--jQuery-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<!-- Latest compiled and minified CSS for bootstrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!-- Optional theme for bootstrap-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		<!-- Latest compiled and minified JavaScript for bootstrap-->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="../styles/gameview_style.css">
+		<script src="../js/gameview.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-5">
+					<ul class="play-details-list">
+						<li class="opponent-name">
+							<span>vs. Eastlake<span>
+						</li>
+						<li class="side-of-ball play-details-margin">
+							<span>Defense</span>
+						</li>
+						<li class="play-location play-details-margin">
+							<span>Quarter 3<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+						                               Drive 2<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+						                               Play 7
+							</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8 play-view-left-sctn">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="well score-sctn">
+								<div class="form-group row position-player-dropdowns">
+									<div class="col-md-6 select-position-sctn">
+										<label id="select-position-label" for="select-position" class="col-md-3 col-form-label">Position:</label>
+										<div class="col-md-9">
+											<select class="form-control" id="select-position">
+												<option></option>
+												<option>QB</option>
+												<option>RB</option>
+												<option>WR</option>
+												<option>CB</option>
+												<option>FS</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6 select-player-sctn hidden">
+										<label id="select-player-label" for="select-player" class="col-md-3 col-form-label">Player:</label>
+										<div class="col-md-9">
+											<select class="form-control" id="select-player">
+												<option></option>
+												<option>Raymond Holden</option>
+												<option>Ricky Estevez</option>
+												<option>Richard Walker</option>
+												<option>Jevante Reed</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row position-traits-sctn hidden">
+									<div class="col-md-12">
+										<ul class="position-traits">
+											<li>
+												<div class="position-trait position-trait-active">
+													<div class="position-trait-score">
+													--
+													</div>
+													<div class="position-trait-text">
+													Strength
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="position-trait">
+													<div class="position-trait-score">
+													--
+													</div>
+													<div class="position-trait-text">
+													Vision
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="position-trait">
+													<div class="position-trait-score">
+													--
+													</div>
+													<div class="position-trait-text">
+													Patience
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="row score-buttons hidden">
+									<div class="col-md-12">
+										<div class="one">
+											<button type="button" class="btn-custom">1</button>
+										</div>
+										<div class="two">
+											<button type="button" class="btn-custom">2</button>
+										</div>
+										<div class="three">
+											<button type="button" class="btn-custom">3</button>
+										</div>
+										<div class="four">
+											<button type="button" class="btn-custom">4</button>
+										</div>
+										<div class="five">
+											<button type="button" class="btn-custom">5</button>
+										</div>
+									</div>
+								</div>
+								<div class="row submit-player-grade-btn hidden">
+									<div class="col-md-12">
+										<button type="button" class="btn-custom">Submit Player Grade</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="vid-player-sctn">
+								<div class="carat-sctn">
+									<span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+								</div>
+								<div class="vid-player">
+									<video controls>
+									</video>
+								</div>
+								<div class="carat-sctn">
+									<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 play-view-right-sctn">
+					<div class="play-select-sctn">
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-avg play-score-sm">
+									71
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									3rd & 7	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-8 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-good play-score-sm">
+									85
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									1st & 10	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-8 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-good play-score-sm">
+									98
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									2nd & 8	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Incomplete Pass
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="active well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-avg play-score-sm">
+									74
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									3rd & 8	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Rush-9 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-bad play-score-sm">
+									45
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									1st & 10
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-8 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-good play-score-sm">
+									90
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									1st & 10	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Rush-12 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-avg play-score-sm">
+									76
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									2nd & 6
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-4 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-bad play-score-sm">
+									58
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									1st & 10	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Completed Pass-15 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-good play-score-sm">
+									85
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									2nd & 10	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Incomplete Pass
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="well play col-md-12">
+							<ul class="play-list">
+								<li>
+									<div class="play-score play-score-bad play-score-sm">
+									63
+									</div>
+								</li>
+								<li>
+									<div class="play-dd">
+									3rd & 2	
+									</div>
+								</li>
+								<li>
+									<div class="play-result">
+									Rush-12 yards
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
