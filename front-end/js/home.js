@@ -20,8 +20,13 @@ $(document).ready(function(){
 
 	}
 	loadSkillgraph();
-	$("#addTraitBtn").on('click', function(){
+	$("#openTraitInputBtn").on('click', function(){
 		$('#newTraitLi').removeClass('hidden');	
+	});
+	//For Justin
+	$('#addTraitBtn').on('click', function(){
+		var traitText = $("#newTraitTxt").val();
+		var traitImportance = ($('#newTraitImportance').val()/25) + 1;
 	});
 });
 
