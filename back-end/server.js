@@ -59,7 +59,6 @@ app.get('/coachview', function(request, response){
 
 //listening to the player view page
 app.get('/playerview', function(request, response){
-	console.log(getTeam('falcons'));
 	response.render('player_view.html');
 });
 
