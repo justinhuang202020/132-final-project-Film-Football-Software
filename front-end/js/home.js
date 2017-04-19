@@ -27,6 +27,7 @@ $(document).ready(function(){
 	$('#addTraitBtn').on('click', function(){
 		var traitText = $("#newTraitTxt").val();
 		var traitImportance = ($('#newTraitImportance').val()/25) + 1;
+		console.log(traitText + traitImportance);
 	});
 });
 
