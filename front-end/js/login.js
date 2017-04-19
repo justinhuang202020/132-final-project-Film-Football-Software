@@ -20,6 +20,9 @@ $(function() {
 	$("#register-form").submit(function(e){
 		e.preventDefault();
 	});
+	$("#login-form").submit(function(e){
+		e.preventDefault();
+	});
 	$('#register-form-link').click(function(e) {
 		console.log("click");
 		e.preventDefault();
@@ -40,6 +43,29 @@ $(function() {
 // 		e.preventDefault();
 // 	});
 // }); 
+function login() {
+	let email = $("#login_email").val().trim();
+	let password = $("#login_password").val();
+	firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+  if (firebase.auth().currentUser.emailVerified) {
+  	alert("signed in");
+  }
+  else {
+  	alert("Email has not been verified");
+  	firebase.auth().signOut().then(function() {
+  // Sign-out successful.
+}).catch(function(error) {
+  alert(error.message);
+});
+  }
+}, function(error) {
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  alert(errorMessage);
+  // ...
+});
+
+}
 function createAccount() {
 	
 	//extract the values from the submit forms
@@ -47,8 +73,8 @@ function createAccount() {
 	let name = $("#firstName").val().trim() + " " + $("#lastName").val().trim();
 	let email = $( "#email" ).val().trim();
 	let confirmEmail = $("#confirmEmail").val().trim();
-	let pass = $( "#password" ).val().trim();
-	let confirmPass = $("#confirmPassword").val().trim();
+	let pass = $( "#password" ).val();
+	let confirmPass = $("#confirmPassword").val();
 	let teamName = $("#teamName").val().trim();
 	// const schoolName = $("#schoolName").val().trim();
 
@@ -62,7 +88,7 @@ function createAccount() {
 
 		var errorCode = error.code;
 		var errorMessage = error.message;
-		console.log("Hi");
+	
 
 		alert(errorMessage);
 
@@ -92,7 +118,7 @@ $.post('/createTeam', parameters, function (error){
 			alert("email verifcation failed. Please sent email again");
 		}, function(error) {
 			console.log("error3");
-			alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-GAME-VUE");
+			alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
 		});
 	}
 });
