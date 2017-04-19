@@ -4,7 +4,12 @@
 	margin:0 auto;
 	text-align: center;
 }
-
+#select-positon-label{
+	line-height:34px;
+}
+.trait-list{
+	padding:0;
+}
 .btn-circle {
   width: 30px;
   height: 30px;
