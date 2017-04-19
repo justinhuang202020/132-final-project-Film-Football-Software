@@ -6,9 +6,15 @@
 
 .navbar li a { color: #000 } 
 
+#top-bar li a:hover { color: black } 
+
 .navbar-brand {
 	letter-spacing: 2px; 
 	font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.navbar-inverse .navbar-header .navbar-brand:hover {
+	color: black;
 }
 
 .page1 {
