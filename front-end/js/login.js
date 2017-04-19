@@ -107,6 +107,11 @@ $.post('/createTeam', parameters, function (error){
 	console.log("Hi1");
 	if (error ===false) {
 		alert("team created");
+		firebase.auth().signOut().then(function() {
+  	// Sign-out successful.
+		}).catch(function(error) {
+  		alert(error.message);
+	});
 		console.log("false");
 	}
 	else {
