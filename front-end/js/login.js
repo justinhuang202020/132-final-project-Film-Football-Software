@@ -30,16 +30,62 @@ $(function() {
 	});
 });
 
-// submit button link to user homepage 
-// $(function() {
-//     $('#login-form-link').click(function(e) {
-// 		$("#login-form").delay(100).fadeIn(100);
-//  		$("#register-form").fadeOut(100);
-// 		$('#register-form-link').removeClass('active');
-// 		$(this).addClass('active');
-// 		e.preventDefault();
-// 	});
-// }); 
+// graph
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Game');
+      data.addColumn('number', 'Overall Score');
+
+      data.addRows([
+        [1, 66],   [2, 70],  [3, 86],  [4, 88],  [5, 96]
+      ]);
+
+      var options = {
+        pointSize: 8, 
+        resize: true,
+        backgroundColor: {fill: 'transparent'},
+        chartArea: {backgroundColor: '#a6a6a6'}, 
+        series: {
+            0: { lineWidth: 4,
+                color: '#538cc6' },
+        }, 
+        hAxis: {
+          baselineColor: 'white',
+          gridlines: {count: 0},
+          titleTextStyle: { color: 'white' }, 
+          textStyle: {
+            color: 'white'
+          }, 
+          ticks: [1, 2, 3, 4, 5]
+        },
+        vAxis: {
+          baselineColor: 'white',
+          textStyle: {color: 'white'}, 
+          titleTextStyle: { color: 'white' } 
+        }, 
+        legend: {
+            position: 'none'
+        },
+        titleTextStyle: { 
+          color: 'white',
+          fontSize: 20,
+          bold: false,
+          italic: false }
+      };
+
+      var chart = new google.visualization.AreaChart(document.getElementById('graph'));
+
+      chart.draw(data, options);
+    }
+
+$(window).resize(function(){
+  drawBasic();
+});
+
 function createAccount() {
 	
 	//extract the values from the submit forms

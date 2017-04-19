@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>FFS</title>
+		<title>GameVue</title>
 		<!-- add favicon -->
 		<script
 		  src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<!-- jQuery library -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 			<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
@@ -28,28 +29,44 @@
   };
   firebase.initializeApp(config);
   </script>
+
 		<script type="text/javascript" src="../js/login.js"></script>
 		<link rel="stylesheet" href="../styles/login-style.css" type="text/css"/>
 	</head>
 	<body>
-		<div class="jumbotron">
-			<h1>Football Film Software</h1>      
-			<p>The easier way to manage practice film and to provide individualized feedback to team players.</p>
-		</div>
-				
-		<div class="container">
-			<div class="row">
 
+		<div class="navbar navbar-inverse">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="home.html">GAMEVUE</a>
+		    </div>
+		    <div id="top-bar" class="collapse navbar-collapse">
+		      <ul class="nav navbar-nav">
+		        <li><a href="#about">The easy way to manage practice film</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+		        <li id="logout"><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		      </ul>
+		    </div><!--/.nav-collapse -->
+		</div><!--/.navbar -->
+
+		<div class="page1">			
+			<div class="row">
 				<div class="col-md-6">
-					<h2>Features</h2>
+					<h3 id="title">The easier way to manage practice film and to provide individualized feedback to team players.</h3>
+					<!-- <h2>Features</h2>
 					<p>-Upload practice video</p>
 					<p>-Provide customized scores for players</p>
 					<p>-Provide players with individualized feedback</p>
 					<p>-View a player's progress over time</p>
-					Register now! 
+					Register now!  -->
 				</div> 
-
-		        <div class="col-md-6">
+			<div class="col-md-6">
+				<div class="well">
 		        	<div class="panel-heading">
 			        	<div class="row">
 				        	<div class="col-xs-6">
@@ -72,13 +89,13 @@
 			        	<div class="row mg-btm">
 				             <div class="col-md-6">
 				                <a href="http://www.facebook.com" class="btn btn-primary btn-block">
-				                  <i class="icon-facebook"></i>    
-				                  Login with Facebook
+				                  <!-- <i class="icon-facebook"></i>     -->
+				             		Login with Facebook
 				                </a>
 							</div>
 							<div class="col-md-6">
 				                <a href="http://mail.google.com" class="btn btn-danger btn-block" >
-				                  <i class="icon-twitter"></i>    
+				                  <!-- <i class="icon-twitter"></i>     -->
 				                  Login with Google+
 				                </a>
 				          </div>
@@ -119,7 +136,7 @@
 				  <div style="padding: 20px;" id="form-register">
 					  <form accept-charset="UTF-8" role="form" id="register-form" method="post" style="display: none;">
 					      <fieldset>
-					      	<h4>
+					      	<h4 id="register-header">
 					      		Register a new account
 					      	</h4>
 					        <div class="form-group input-group">
@@ -180,7 +197,7 @@
 				  </div>
 				  <!-- Forgot password -->
 				  <div style="display: none;" id="form-olvidado">
-				    <h4 class="">
+				    <h4 id="forgot-password">
 				      Forgot your password?
 				    </h4>
 				    <form accept-charset="UTF-8" role="form" id="login-recordar" method="post">
@@ -211,13 +228,61 @@
 				</div>
 			</div>
 		</div>
+		</div>
+	</div>
+</div>
+
+	<section id="section02" class="demo">
+		<a href="#page2"><span></span></a>
+	</section>
+
+
+	<div id="page2">
+		<div class="col-md-6">
+			<div id="features-wrapper">
+				<div id="features-content">
+					<h2 class="text-center">Features</h2>
+					<h4>Bring practice online.</h4>
+					<p>Upload film and score individual plays based on personalized categories like 'Passes' and 'Tackles.'</p>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-md-6">
+			<img id="view-img" src="../img/coach.png" class="img-fluid" alt="Responsive image" height="100%" width="100%">
+		</div>
+	</div>
+
+	<!-- page3 -->
+	<div id="page3">
+		<div class="row">
+			<div class="col-md-12">
+				<div id="progress-wrapper">
+					<div id="progress-content">
+						<h2 class="text-center">View Your Team's Progress</h2>
+						<h4>Bring practice online.</h4>
+						<p>Upload film and score individual plays based on personalized categories like 'Passes' and 'Tackles.'</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div id="graph-wrapper">
+				<div id="graph"></div>
+			</div>
+		</div>
+	</div>
+
+
+		
 		<!-- footer -->
-		<div class="navbar navbar-default" id="footer">
+		<!-- <div class="navbar navbar-default" id="footer">
 		    <div class="container">
 			    <p class="navbar-text pull-left">© 2017 - Site Built By CS132 FFS Group
 			        <a href="http://cs.brown.edu/courses/csci1320/" target="_blank">CS132 Site</a>
 			    </p>
 		    </div>
-		</div>
+		</div> -->
 	</body> 
 </html>
