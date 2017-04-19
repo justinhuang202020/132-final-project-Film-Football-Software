@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>FFS</title>
+		<title>GameVue</title>
 		<!-- add favicon -->
 		<script
 		  src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -15,13 +15,14 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../js/home.js"></script>
-		<link rel="stylesheet" href="../styles/home-style.css" type="text/css"/>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript" src="home.js"></script>
+		<link rel="stylesheet" href="home-style.css" type="text/css"/>
 	</head>
 
 	<body>
 
-		<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+		<!-- <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -29,57 +30,113 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span> 
 		      </button>
-		      <a class="navbar-brand" href="home">FFSoftware</a>
+		      <a class="navbar-brand" href="home.html">FFSoftware</a>
 		    </div>
 		    <div class="collapse navbar-collapse" id="myNavbar">
 		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="home">Home</a></li>
-		        <li><a href="playerview">Games</a></li>
+		        <li class="active"><a href="home.html">Home</a></li>
+		        <li><a href="player_view.html">Games</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="login"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		        <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 		      </ul>
 		    </div>
 		  </div>
-		</nav>
+		</nav> -->
 
-		<div class="container">
-			<div class="row" style="padding-bottom:10px;">
-				<h4>Brown University Football Team</h4>
-				<!-- Trigger the player modal with a button -->
-				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#playerModal">View Players</button>
-				<!-- Trigger the category modal with a button -->
-				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#categoryModal">View/Edit Traits</button>
-				<h4 class="text-center">Your Team's Last Five Games</h4>
-				<img src="../img/line_graph.png" class="rounded center-block" alt="Responsive image">
-				<!--My Modal -->
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="home.html">GameVue</a>
+		    </div>
+		    <div id="top-bar" class="collapse navbar-collapse">
+		      <ul class="nav navbar-nav">
+		        <li><a href="#about">Brown University Football Team</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+		        <li id="logout"><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		      </ul>
+		    </div><!--/.nav-collapse -->
+		</div><!--/.navbar -->
+
+		<div class="row-offcanvas row-offcanvas-left">
+		  <div id="sidebar" class="sidebar-offcanvas">
+		      <div class="sidebar-headers">
+		      	<div id="side-bar-names">
+			        <h3>Sidebar</h3>
+			        <h5>This is about stuff</h5>
+			    </div>
+		        <ul id="nav-side-list" class="nav nav-stacked">
+		          <hr>
+		          <li class="active" id="home-nav"><a href="home.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+		          <hr>
+		          <li><a href="coach_view.html"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		          <hr>
+		          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+		          <hr>
+		          <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
+		          <hr>
+		          <li><a href="#"><span class="glyphicon glyphicon-upload"></span> Upload Video</a></li>
+		          <hr>
+		          <li><a href="#"><span class="glyphicon glyphicon-edit"></span> Settings</a></li>
+		          <hr>
+		        </ul>
+		      </div>
+		  </div>
+		  <div id="main">
+		      <!-- <div class="row" style="padding-bottom:10px;"> -->
+		      	<div id="dashboard">
+					<h3>Dashboard</h3>
+				</div>
+				<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Players</button>
 				<div id="myModal" class="modal fade" role="dialog">
 				  <div class="modal-dialog">
-					<!-- Modal content-->
-					<div class="modal-content">
-					  <div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Players</h4>
-					  </div>
-					  <div class="modal-body">
-						<ul>
-							<li><a href="playerview">Bob #52</a></li>
-							<li><a href="playerview">Joe #11</a></li>
-							<li><a href="playerview">Tom #5</a></li>
-							<li><a href="playerview">Alan #30</a></li>
-							<li><a href="playerview">Josh #19</a></li>
-							<li><a href="playerview">Bill #9</a></li>
-						</ul>
-					  </div>
-					  <div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					  </div>
-					</div>
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        <h4 class="modal-title">Players</h4>
+				      </div>
+				      <div class="modal-body">
+				        <ul>
+				        	<li><a href="player_view.html">Bob #52</a></li>
+				        	<li><a href="player_view.html">Joe #11</a></li>
+				        	<li><a href="player_view.html">Tom #5</a></li>
+				        	<li><a href="player_view.html">Alan #30</a></li>
+				        	<li><a href="player_view.html">Josh #19</a></li>
+				        	<li><a href="player_view.html">Bill #9</a></li>
+				        </ul>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      </div>
+				    </div>
+
 				  </div>
-				</div>
-			</div>
+				</div> -->
+			<!-- </div> -->
+			<!-- <div class="row"> -->
+				<div id="graph" style="width: inherit">
+					<h3 class="text-center">Recent Performance</h3>
+					<hr>
+					<!-- <div class="panel panel-default">
+						<div class="panel-heading">
+                            Area Chart Example
+                        </div>
+		    			<div class="panel-body"> -->
+		    				<div id="chart" style="width: 100%; height: 500px"></div>
+		    			<!-- </div> -->
+		    		<!-- </div> -->
+	    		</div>
+	    	<!-- </div> -->
+
+			<!-- <h4 class="text-center">Your Team's Last Five Games</h4> -->
+			<!-- <img src="line_graph.png" class="rounded center-block" alt="Responsive image"> -->
 			<!-- strengths and weaknesses -->
-			<div class="row">
+			<!-- <div class="row"> -->
                 <div class="col-md-6">
                     <div class="sectionTitle" id="strengths">Strengths</div>
                     <div class="well">
@@ -115,77 +172,59 @@
                     	</div>
                     </div> 
                 </div>
-            </div>
+            <!-- </div> -->
             <!-- recent uploads -->
-			<div class="row">
+			<!-- <div class="row"> -->
 				<div id="recent-uploads">
-					<h4>Recent Uploads</h4> 
+					<h3>Recent Uploads</h3> 
 					<!-- Make collapsable?? -->
-					<div class="panel panel-default">
-				      <div class="panel-heading"><a href="playerview">Brown vs. Eastlake</a></div>
-				      <div class="panel-body">
-				      	<p>Best Plays: </p>
-							<button type="button" class="btn btn-success btn-circle">93</button>
-							<button type="button" class="btn btn-success btn-circle">90</button>
-							<button type="button" class="btn btn-success btn-circle">88</button>
-							<button type="button" class="btn btn-success btn-circle">95</button>
-							<button type="button" class="btn btn-success btn-circle">82</button>
-				      	<p>Worst Plays: </p>
-				      		<button type="button" class="btn btn-danger btn-circle">60</button>
-							<button type="button" class="btn btn-danger btn-circle">71</button>
-							<button type="button" class="btn btn-danger btn-circle">55</button>
-							<button type="button" class="btn btn-danger btn-circle">50</button>
-							<button type="button" class="btn btn-danger btn-circle">63</button>
-				      </div>
-				    </div>
-				    <div class="panel panel-default">
-				      <div class="panel-heading"><a href="playerview">Brown vs. Westwood</a></div>
-				      <div class="panel-body">
-				      	<p>Best Plays: </p>
-							<button type="button" class="btn btn-success btn-circle">93</button>
-							<button type="button" class="btn btn-success btn-circle">90</button>
-							<button type="button" class="btn btn-success btn-circle">88</button>
-							<button type="button" class="btn btn-success btn-circle">95</button>
-							<button type="button" class="btn btn-success btn-circle">82</button>
-				      	<p>Worst Plays: </p>
-				      		<button type="button" class="btn btn-danger btn-circle">60</button>
-							<button type="button" class="btn btn-danger btn-circle">71</button>
-							<button type="button" class="btn btn-danger btn-circle">55</button>
-							<button type="button" class="btn btn-danger btn-circle">50</button>
-							<button type="button" class="btn btn-danger btn-circle">63</button>
-				      </div>
-				    </div>
-				    <div class="panel panel-default">
-				      <div class="panel-heading"><a href="playerview">Brown vs. Wellesley</a></div>
-				      <div class="panel-body">
-				      	<p>Best Plays: </p>
-							<button type="button" class="btn btn-success btn-circle">93</button>
-							<button type="button" class="btn btn-success btn-circle">90</button>
-							<button type="button" class="btn btn-success btn-circle">88</button>
-							<button type="button" class="btn btn-success btn-circle">95</button>
-							<button type="button" class="btn btn-success btn-circle">82</button>
-				      	<p>Worst Plays: </p>
-				      		<button type="button" class="btn btn-danger btn-circle">60</button>
-							<button type="button" class="btn btn-danger btn-circle">71</button>
-							<button type="button" class="btn btn-danger btn-circle">55</button>
-							<button type="button" class="btn btn-danger btn-circle">50</button>
-							<button type="button" class="btn btn-danger btn-circle">63</button>
-				      </div>
-				    </div>
+					<div class="col-md-4">
+						<h4 class="text-center"><a href="player_view.html">Brown vs. Eastlake</a></h4>
+					      	<h5 class="text-center">Best Plays</h5>
+								<button type="button" class="btn btn-success btn-circle">93</button>
+								<button type="button" class="btn btn-success btn-circle">90</button>
+								<button type="button" class="btn btn-success btn-circle">88</button>
+					      	<h5 class="text-center">Worst Plays</h5>
+					      		<button type="button" class="btn btn-danger btn-circle">60</button>
+								<button type="button" class="btn btn-danger btn-circle">71</button>
+								<button type="button" class="btn btn-danger btn-circle">55</button>
 					</div>
-				</div>
+					<div class="col-md-4">
+						<h4 class="text-center"><a href="player_view.html">Brown vs. Westwood</a></h4>
+				      	<h5 class="text-center">Best Plays</h5>
+							<button type="button" class="btn btn-success btn-circle">93</button>
+							<button type="button" class="btn btn-success btn-circle">90</button>
+							<button type="button" class="btn btn-success btn-circle">88</button>
+				      	<h5 class="text-center">Worst Plays</h5>
+				      		<button type="button" class="btn btn-danger btn-circle">60</button>
+							<button type="button" class="btn btn-danger btn-circle">71</button>
+							<button type="button" class="btn btn-danger btn-circle">55</button>
+					</div>
+					<div class="col-md-4">
+						<h4 class="text-center"><a href="player_view.html">Brown vs. Wellesley</a></h4>
+				      	<h5 class="text-center">Best Plays</h5>
+							<button type="button" class="btn btn-success btn-circle">93</button>
+							<button type="button" class="btn btn-success btn-circle">90</button>
+							<button type="button" class="btn btn-success btn-circle">88</button>
+				      	<h5 class="text-center">Worst Plays</h5>
+				      		<button type="button" class="btn btn-danger btn-circle">60</button>
+							<button type="button" class="btn btn-danger btn-circle">71</button>
+							<button type="button" class="btn btn-danger btn-circle">55</button>
+					</div>
+				<!-- </div> -->
 			</div>
-		</div> 
+		<!-- </div>  -->
+			
 
 
 		<!-- footer -->
-		<div class="navbar navbar-default">
+		<!-- <div class="navbar navbar-default">
 		    <div class="container">
 			    <p class="navbar-text pull-left">© 2017 - Site Built By CS132 FFS Group
 			        <a href="http://cs.brown.edu/courses/csci1320/" target="_blank">CS132 Site</a>
 			    </p>
 		    </div>
-		</div>
+		</div> -->
 
 	</body> 
 </html> 

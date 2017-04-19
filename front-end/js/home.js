@@ -24,3 +24,77 @@ $(document).ready(function(){
 		$('#newTraitLi').removeClass('hidden');	
 	});
 });
+
+$(document).ready(function() {
+  $('[data-toggle=offcanvas]').click(function() {
+    $('.row-offcanvas').toggleClass('active');
+  });
+});
+
+// chart 
+
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawBasic);
+
+function drawBasic() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Game');
+      data.addColumn('number', 'Overall Score');
+
+      data.addRows([
+        [1, 5],   [2, 10],  [3, 23],  [4, 17],  [5, 18]
+      ]);
+
+      var options = {
+        title: 'Last Five Games',
+        pointSize: 8, 
+        resize: true,
+        areaOpacity: .5, 
+        backgroundColor: '#2C3A42',
+        chartArea: {backgroundColor: '#a6a6a6'}, 
+        series: {
+            0: { lineWidth: 4,
+                color: '#538cc6' },
+        }, 
+        // backgroundColor: '#f2f2f2', 
+        hAxis: {
+          title: 'Game',
+          baselineColor: 'white',
+          gridlines: {count: 0},
+          titleTextStyle: { color: 'white' }, 
+          textStyle: {
+            color: 'white'
+            // fontName: 'Myriad'
+          }, 
+          ticks: [1, 2, 3, 4, 5]
+        },
+        vAxis: {
+          title: 'Overall Score',
+          baselineColor: 'white',
+          textStyle: {color: 'white'}, 
+          titleTextStyle: { color: 'white' } 
+        }, 
+        legend: {
+            textStyle: {
+                color: 'white'
+                // fontName: 'Myriad'
+            }
+        },
+        titleTextStyle: { 
+          color: 'white',
+          // fontName:'Myriad',
+          fontSize: 20,
+          bold: false,
+          italic: false }
+      };
+
+      var chart = new google.visualization.AreaChart(document.getElementById('chart'));
+
+      chart.draw(data, options);
+    }
+
+$(window).resize(function(){
+  drawBasic();
+});
+
