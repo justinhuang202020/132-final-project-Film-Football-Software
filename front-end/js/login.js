@@ -20,6 +20,9 @@ $(function() {
 	$("#register-form").submit(function(e){
 		e.preventDefault();
 	});
+	$("#login-form").submit(function(e){
+		e.preventDefault();
+	});
 	$('#register-form-link').click(function(e) {
 		console.log("click");
 		e.preventDefault();
@@ -30,62 +33,39 @@ $(function() {
 	});
 });
 
-// graph
-google.charts.load('current', {packages: ['corechart', 'line']});
-google.charts.setOnLoadCallback(drawBasic);
-
-function drawBasic() {
-
-      var data = new google.visualization.DataTable();
-      data.addColumn('number', 'Game');
-      data.addColumn('number', 'Overall Score');
-
-      data.addRows([
-        [1, 66],   [2, 70],  [3, 86],  [4, 88],  [5, 96]
-      ]);
-
-      var options = {
-        pointSize: 8, 
-        resize: true,
-        backgroundColor: {fill: 'transparent'},
-        chartArea: {backgroundColor: '#a6a6a6'}, 
-        series: {
-            0: { lineWidth: 4,
-                color: '#538cc6' },
-        }, 
-        hAxis: {
-          baselineColor: 'white',
-          gridlines: {count: 0},
-          titleTextStyle: { color: 'white' }, 
-          textStyle: {
-            color: 'white'
-          }, 
-          ticks: [1, 2, 3, 4, 5]
-        },
-        vAxis: {
-          baselineColor: 'white',
-          textStyle: {color: 'white'}, 
-          titleTextStyle: { color: 'white' } 
-        }, 
-        legend: {
-            position: 'none'
-        },
-        titleTextStyle: { 
-          color: 'white',
-          fontSize: 20,
-          bold: false,
-          italic: false }
-      };
-
-      var chart = new google.visualization.AreaChart(document.getElementById('graph'));
-
-      chart.draw(data, options);
-    }
-
-$(window).resize(function(){
-  drawBasic();
+// submit button link to user homepage 
+// $(function() {
+//     $('#login-form-link').click(function(e) {
+// 		$("#login-form").delay(100).fadeIn(100);
+//  		$("#register-form").fadeOut(100);
+// 		$('#register-form-link').removeClass('active');
+// 		$(this).addClass('active');
+// 		e.preventDefault();
+// 	});
+// }); 
+function login() {
+	let email = $("#login_email").val().trim();
+	let password = $("#login_password").val();
+	firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+  if (firebase.auth().currentUser.emailVerified) {
+  	alert("signed in");
+  }
+  else {
+  	alert("Email has not been verified");
+  	firebase.auth().signOut().then(function() {
+  // Sign-out successful.
+}).catch(function(error) {
+  alert(error.message);
+});
+  }
+}, function(error) {
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  alert(errorMessage);
+  // ...
 });
 
+}
 function createAccount() {
 	
 	//extract the values from the submit forms
@@ -93,8 +73,8 @@ function createAccount() {
 	let name = $("#firstName").val().trim() + " " + $("#lastName").val().trim();
 	let email = $( "#email" ).val().trim();
 	let confirmEmail = $("#confirmEmail").val().trim();
-	let pass = $( "#password" ).val().trim();
-	let confirmPass = $("#confirmPassword").val().trim();
+	let pass = $( "#password" ).val();
+	let confirmPass = $("#confirmPassword").val();
 	let teamName = $("#teamName").val().trim();
 	// const schoolName = $("#schoolName").val().trim();
 
@@ -108,7 +88,7 @@ function createAccount() {
 
 		var errorCode = error.code;
 		var errorMessage = error.message;
-		console.log("Hi");
+	
 
 		alert(errorMessage);
 
@@ -127,6 +107,11 @@ $.post('/createTeam', parameters, function (error){
 	console.log("Hi1");
 	if (error ===false) {
 		alert("team created");
+		firebase.auth().signOut().then(function() {
+  	// Sign-out successful.
+		}).catch(function(error) {
+  		alert(error.message);
+	});
 		console.log("false");
 	}
 	else {
@@ -138,7 +123,7 @@ $.post('/createTeam', parameters, function (error){
 			alert("email verifcation failed. Please sent email again");
 		}, function(error) {
 			console.log("error3");
-			alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-GAME-VUE");
+			alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
 		});
 	}
 });
