@@ -21,29 +21,6 @@
 	</head>
 
 	<body>
-
-		<!-- <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-		  <div class="container-fluid">
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span> 
-		      </button>
-		      <a class="navbar-brand" href="home.html">FFSoftware</a>
-		    </div>
-		    <div class="collapse navbar-collapse" id="myNavbar">
-		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="home.html">Home</a></li>
-		        <li><a href="player_view.html">Games</a></li>
-		      </ul>
-		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-		      </ul>
-		    </div>
-		  </div>
-		</nav> -->
-
 		<div class="navbar navbar-inverse navbar-fixed-top">
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -67,14 +44,14 @@
 		  <div id="sidebar" class="sidebar-offcanvas">
 		      <div class="sidebar-headers">
 		      	<div id="side-bar-names">
-			        <h3>Sidebar</h3>
-			        <h5>This is about stuff</h5>
+			        <h3>Navigate</h3>
+			        <h5>10 Games Total</h5>
 			    </div>
 		        <ul id="nav-side-list" class="nav nav-stacked">
 		          <hr>
 		          <li class="active" id="home-nav"><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		          <hr>
-		          <li><a href="coach_view"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		          <li><a href="coachview"><span class="glyphicon glyphicon-film"></span> Games</a></li>
 		          <hr>
 		          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
@@ -88,9 +65,8 @@
 		      </div>
 		  </div>
 		  <div id="main">
-		      <!-- <div class="row" style="padding-bottom:10px;"> -->
 		      	<div id="dashboard">
-					<h3>Dashboard</h3>
+					<div id="dash-title">Dashboard</div>
 				</div>
 				<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Players</button>
 				<div id="myModal" class="modal fade" role="dialog">
@@ -122,21 +98,9 @@
 				<div id="graph" style="width: inherit">
 					<h3 class="text-center">Recent Performance</h3>
 					<hr>
-					<!-- <div class="panel panel-default">
-						<div class="panel-heading">
-                            Area Chart Example
-                        </div>
-		    			<div class="panel-body"> -->
-		    				<div id="chart" style="width: 100%; height: 500px"></div>
-		    			<!-- </div> -->
-		    		<!-- </div> -->
+		    		<div id="chart" style="width: 100%; height: 500px"></div>
 	    		</div>
-	    	<!-- </div> -->
-
-			<!-- <h4 class="text-center">Your Team's Last Five Games</h4> -->
-			<!-- <img src="line_graph.png" class="rounded center-block" alt="Responsive image"> -->
-			<!-- strengths and weaknesses -->
-			<!-- <div class="row"> -->
+	   
                 <div class="col-md-6">
                     <div class="sectionTitle" id="strengths">Strengths</div>
                     <div class="well">
@@ -172,13 +136,11 @@
                     	</div>
                     </div> 
                 </div>
-            <!-- </div> -->
             <!-- recent uploads -->
-			<!-- <div class="row"> -->
 				<div id="recent-uploads">
-					<h3>Recent Uploads</h3> 
+					<div class="sectionTitle" id="recent-title">Recent Uploads</div> 
 					<!-- Make collapsable?? -->
-					<div class="col-md-4">
+					<div class="col-md-4 text-center">
 						<h4 class="text-center"><a href="player_view.html">Brown vs. Eastlake</a></h4>
 					      	<h5 class="text-center">Best Plays</h5>
 								<button type="button" class="btn btn-success btn-circle">93</button>
@@ -189,7 +151,7 @@
 								<button type="button" class="btn btn-danger btn-circle">71</button>
 								<button type="button" class="btn btn-danger btn-circle">55</button>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-4 text-center">
 						<h4 class="text-center"><a href="player_view.html">Brown vs. Westwood</a></h4>
 				      	<h5 class="text-center">Best Plays</h5>
 							<button type="button" class="btn btn-success btn-circle">93</button>
@@ -200,7 +162,7 @@
 							<button type="button" class="btn btn-danger btn-circle">71</button>
 							<button type="button" class="btn btn-danger btn-circle">55</button>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-4 text-center">
 						<h4 class="text-center"><a href="player_view.html">Brown vs. Wellesley</a></h4>
 				      	<h5 class="text-center">Best Plays</h5>
 							<button type="button" class="btn btn-success btn-circle">93</button>
@@ -211,20 +173,6 @@
 							<button type="button" class="btn btn-danger btn-circle">71</button>
 							<button type="button" class="btn btn-danger btn-circle">55</button>
 					</div>
-				<!-- </div> -->
 			</div>
-		<!-- </div>  -->
-			
-
-
-		<!-- footer -->
-		<!-- <div class="navbar navbar-default">
-		    <div class="container">
-			    <p class="navbar-text pull-left">© 2017 - Site Built By CS132 FFS Group
-			        <a href="http://cs.brown.edu/courses/csci1320/" target="_blank">CS132 Site</a>
-			    </p>
-		    </div>
-		</div> -->
-
 	</body> 
 </html> 
