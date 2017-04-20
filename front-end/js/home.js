@@ -28,7 +28,15 @@ $(document).ready(function(){
 		var traitText = $("#newTraitTxt").val();
 		var traitImportance = ($('#newTraitImportance').val()/25) + 1;
     var option = $("#select-position")[0].selectedIndex;
-
+        var traitImportanceFullValue = $('#newTraitImportance').val();
+    var li = $("<li></li>");
+    var input = $("<input step='25'></input>");
+    input.attr("type", "range");
+    input.attr("step", 25);
+    input.attr("value", traitImportanceFullValue);
+    li.html(traitText);
+    li.append(input);
+    $("#traits").append(li);
     console.log();
     console.log(traitText + " " + traitImportance + " " + option) ;
     const parameters = {
@@ -36,12 +44,13 @@ $(document).ready(function(){
       importance: traitImportance, 
       category: traitText
     }
-    $.post('/createField', parameters, function (error){
-      if (error ===false ) {
+    // $.post('/createField', parameters, function (error){
+    //   if (error ===false ) {
         
-      }
-    });
+    //   }
+    // });
   });
+});
 
   $(document).ready(function() {
     $('[data-toggle=offcanvas]').click(function() {
