@@ -87,9 +87,9 @@ app.post('/createTeam', function(request, response) {
 });
 function addCategory(position, category, importance) {
 	let data = {
-
+		
 	}
-	let newCategory = db.ref().child('teams').child('team1').child('categories').child(category).push();
+	let newCategory = db.ref().child('teams').child('team1').child('categories').push();
 	console.log(newCategory);
 }
 
