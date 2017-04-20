@@ -27,7 +27,19 @@ $(document).ready(function(){
 	$('#addTraitBtn').on('click', function(){
 		var traitText = $("#newTraitTxt").val();
 		var traitImportance = ($('#newTraitImportance').val()/25) + 1;
-		console.log(traitText + traitImportance);
+    var option = $("#select-position")[0].selectedIndex;
+
+    console.log();
+		console.log(traitText + " " + traitImportance + " " + option) ;
+    const parameters = {
+      position: option,
+      importance: traitImportance, 
+      category: traitText
+    }
+    $.post('/createField', parameters, function (error){
+      if (error ===false ) {
+
+      }
 	});
 });
 

@@ -61,7 +61,14 @@ app.get('/coachview', function(request, response){
 app.get('/playerview', function(request, response){
 	response.render('player_view.html');
 });
-
+app.post('/createField', function(request, response) {
+	if (request.body!==undefined) {
+		let position = request.body.position;
+		let category = request.body.category;
+		let importance = request.body.importance;
+		addCategory(position, category, importance);
+	}
+}
 
 app.post('/createTeam', function(request, response) {
 	let email = request.body.email;
@@ -78,6 +85,13 @@ app.post('/createTeam', function(request, response) {
 
 
 });
+function addCategory(position, category, importance) {
+	let data = {
+
+	}
+	let newCategory = db.ref().child('teams').child('team1').child('categories').child(category).push();
+	console.log(newCategory);
+}
 
 //create a new team
 function createTeam(email, teamName, coachName, schoolName) {
