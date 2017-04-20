@@ -61,14 +61,43 @@ app.get('/coachview', function(request, response){
 app.get('/playerview', function(request, response){
 	response.render('player_view.html');
 });
-app.post('/createField', function(request, response) {
-	if (request.body!==undefined) {
-		let position = request.body.position;
-		let category = request.body.category;
-		let importance = request.body.importance;
-		addCategory(position, category, importance);
-	}
-}
+
+
+app.post('/createCoach', function(request, respnonse) {
+
+	let teamId = request.body.teamId;
+	let coachName = request.body.coachName;
+	let coachEmail = request.body.coachEmail;
+	let coachPositionId = request.body.coachPositionId;
+
+	let error = addCoach(teamId, coachEmail, coachName, coachPositionId);
+
+	response.json(error);
+
+});
+
+
+app.post('/createPlayer', function(request, respnonse) {
+
+	let teamId = request.body.teamId;
+	let playerName = request.body.playerName;
+	let playerEmail = request.body.playerEmail;
+	let playerPositionId = request.body.playerPositionId;
+
+	let error = addPlayer(teamId, coachEmail, coachName, coachPositionId);
+
+	response.json(error);
+
+});
+
+
+// app.post('/createField', function(request, response) {
+// 	let position = request.body.position;
+// 	let category = request.body.category;
+// 	let importance = request.body.importance;
+// 	addCategory(position, category, importance);
+	
+// });
 
 app.post('/createTeam', function(request, response) {
 	let email = request.body.email;
@@ -76,22 +105,18 @@ app.post('/createTeam', function(request, response) {
 	let coachName = request.body.coachName;
 	let schoolName = request.body.schoolName;
 
-	createTeam(email,teamName, coachName, schoolName);
+	let errorOrTeamId = createTeam(email,teamName, coachName, schoolName);
 
-	console.log(email);
-	console.log(teamName);
-	console.log(coachName);
-	console.log(schoolName);
-
+	response.json(errorOrTeamId);
 
 });
-function addCategory(position, category, importance) {
-	let data = {
+// function addCategory(position, category, importance) {
+// 	let data = {
 		
-	}
-	let newCategory = db.ref().child('teams').child('team1').child('categories').push();
-	console.log(newCategory);
-}
+// 	}
+// 	let newCategory = db.ref().child('teams').child('team1').child('categories').push();
+// 	console.log(newCategory);
+// }
 
 //create a new team
 function createTeam(email, teamName, coachName, schoolName) {
@@ -102,13 +127,14 @@ function createTeam(email, teamName, coachName, schoolName) {
 		teamName: teamName
 	};
 
+
 	let newTeamRef = db.ref().child('teams').push();
 
 	newTeamRef.set(teamData, function(error) {
 		if (error) {
 			return new Boolean(true); 
 		} else {
-			return new Boolean(false);
+			return newTeamRef.key;
 		}
 	});
 
@@ -125,18 +151,47 @@ function addPlayer(teamId, email, name, positionId) {
 	};
 
 	let newPlayerRef = db.ref().child('players').push();
+	let playerId = newPlayerRef.key;
 
 	newPlayerRef.set(playerData, function(error) {
+		if (error) {
+			return new Boolean(true); 
+		} else {
+			//if no error, add the playerId to the list of teamIds for consistency
+			let newPlayerTeamRef = db.ref().child("teams").child(teamId).child("players").child(playerId);
+
+			//setting the reference for player in the team
+			newPlayerRef.set(new Boolean(true), function(error) {
+				if(error) {
+					return new Boolean(true);
+				} else {
+					return new Boolean(false);
+				}
+			});
+		}
+	});
+
+
+
+}
+
+function addCoach(teamId, email, name, positionId) {
+
+	let coachData = {
+		email: email,
+		name: name,
+		position: positionId
+	};
+
+	let newCoachRef = db.ref().child('teams').child(teamId).child("coaches").push();
+
+	newCoachRef.set(coachData, function(error) {
 		if (error) {
 			return new Boolean(true); 
 		} else {
 			return new Boolean(false);
 		}
 	});
-
-}
-
-function addCoach(teamId, email, name, posoitionId) {
 
 
 }

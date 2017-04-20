@@ -147,23 +147,26 @@ else {
 
 function postRequestCreate(email, teamName, coachName, schoolName) {
 	let parameters = {email: email, teamName: teamName, coachName:coachName, schoolName: $("#schoolName").val().trim()
-};
+	};
 
-$.post('/createTeam', parameters, function (error){
-	console.log("Hi1");
-	if (error ===false) {
+$.post('/createTeam', parameters, function (errorOrTeamId){.
+
+	console.log(errorOrTeamId);
+
+	if (errorOrTeamId != true) {
 		alert("team created");
+		let user = firebase.auth().currentUser;
+		user.displayName = errorOrTeamId;
 		firebase.auth().signOut().then(function() {
-  	// Sign-out successful.
+  		// Sign-out successful.
 		}).catch(function(error) {
   		alert(error.message);
 	});
-		console.log("false");
 	}
 	else {
 		alert("error, please sign up again");
-		var user = firebase.auth().currentUser;
-		console.log("error1");
+		let user = firebase.auth().currentUser;
+
 		user.delete().then(function() {
 			console.log("error2");
 			alert("email verifcation failed. Please sent email again");
