@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>GameVue</title>
+		<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  var config = {
+			apiKey: "AIzaSyCcn-PMVozRa8Gkem8JImkEBBIIiancl5k",
+			authDomain: "gamevue-c6394.firebaseapp.com",
+			databaseURL: "https://gamevue-c6394.firebaseio.com",
+			projectId: "gamevue-c6394",
+			storageBucket: "gamevue-c6394.appspot.com",
+			messagingSenderId: "351663205276"
+		  };
+		  firebase.initializeApp(config);
+		  </script>
+		<!-- add favicon -->
+		<script
+		  src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		  crossorigin="anonymous"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript" src="../js/home.js"></script>
+		<link rel="stylesheet" href="../styles/home-style.css" type="text/css"/>
+	</head>
+
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="home">GameVue</a>
+		    </div>
+		    <div id="top-bar" class="collapse navbar-collapse">
+		      <ul class="nav navbar-nav">
+		        <li><a href="#about">Brown University Football Team</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+		        <li id="logout"><a href="login"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		      </ul>
+		    </div><!--/.nav-collapse -->
+		</div><!--/.navbar -->
+
+		<div class="row-offcanvas row-offcanvas-left">
+		  <div id="sidebar" class="sidebar-offcanvas">
+		      <div class="sidebar-headers">
+		      	<div id="side-bar-names">
+			        <h3>Navigate</h3>
+			        <h5>10 Games Total</h5>
+			    </div>
+		        <ul id="nav-side-list" class="nav nav-stacked">
+		          <hr>
+		          <li id="home-nav"><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+		          <hr>
+		          <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		          <hr>
+		          <li class="active"><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+		          <hr>
+		          <!-- <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
+		          <hr> -->
+		          <!--<li><a href="#"><span class="glyphicon glyphicon-upload"></span> Upload Video</a></li>
+		          <hr>-->
+		          <!-- <li><a href="#"><span class="glyphicon glyphicon-edit"></span> Settings</a></li>
+		          <hr> -->
+		        </ul>
+		      </div>
+		  </div>
+		  <div id="main">
+		      	<div id="players">
+		      		<h1>Players</h1>
+		      		<div class="col-md-3" id="qf">
+		      			<h3>qf</h3>
+		      			<ul>
+			      			<li><a href="player_view.html">Bob #52</a></li>
+					        <li><a href="player_view.html">Joe #11</a></li>
+					       	<li><a href="player_view.html">Tom #5</a></li>
+					       	<li><a href="player_view.html">Alan #30</a></li>
+				        	<li><a href="player_view.html">Josh #19</a></li>
+				        	<li><a href="player_view.html">Bill #9</a></li>
+				       </ul>
+		      		</div>
+		      		<div class="col-md-3" id="rf">
+		      			<h3>rf</h3>
+		      			<ul>
+			      			<li><a href="player_view.html">Bob #52</a></li>
+					        <li><a href="player_view.html">Joe #11</a></li>
+					       	<li><a href="player_view.html">Tom #5</a></li>
+					       	<li><a href="player_view.html">Alan #30</a></li>
+				        	<li><a href="player_view.html">Josh #19</a></li>
+				        	<li><a href="player_view.html">Bill #9</a></li>
+				       </ul>
+		      		</div>
+		      		<div class="col-md-3" id="tf">
+		      			<h3>tf</h3>
+		      			<ul>
+			      			<li><a href="player_view.html">Bob #52</a></li>
+					        <li><a href="player_view.html">Joe #11</a></li>
+					       	<li><a href="player_view.html">Tom #5</a></li>
+					       	<li><a href="player_view.html">Alan #30</a></li>
+				        	<li><a href="player_view.html">Josh #19</a></li>
+				        	<li><a href="player_view.html">Bill #9</a></li>
+				       </ul>
+		      		</div>
+		      		<div class="col-md-3" id="sf">
+		      			<h3>sf</h3>
+		      			<ul>
+			      			<li><a href="player_view.html">Bob #52</a></li>
+					        <li><a href="player_view.html">Joe #11</a></li>
+					       	<li><a href="player_view.html">Tom #5</a></li>
+					       	<li><a href="player_view.html">Alan #30</a></li>
+				        	<li><a href="player_view.html">Josh #19</a></li>
+				        	<li><a href="player_view.html">Bill #9</a></li>
+				       </ul>
+		      		</div>
+		      	</div>
+		      	<!-- Add a new player -->
+		      	<hr>
+		      	<h4>Add a New Player</h4>
+		      	<form action="">
+				  First Name<br>
+				  <input type="text" name="firstname" value="First Name">
+				  <br>
+				  Last name:<br>
+				  <input type="text" name="lastname" value="Last Name">
+				  <br>
+				  Position<br>
+				  <input type="text" name="position" value="Position">
+				  <br><br>
+				  <input type="submit" value="Add New Player">
+				</form> 
+		  </div>
+	</body> 
+</html> 
