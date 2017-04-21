@@ -59,6 +59,11 @@ app.get('/coachview', function(request, response){
 
 //listening to the player view page
 app.get('/playerview', function(request, response){
+	let grades = {
+		speed:1,
+		vision:4
+	};
+	addGrades('play1',grades,'player1Id');
 	response.render('player_view.html');
 });
 
@@ -88,6 +93,15 @@ app.post('/createPlayer', function(request, respnonse) {
 
 	response.json(error);
 
+});
+
+app.post('/createPlay', function(request, response){
+	let gameId = request.body.gameId;
+	let videoUrl = request.body.videoUrl;
+	
+	let error = addPlay(gameId, videoUrl);
+	
+	response.json(error);
 });
 
 
@@ -142,49 +156,36 @@ function createTeam(email, teamName, coachName, schoolName) {
 
 
 function addPlayer(teamId, email, name, positionId) {
-
 	//adding the player data to the database
 	let playerData = {
 		email: email,
 		name: name,
-		positionId: positionId
+		positionId: positionId,
+		teamId:teamId
 	};
 
 	let newPlayerRef = db.ref().child('players').push();
 	let playerId = newPlayerRef.key;
-
+	
 	newPlayerRef.set(playerData, function(error) {
 		if (error) {
 			return new Boolean(true); 
 		} else {
-			//if no error, add the playerId to the list of teamIds for consistency
-			let newPlayerTeamRef = db.ref().child("teams").child(teamId).child("players").child(playerId);
-
-			//setting the reference for player in the team
-			newPlayerRef.set(new Boolean(true), function(error) {
-				if(error) {
-					return new Boolean(true);
-				} else {
-					return new Boolean(false);
-				}
-			});
+			return new Boolean(false);
 		}
 	});
-
-
-
 }
 
 function addCoach(teamId, email, name, positionId) {
-
 	let coachData = {
 		email: email,
 		name: name,
-		position: positionId
+		position: positionId,
+		teamId:teamId
 	};
 
-	let newCoachRef = db.ref().child('teams').child(teamId).child("coaches").push();
-
+	let newCoachRef = db.ref().child("coaches").push();
+	
 	newCoachRef.set(coachData, function(error) {
 		if (error) {
 			return new Boolean(true); 
@@ -196,11 +197,56 @@ function addCoach(teamId, email, name, positionId) {
 
 }
 
-function addGame(teamId) {
-
+function addGame(teamId, opponent) {
+	let gameData = {
+		opponent:opponent,
+		teamId:teamId
+	};
+	
+	let newGameRef = db.ref().child('games').push();
+	
+	newGameRef.set(gameData,function(error){
+		if (error) {
+			return new Boolean(true); 
+		} else {
+			return new Boolean(false);
+		}
+	});
 }
 
-function addPlay(teamId, gameId){
+function addPlay(gameId, videoUrl){
+	console.log("adding play...");
+	let playData = {
+		gameId:gameId,
+		videoUrl:videoUrl
+	};
+	
+	let newPlayRef = db.ref().child('plays').push();
+	
+	newPlayRef.set(playData, function(error){
+		if (error) {
+			return new Boolean(true); 
+		} else {
+			return new Boolean(false);
+		}
+	});
+}
 
+function addGrades(playId, grades, playerId){
+	let gradeData = {
+		playId:playId,
+		grades:grades,
+		playerId:playerId
+	}
+	
+	let newGradeRef = db.ref().child('grades').push();
+	
+	newGradeRef.set(gradeData, function(error){
+		if (error) {
+			return new Boolean(true); 
+		} else {
+			return new Boolean(false);
+		}
+	});
 }
 

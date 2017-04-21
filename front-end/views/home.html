@@ -4,6 +4,19 @@
 	<head>
 		<meta charset="utf-8">
 		<title>GameVue</title>
+		<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  var config = {
+			apiKey: "AIzaSyCcn-PMVozRa8Gkem8JImkEBBIIiancl5k",
+			authDomain: "gamevue-c6394.firebaseapp.com",
+			databaseURL: "https://gamevue-c6394.firebaseio.com",
+			projectId: "gamevue-c6394",
+			storageBucket: "gamevue-c6394.appspot.com",
+			messagingSenderId: "351663205276"
+		  };
+		  firebase.initializeApp(config);
+		  </script>
 		<!-- add favicon -->
 		<script
 		  src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -98,78 +111,6 @@
 				<!--Category Modal-->
 				<div id="categoryModal" class="modal fade" role="dialog">
 				  <div class="modal-dialog">
-					<div class="modal-content">
-					  <div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Player Categories</h4>
-					  </div>
-					  <div class="modal-body">
-						<div class="row-fluid">
-							<div class="col-md-12 select-position-sctn">
-								<label id="select-position-label" for="select-position" class="col-md-3 col-form-label">Position:</label>
-								<div class="col-md-9">
-									<select class="form-control" id="select-position">
-										<option id = "final"></option>
-										<option id = "QB">QB</option>
-										<option id = "RB">RB</option>
-										<option id = "WR">WR</option>
-										<option id = "CB">CB</option>
-										<option id = "FS">FS</option>
-									</select>
-								</div>
-							</div>
-						</div>
-						<div class="row-fluid text-center">
-							<button id="openTraitInputBtn" type="button" class="btn btn-default btn-sm" style="margin-top:10px;">
-							  <span class="glyphicon glyphicon-plus-sign" style="color:green"></span> Add New Category
-							</button>
-							<div class="row" style="margin-bottom:10px;">
-								<div style="padding:0;">
-									<div class="col-md-3 text-left">
-										Least Important
-									</div>
-									<div class="col-md-3 col-md-offset-6 text-right">
-										Most Important
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row-fluid">
-							<ul style="padding:0;" id = "traits">
-								<li id="newTraitLi" class="hidden">
-									<input id="newTraitTxt" type="text">
-									<input id="newTraitImportance" type="range" step="25" value="50">
-									<div class="text-center" style="margin-top:10px">
-										<button id="addTraitBtn" class="btn btn-primary btn-sm" type="button">
-											Add Category
-										</button
-									</div>
-								</li>
-								<li>Press
-								<input type="range" step="25" value="50">
-								</li>
-								<li>Patience
-								<input type="range" step="25" value="50">
-								</li>
-								<li>Backpedal
-								<input type="range" step="25" value="50">
-								</li>
-								<li>Keys
-								<input type="range" step="25" value="50">
-								</li>
-							</ul>
-						</div>
-					  </div>
-					  <div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					  </div>
-					</div>
-
-				  </div>
-				</div>
-				<!--Category Modal-->
-				<div id="categoryModal" class="modal fade" role="dialog">
-				  <div class="modal-dialog">
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -178,6 +119,10 @@
 				      <div class="modal-body">
 						<div class="row-fluid">
 							<div class="col-md-12 select-position-sctn">
+								<input id="videoUploadInput" type="file" name="filefield" multiple="multiple">
+								<button id="videoUploadBtn" class="btn btn-default">
+									Upload
+								</button>
 								<label id="select-position-label" for="select-position" class="col-md-3 col-form-label">Position:</label>
 								<div class="col-md-9">
 									<select class="form-control" id="select-position">

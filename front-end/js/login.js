@@ -7,6 +7,9 @@ $(document).ready(function() {
 		e.preventDefault();
 		$('div#form-olvidado').toggle('500');
 	});
+	$('#loginSubmitBtn').on('click', function(e){
+		login();
+	});
 });
 
 $(function() {
@@ -90,6 +93,7 @@ $(window).resize(function(){
 });
 
 function login() {
+	console.log("logging in...");
 	let email = $("#login_email").val().trim();
 	let password = $("#login_password").val();
 	firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
@@ -146,10 +150,9 @@ else {
 }
 
 function postRequestCreate(email, teamName, coachName, schoolName) {
-	let parameters = {email: email, teamName: teamName, coachName:coachName, schoolName: $("#schoolName").val().trim()
-	};
+	let parameters = {email: email, teamName: teamName, coachName:coachName, schoolName: $("#schoolName").val().trim()};
 
-$.post('/createTeam', parameters, function (errorOrTeamId){.
+$.post('/createTeam', parameters, function (errorOrTeamId){
 
 	console.log(errorOrTeamId);
 
