@@ -276,11 +276,10 @@ function addGrades(playId, grades, playerId){
 
 function addCategory(teamId, positionId, importance, title){
 	let categoryData = {
-		importance:importance,
-		title:title
+		importance:importance
 	};
 	
-	let newCategoryRef = db.ref().child('teams').child(teamId).child('categories').child(positionId).push();
+	let newCategoryRef = db.ref().child('teams').child(teamId).child('categories').child(positionId).child(title);
 	
 	newCategoryRef.set(categoryData, function(error){
 		if (error) {
