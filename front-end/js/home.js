@@ -17,48 +17,6 @@ $(document).ready(function(){
       go();
 
     });
-	$('#videoUploadBtn').on('click', function(){
-		var gameId = 'game1';
-		// File or Blob named mountains.jpg
-		var file = $("#videoUploadInput").prop('files')[0];
-
-		// Create the file metadata
-		var metadata = {
-		  contentType: file.type
-		};
-		// Create a root reference
-		var storageRef = firebase.storage().ref();
-		// Upload file and metadata to the object 'images/mountains.jpg'
-		var uploadTask = storageRef.child('videos/'+ gameId+"/" + file.name).put(file, metadata);
-
-		// Listen for state changes, errors, and completion of the upload.
-		uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-		  function(snapshot) {
-			// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-			console.log('Upload is ' + progress + '% done');
-			switch (snapshot.state) {
-			  case firebase.storage.TaskState.PAUSED: // or 'paused'
-				console.log('Upload is paused');
-				break;
-			  case firebase.storage.TaskState.RUNNING: // or 'running'
-				console.log('Upload is running');
-				break;
-			}
-		  }, function(error) {
-			console.log(error.code);
-		}, function() {
-			// Upload completed successfully, now we can get the download URL
-			var downloadURL = uploadTask.snapshot.downloadURL;
-			var parameters = {
-				gameId:gameId,
-				videoUrl:downloadURL
-			};
-			$.post('/createPlay', parameters, function(error){
-				console.log(error);
-			});
-		});
-	});
  }
  loadSkillgraph();
  $("#openTraitInputBtn").on('click', function(){
@@ -78,18 +36,20 @@ $(document).ready(function(){
     li.html(traitText);
     li.append(input);
     $("#traits").append(li);
-    console.log();
-    console.log(traitText + " " + traitImportance + " " + option) ;
     const parameters = {
-      position: option,
-      importance: traitImportance, 
-      category: traitText
+      teamId: 'team1',
+      positionId: 4, 
+      importance: traitImportance,
+	  title: traitText
     }
-    // $.post('/createField', parameters, function (error){
-    //   if (error ===false ) {
-        
-    //   }
-    // });
+    $.post('/createCategory', parameters, function (error){
+      if(error){
+		  console.log(error);
+	  }
+    });
+	$('#newTraitLi').addClass('hidden');
+	$("#newTraitTxt").val("");
+	$('#newTraitImportance').val(50);
   });
 });
 

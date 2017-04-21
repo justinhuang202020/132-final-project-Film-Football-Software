@@ -9,11 +9,48 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 		<!-- Latest compiled and minified JavaScript for bootstrap-->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  var config = {
+			apiKey: "AIzaSyCcn-PMVozRa8Gkem8JImkEBBIIiancl5k",
+			authDomain: "gamevue-c6394.firebaseapp.com",
+			databaseURL: "https://gamevue-c6394.firebaseio.com",
+			projectId: "gamevue-c6394",
+			storageBucket: "gamevue-c6394.appspot.com",
+			messagingSenderId: "351663205276"
+		  };
+		  firebase.initializeApp(config);
+		</script>
 		<link rel="stylesheet" href="../styles/gameview_style.css">
 		<script src="../js/gameview.js"></script>
 	</head>
 	<body>
 		<div class="container-fluid">
+			<div id="addPlayModal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add New Play</h4>
+				  </div>
+				  <div class="modal-body">
+					<h3>
+					To Add Plays to this game, upload the video(s) of the play(s) below.
+					</h3>
+					<form id="playForm">
+						<input id="videoUploadInput" type="file" name="filefield" multiple="multiple">
+						<button type="submit" class="btn btn-default">
+							Upload
+						</button>
+					</form>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
 			<div class="row">
 				<div class="col-md-5">
 					<ul class="play-details-list">
@@ -30,6 +67,11 @@
 							</span>
 						</li>
 					</ul>
+				</div>
+				<div class="col-md-4 col-md-offset-3 text-center" style="line-height:64px;">
+					<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addPlayModal">
+						Add Plays to Game
+					</button>
 				</div>
 			</div>
 			<div class="row">

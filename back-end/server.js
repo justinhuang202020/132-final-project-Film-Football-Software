@@ -57,13 +57,13 @@ app.get('/coachview', function(request, response){
 	response.render('coach_view.html');
 });
 
+//listening to the coach view page
+app.get('/gamepage', function(request, response){
+	response.render('game_page.html');
+});
+
 //listening to the player view page
 app.get('/playerview', function(request, response){
-	let grades = {
-		speed:1,
-		vision:4
-	};
-	addGrades('play1',grades,'player1Id');
 	response.render('player_view.html');
 });
 
@@ -100,6 +100,28 @@ app.post('/createPlay', function(request, response){
 	let videoUrl = request.body.videoUrl;
 	
 	let error = addPlay(gameId, videoUrl);
+	
+	response.json(error);
+});
+
+app.post('/createGame', function(request, response){
+	let teamId = request.body.teamId;
+	let opponent = request.body.opponent;
+	let teamScore = request.body.teamScore;
+	let opponentScore = request.body.opponentScore;
+	
+	let error = addGame(teamId, opponent, teamScore, opponentScore);
+	
+	response.json(error);
+});
+
+app.post('/createCategory', function(request, response){
+	let teamId = request.body.teamId;
+	let positionId = request.body.positionId;
+	let importance = request.body.importance;
+	let title = request.body.title;
+	
+	let error = addCategory(teamId, positionId, importance, title);
 	
 	response.json(error);
 });
@@ -197,10 +219,12 @@ function addCoach(teamId, email, name, positionId) {
 
 }
 
-function addGame(teamId, opponent) {
+function addGame(teamId, opponent, teamScore, opponentScore) {
 	let gameData = {
 		opponent:opponent,
-		teamId:teamId
+		teamId:teamId,
+		teamScore:teamScore,
+		opponentScore:opponentScore
 	};
 	
 	let newGameRef = db.ref().child('games').push();
@@ -242,6 +266,23 @@ function addGrades(playId, grades, playerId){
 	let newGradeRef = db.ref().child('grades').push();
 	
 	newGradeRef.set(gradeData, function(error){
+		if (error) {
+			return new Boolean(true); 
+		} else {
+			return new Boolean(false);
+		}
+	});
+}
+
+function addCategory(teamId, positionId, importance, title){
+	let categoryData = {
+		importance:importance,
+		title:title
+	};
+	
+	let newCategoryRef = db.ref().child('teams').child(teamId).child('categories').child(positionId).push();
+	
+	newCategoryRef.set(categoryData, function(error){
 		if (error) {
 			return new Boolean(true); 
 		} else {

@@ -64,16 +64,16 @@
 		          <hr>
 		          <li class="active" id="home-nav"><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		          <hr>
-		          <li><a href="coachview"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		          <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
 		          <hr>
 		          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
-		          <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
-		          <hr>
+		          <!-- <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
+		          <hr> -->
 		          <li><a href="#"><span class="glyphicon glyphicon-upload"></span> Upload Video</a></li>
 		          <hr>
-		          <li><a href="#"><span class="glyphicon glyphicon-edit"></span> Settings</a></li>
-		          <hr>
+		          <!-- <li><a href="#"><span class="glyphicon glyphicon-edit"></span> Settings</a></li>
+		          <hr> -->
 		        </ul>
 		      </div>
 		  </div>
@@ -119,10 +119,6 @@
 				      <div class="modal-body">
 						<div class="row-fluid">
 							<div class="col-md-12 select-position-sctn">
-								<input id="videoUploadInput" type="file" name="filefield" multiple="multiple">
-								<button id="videoUploadBtn" class="btn btn-default">
-									Upload
-								</button>
 								<label id="select-position-label" for="select-position" class="col-md-3 col-form-label">Position:</label>
 								<div class="col-md-9">
 									<select class="form-control" id="select-position">
@@ -152,7 +148,7 @@
 							</div>
 						</div>
 						<div class="row-fluid">
-							<ul style="padding:0;" >
+							<ul id="traits" style="padding:0;" >
 								<li id="newTraitLi" class="hidden">
 									<input id="newTraitTxt" type="text">
 									<input id="newTraitImportance" type="range" step="25" value="50">

@@ -96,7 +96,7 @@ body{
 	}
 	.play-select-sctn{
 		height:100%;
-		padding:2px;
+		padding-right:2px;
 		overflow-y:scroll;
 	}
 	.play{
@@ -179,6 +179,9 @@ body{
 		background-color:yellow;
 		margin-top:15px;
 		height:40px;
+	}
+	#addPlayModal{
+		color:black;
 	}
 	.score-buttons{
 		text-align:center;
