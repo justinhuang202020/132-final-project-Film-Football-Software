@@ -81,7 +81,7 @@
 		      	<div id="players">
 		      		<h1>Players</h1>
 		      		<div class="col-md-3" id="qf">
-		      			<h3>qf</h3>
+		      			<h3>Some Position</h3>
 		      			<ul>
 			      			<li><a href="player_view.html">Bob #52</a></li>
 					        <li><a href="player_view.html">Joe #11</a></li>
@@ -92,7 +92,7 @@
 				       </ul>
 		      		</div>
 		      		<div class="col-md-3" id="rf">
-		      			<h3>rf</h3>
+		      			<h3>Some Position</h3>
 		      			<ul>
 			      			<li><a href="player_view.html">Bob #52</a></li>
 					        <li><a href="player_view.html">Joe #11</a></li>
@@ -103,7 +103,7 @@
 				       </ul>
 		      		</div>
 		      		<div class="col-md-3" id="tf">
-		      			<h3>tf</h3>
+		      			<h3>Some Position</h3>
 		      			<ul>
 			      			<li><a href="player_view.html">Bob #52</a></li>
 					        <li><a href="player_view.html">Joe #11</a></li>
@@ -114,7 +114,7 @@
 				       </ul>
 		      		</div>
 		      		<div class="col-md-3" id="sf">
-		      			<h3>sf</h3>
+		      			<h3>Some Position</h3>
 		      			<ul>
 			      			<li><a href="player_view.html">Bob #52</a></li>
 					        <li><a href="player_view.html">Joe #11</a></li>
@@ -125,10 +125,10 @@
 				       </ul>
 		      		</div>
 		      	</div>
-		      	<!-- Add a new player -->
 		      	<hr>
+		      	<!-- Add a new player -->
 		      	<h4>Add a New Player</h4>
-		      	<form action="">
+		      	<!-- <form action="">
 				  First Name<br>
 				  <input type="text" name="firstname" value="First Name">
 				  <br>
@@ -139,7 +139,40 @@
 				  <input type="text" name="position" value="Position">
 				  <br><br>
 				  <input type="submit" value="Add New Player">
-				</form> 
+				</form>  -->
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+				  Add Player +
+				</button>
+
+				<!-- Modal -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="myModalLabel">Add Player</h4>
+				      </div>
+				      <div class="modal-body">
+				        <form action="">
+						  First Name<br>
+						  <input type="text" name="firstname" value="First Name">
+						  <br>
+						  Last name:<br>
+						  <input type="text" name="lastname" value="Last Name">
+						  <br>
+						  Position<br>
+						  <input type="text" name="position" value="Position">
+						  <br><br>
+						  <input type="submit" value="Add New Player">
+						</form> 
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 		  </div>
 	</body> 
 </html> 
