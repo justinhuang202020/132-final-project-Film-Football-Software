@@ -79,7 +79,7 @@ app.post('/getPositions', function(request, response) {
 	
 	let positionsRef = db.ref().child('positions');
 
-	positionsRef.on("value", function(snapshot) {
+	positionsRef.once("value", function(snapshot) {
 		console.log(snapshot.val());
 		response.json(snapshot.val());
 	}, function(error) {
@@ -94,7 +94,7 @@ app.post('/getGames', function(request, response) {
 	
 	let gamesRef = db.ref().child('games');
 
-	gamesRef.orderByChild("teamId").equalTo('team1').on("value", function(snapshot) {
+	gamesRef.orderByChild("teamId").equalTo('team1').once("value", function(snapshot) {
 		console.log(snapshot.val());
 		response.json(snapshot.val());
 	}, function(error) {
@@ -103,16 +103,31 @@ app.post('/getGames', function(request, response) {
 	});
 });
 
-app.post('/getPlayersForPosition', function(request, response) {
+// app.post('/getPlayersForPosition', function(request, response) {
 
-	let positionId = request.body.positionId;
+// 	let positionId = request.body.positionId;
 
-	let playersRef = db.ref().child('players');
+// 	let playersRef = db.ref().child('players');
 
-	playersRef.orderByChild("teamId").equalTo('team1').on("value", function(snapshot) {
+// 	playersRef.orderByChild("teamId").equalTo('team1').once("value", function(snapshot) {
 
-		let array  = snapshot.val();
+// 		let array  = snapshot.val();
 
+// 		console.log(snapshot.val());
+// 		response.json(snapshot.val());
+// 	}, function(error) {
+// 		console.error(error);
+// 		response.json(new Boolean(true));
+// 	});
+// });
+
+app.post('/getPlaysForGame', function(request, response) {
+	let gameId = request.body.gameId;
+	gameId = "game1";
+	
+	let playsRef = db.ref().child('plays');
+
+	playsRef.orderByChild("gameId").equalTo(gameId).once("value", function(snapshot) {
 		console.log(snapshot.val());
 		response.json(snapshot.val());
 	}, function(error) {
@@ -189,6 +204,7 @@ app.post('/createGame', function(request, response){
 			response.json(new Boolean (false));
 		}
 	});	
+
 });
 
 app.post('/createCategory', function(request, response){
@@ -210,6 +226,9 @@ app.post('/createTeam', function(request, response) {
 	let schoolName = request.body.schoolName;
 
 	let errorOrTeamId = createTeam(email,teamName, coachName, schoolName);
+
+
+	console.log("HERE" +errorOrTeamId);
 
 	response.json(errorOrTeamId);
 
