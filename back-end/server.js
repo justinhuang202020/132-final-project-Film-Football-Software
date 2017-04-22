@@ -68,50 +68,20 @@ app.get('/playerview', function(request, response){
 });
 
 
-
-
 ////////////////////////// RETRIEVAL FUNCTIONS BELOW //////////////////////////////////////////////////
 
-// app.post('/getCoaches', function(request, response)) {
-
-// 	let teamId = request.body.teamId;
-
-// 	//true if error, list of coaches if no error
-// 	let errorOrList = retrieveCoaches(teamId);
-
-// 	response.json(errorOrList);
-
-// }
-
-// function retrieveCoaches(teamId) {
-
-// 	let coachesRef = db.ref().child('coaches');
-
-// 	coachesRef.orderByChild("teamId").equalTo(teamId).on("value", function(snapshot) {
-// 		console.log(snapshot.val());
-// 		return snapshot;
-// 	}, function(error) {
-// 		console.error(error);
-// 	});
-// }
-
-// app.post('/getPlayers', function(request, response)) {
-// 	let teamId = request.body.teamId;
-
-// 	//true if error, list of coaches if no error
-// 	let errorOrList = retrievePlayers(teamId);
-
-// 	response.json(errorOrList);
-
-// }
-
-
-
-// function retrievePlayers(teamId) {
-
+app.post('/getPositions', function(request, response) {
 	
-// }
+	let positionsRef = db.ref().child('positions');
 
+	positionsRef.on("value", function(snapshot) {
+		console.log(snapshot.val());
+		response.json(snapshot.val());
+	}, function(error) {
+		console.error(error);
+		response.json(new Boolean(true));
+	});
+});
 
 
 app.post('/getGames', function(request, response) {
@@ -128,21 +98,23 @@ app.post('/getGames', function(request, response) {
 	});
 });
 
+app.post('/getPlayersForPosition', function(request, response) {
 
+	let positionId = request.body.positionId;
 
-function retrieveGames(teamId) {
+	let playersRef = db.ref().child('players');
 
-	let gamesRef = db.ref().child('games');
+	playersRef.orderByChild("teamId").equalTo('team1').on("value", function(snapshot) {
 
-	gamesRef.orderByChild("teamid").equalTo(teamId).on("value", function(snapshot) {
+		let array  = snapshot.val();
+
 		console.log(snapshot.val());
-		return snapshot;
+		response.json(snapshot.val());
 	}, function(error) {
 		console.error(error);
-		return new Boolean(true);
+		response.json(new Boolean(true));
 	});
-}
-
+});
 
 
 
