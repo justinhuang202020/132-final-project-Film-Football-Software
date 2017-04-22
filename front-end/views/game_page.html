@@ -108,7 +108,7 @@
 		          <hr>
 		          <li class="active" ><a href="#"><span class="glyphicon glyphicon-film"></span> Games</a></li>
 		          <hr>
-		          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+		          <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
 		          <!--<li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
 		          <hr>-->
@@ -157,7 +157,7 @@
 				Games
 				</h1>
 			</div>
-			<div class="row">
+			<div id="thumbnail-holder" class="row">
 				<div class="col-sm-6 col-md-3">
 					<div class="thumbnail add-game-thumbnail text-center" data-toggle="modal" data-target="#addGameModal">
 						<div class="thumbnail-content">
@@ -253,11 +253,57 @@
 					opponentScore:opponentScore,
 					teamScore:teamScore
 				};
-				console.log(parameters);
+				buildGameEl(opponent, opponentScore, teamScore);
 				$.post('/createGame', parameters, function(error){
 					console.log(error);
 				});
 			});
+			$.post('/getGames', function(response){
+				console.log(response);
+			});
+			function buildGameEl(opponent, opponentScore, teamScore){
+				var divString = '<div></div>';
+				var widthDiv = $(divString);
+				widthDiv.addClass("col-sm-6 col-md-3");
+				var thumbnailDiv = $(divString);
+				thumbnailDiv.addClass("thumbnail game-thumbnail text-center");
+				var thumbnailContentDiv = $(divString);
+				thumbnailContentDiv.addClass("thumbnail-content");
+				var thumbnailOpponentDiv = $(divString);
+				thumbnailOpponentDiv.addClass("thumbnail-opponent");
+				var thumbnailOutcomeDiv = $(divString);
+				thumbnailOutcomeDiv.addClass("thumbnail-outcome")
+				var thumbnailFooterDiv = $(divString);
+				thumbnailFooterDiv.addClass("thumbnail-footer");
+				var thumbnailScoreDiv = $(divString);
+				thumbnailScoreDiv.addClass("thumbnail-score");
+				var opponentString = "vs. "+opponent;
+				thumbnailOpponentDiv.html(opponentString);
+				var outcomeString = "";
+				var outcomeClass = "";
+				if(teamScore>opponentScore){
+					outcomeString = "W";
+					outcomeClass = "color-win";
+				}
+				else if(opponentScore > teamScore){
+					outcomeString = "L";
+					outcomeClass="color-lose";
+				}
+				else{
+					outcomeString = "T";
+				}
+				thumbnailOutcomeDiv.addClass(outcomeClass);
+				thumbnailOutcomeDiv.html(outcomeString);
+				var thumbnailScoreString = ""+teamScore + "-" + opponentScore+"";
+				thumbnailScoreDiv.html(thumbnailScoreString);
+				widthDiv.append(thumbnailDiv);
+				thumbnailDiv.append(thumbnailContentDiv);
+				thumbnailDiv.append(thumbnailFooterDiv);
+				thumbnailContentDiv.append(thumbnailOpponentDiv);
+				thumbnailContentDiv.append(thumbnailOutcomeDiv);
+				thumbnailFooterDiv.append(thumbnailScoreDiv);
+				$("#thumbnail-holder").append(widthDiv);
+			}
 		  </script>
 	</body> 
 </html> 

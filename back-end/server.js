@@ -116,21 +116,25 @@ app.get('/playerview', function(request, response){
 
 app.post('/getGames', function(request, response) {
 	let teamId = request.body.teamId;
+	
+	let gamesRef = db.ref().child('games');
 
-	//true if error, list of coaches if no error
-	let errorOrList = retrieveGames(teamId);
-
-	response.json(errorOrList);
-
+	gamesRef.orderByChild("teamId").equalTo('team1').on("value", function(snapshot) {
+		console.log(snapshot.val());
+		response.json(snapshot.val());
+	}, function(error) {
+		console.error(error);
+		response.json(new Boolean(true));
+	});
 });
 
 
 
-function retrievePlayers(teamId) {
+function retrieveGames(teamId) {
 
-	let teamsRef = db.ref().child('teams');
+	let gamesRef = db.ref().child('games');
 
-	coachesRef.orderByChild("teamId").equalTo(teamId).on("value", function(snapshot) {
+	gamesRef.orderByChild("teamid").equalTo(teamId).on("value", function(snapshot) {
 		console.log(snapshot.val());
 		return snapshot;
 	}, function(error) {
@@ -150,7 +154,7 @@ function retrievePlayers(teamId) {
 
 
 ////////////////////////// CREATION FUNCTIONS BELOW //////////////////////////////////////////////////
-app.post('/createCoach', function(request, respnonse) {
+app.post('/createCoach', function(request, response) {
 
 	let teamId = request.body.teamId;
 	let coachName = request.body.coachName;
@@ -164,14 +168,14 @@ app.post('/createCoach', function(request, respnonse) {
 });
 
 
-app.post('/createPlayer', function(request, respnonse) {
+app.post('/createPlayer', function(request, response) {
 
 	let teamId = request.body.teamId;
 	let playerName = request.body.playerName;
 	let playerEmail = request.body.playerEmail;
 	let playerPositionId = request.body.playerPositionId;
 
-	let error = addPlayer(teamId, coachEmail, coachName, coachPositionId);
+	let error = addPlayer(teamId, playerName, playerEmail, playerPositionId);
 
 	response.json(error);
 

@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	setVideoSrc("https://firebasestorage.googleapis.com/v0/b/gamevue-c6394.appspot.com/o/videos%2F-KiGTKEA6mF0TYyRJ82S%2Fshe.mp4?alt=media&token=43558c7e-c2f4-4f3f-8eb5-f339b1edcdda");
 	var $video  = $('video'),
 		$vidContainer = $('.vid-player-sctn:first'),
 		$leftSctn = $('.play-view-left-sctn'),
@@ -47,12 +48,46 @@ $(document).ready(function(){
 	});
 	$("#playForm").submit(function(e){
 		e.preventDefault();
+		addPlayEl(100, "", "");
 		var gameId = 'game1';
 		for(var i =0; i<$("#videoUploadInput").prop('files').length;i++){
 			var file = $("#videoUploadInput").prop('files')[i];
 			uploadFile(gameId, file);
 		}
 	});
+	function addPlayEl(playScore, dAndD, description){
+		var divString = '<div></div>';
+		var ulString = '<ul></ul>';
+		var liString = '<li></li>';
+		var playDiv = $(divString);
+		playDiv.addClass("well play col-md-12");
+		var ul = $(ulString);
+		ul.addClass("play-list");
+		var li1 = $(liString);
+		var playScoreDiv = $(divString);
+		playScoreDiv.addClass("play-score play-score-avg play-score-sm");
+		playScoreDiv.html(playScore);
+		var li2 = $(liString);
+		var playDdDiv = $(divString);
+		playDdDiv.addClass("play-dd");
+		playDdDiv.html(dAndD);
+		var li3 = $(liString);
+		var playResultDiv = $(divString);
+		playResultDiv.addClass("play-result");
+		playResultDiv.html(description);
+		li1.append(playScoreDiv);
+		li2.append(playDdDiv);
+		li3.append(playResultDiv);
+		ul.append(li1);
+		ul.append(li2);
+		ul.append(li3);
+		playDiv.append(ul);
+		$(".play-select-sctn").append(playDiv);
+	}
+	function setVideoSrc(videoUrl){
+		$('.vid-player video source').attr('src', videoUrl);
+		$(".vid-player video")[0].load();
+	}
 	function uploadFile(gameId, file){
 		// Create the file metadata
 		var metadata = {
