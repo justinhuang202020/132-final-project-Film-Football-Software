@@ -170,74 +170,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail game-thumbnail text-center">
-						<div class="thumbnail-content">
-							<div class="thumbnail-opponent">
-								vs. Eastlake
-							</div>
-							<div class="thumbnail-outcome color-win">
-								W
-							</div>
-						</div>
-						<div class="thumbnail-footer">
-							<div class="thumbnail-score">
-							37-20
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail text-center">
-						<div class="thumbnail-content">
-							<div class="thumbnail-opponent">
-								vs. Sweetwater
-							</div>
-							<div class="thumbnail-outcome color-win">
-								W
-							</div>
-						</div>
-						<div class="thumbnail-footer">
-							<div class="thumbnail-score">
-							47-10
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail text-center">
-						<div class="thumbnail-content">
-							<div class="thumbnail-opponent">
-								vs. La Costa ...
-							</div>
-							<div class="thumbnail-outcome color-lose">
-								L
-							</div>
-						</div>
-						<div class="thumbnail-footer">
-							<div class="thumbnail-score">
-							21-31
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail text-center">
-						<div class="thumbnail-content">
-							<div class="thumbnail-opponent">
-								vs. Mater Dei
-							</div>
-							<div class="thumbnail-outcome">
-								T
-							</div>
-						</div>
-						<div class="thumbnail-footer">
-							<div class="thumbnail-score">
-							20-20
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		  </div>
 		  <script>
@@ -259,7 +191,10 @@
 				});
 			});
 			$.post('/getGames', function(response){
-				console.log(response);
+				for(id in response){
+					var game = response[id];
+					buildGameEl(game.opponent, game.opponentScore, game.teamScore);
+				}
 			});
 			function buildGameEl(opponent, opponentScore, teamScore){
 				var divString = '<div></div>';

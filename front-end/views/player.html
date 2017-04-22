@@ -29,7 +29,7 @@
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript" src="../js/home.js"></script>
+		<script type="text/javascript" src="../js/player.js"></script>
 		<link rel="stylesheet" href="../styles/home-style.css" type="text/css"/>
 	</head>
 
@@ -66,7 +66,7 @@
 		          <hr>
 		          <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
 		          <hr>
-		          <li class="active"><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+		          <li class="active"><a href="#"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
 		          <!-- <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
 		          <hr> -->
@@ -128,6 +128,19 @@
 		      	<hr>
 		      	<!-- Add a new player -->
 		      	<h4>Add a New Player</h4>
+		      	<!-- <form action="">
+				  First Name<br>
+				  <input type="text" name="firstname" value="First Name">
+				  <br>
+				  Last name:<br>
+				  <input type="text" name="lastname" value="Last Name">
+				  <br>
+				  Position<br>
+				  <input type="text" name="position" value="Position">
+				  <br><br>
+				  <input type="submit" value="Add New Player">
+				</form>  -->
+				<!-- Button trigger modal -->
 				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 				  Add Player +
 				</button>
@@ -141,17 +154,22 @@
 				        <h4 class="modal-title" id="myModalLabel">Add Player</h4>
 				      </div>
 				      <div class="modal-body">
-				        <form action="">
+				        <form id="addPlayerForm">
 						  First Name<br>
-						  <input type="text" name="firstname" value="First Name">
+						  <input id="addPlayerFirst" type="text" name="firstname" placeholder="First Name">
 						  <br>
 						  Last name:<br>
-						  <input type="text" name="lastname" value="Last Name">
+						  <input id="addPlayerLast" type="text" name="lastname" placeholder="Last Name">
 						  <br>
 						  Position<br>
-						  <input type="text" name="position" value="Position">
-						  <br><br>
-						  <input type="submit" value="Add New Player">
+						  <input id="addPlayerPosition" type="number" name="position" placeholder="Position">
+						  <br>
+						  Email<br>
+						  <input id="addPlayerEmail" type="email" name="email" placeholder="email">
+						  <br>
+						  <button type="submit">
+							Add Player
+						  </button>
 						</form> 
 				      </div>
 				      <div class="modal-footer">
