@@ -68,6 +68,51 @@ app.get('/playerview', function(request, response){
 });
 
 
+
+
+////////////////////////// RETRIEVAL FUNCTIONS BELOW //////////////////////////////////////////////////
+
+app.post('/getCoaches', function(request, response)) {
+
+	let teamId = request.body.teamId;
+
+	//true if error, list of coaches if no error
+	let errorOrList = retrieveCoaches(teamId);
+
+	response.json(errorOrList);
+
+}
+
+app.post('/getPlayers', function(request, response)) {
+	let teamId = request.body.teamId;
+
+	//true if error, list of coaches if no error
+	let errorOrList = retrievePlayers(teamId);
+
+	response.json(errorOrList);
+
+}
+
+
+function retrieveCoaches(teamId) {
+
+
+}
+
+function retrievePlayers(teamId) {
+
+	
+}
+
+
+
+///////////////////////////RETRIEVAL FUNCTIONS ABOVE //////////////////////////////////////////////////
+
+
+
+
+
+////////////////////////// CREATION FUNCTIONS BELOW //////////////////////////////////////////////////
 app.post('/createCoach', function(request, respnonse) {
 
 	let teamId = request.body.teamId;
@@ -127,14 +172,6 @@ app.post('/createCategory', function(request, response){
 });
 
 
-// app.post('/createField', function(request, response) {
-// 	let position = request.body.position;
-// 	let category = request.body.category;
-// 	let importance = request.body.importance;
-// 	addCategory(position, category, importance);
-	
-// });
-
 app.post('/createTeam', function(request, response) {
 	let email = request.body.email;
 	let teamName = request.body.teamName;
@@ -146,13 +183,7 @@ app.post('/createTeam', function(request, response) {
 	response.json(errorOrTeamId);
 
 });
-// function addCategory(position, category, importance) {
-// 	let data = {
-		
-// 	}
-// 	let newCategory = db.ref().child('teams').child('team1').child('categories').push();
-// 	console.log(newCategory);
-// }
+
 
 //create a new team
 function createTeam(email, teamName, coachName, schoolName) {
@@ -162,7 +193,6 @@ function createTeam(email, teamName, coachName, schoolName) {
 		schoolName: schoolName,
 		teamName: teamName
 	};
-
 
 	let newTeamRef = db.ref().child('teams').push();
 
@@ -289,4 +319,7 @@ function addCategory(teamId, positionId, importance, title){
 		}
 	});
 }
+
+////////////////////////// CREATION FUNCTIONS ABOVE //////////////////////////////////////////
+
 
