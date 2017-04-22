@@ -72,37 +72,74 @@ app.get('/playerview', function(request, response){
 
 ////////////////////////// RETRIEVAL FUNCTIONS BELOW //////////////////////////////////////////////////
 
-app.post('/getCoaches', function(request, response)) {
+// app.post('/getCoaches', function(request, response)) {
 
+// 	let teamId = request.body.teamId;
+
+// 	//true if error, list of coaches if no error
+// 	let errorOrList = retrieveCoaches(teamId);
+
+// 	response.json(errorOrList);
+
+// }
+
+// function retrieveCoaches(teamId) {
+
+// 	let coachesRef = db.ref().child('coaches');
+
+// 	coachesRef.orderByChild("teamId").equalTo(teamId).on("value", function(snapshot) {
+// 		console.log(snapshot.val());
+// 		return snapshot;
+// 	}, function(error) {
+// 		console.error(error);
+// 	});
+// }
+
+// app.post('/getPlayers', function(request, response)) {
+// 	let teamId = request.body.teamId;
+
+// 	//true if error, list of coaches if no error
+// 	let errorOrList = retrievePlayers(teamId);
+
+// 	response.json(errorOrList);
+
+// }
+
+
+
+// function retrievePlayers(teamId) {
+
+	
+// }
+
+
+
+app.post('/getGames', function(request, response) {
 	let teamId = request.body.teamId;
 
 	//true if error, list of coaches if no error
-	let errorOrList = retrieveCoaches(teamId);
+	let errorOrList = retrieveGames(teamId);
 
 	response.json(errorOrList);
 
-}
-
-app.post('/getPlayers', function(request, response)) {
-	let teamId = request.body.teamId;
-
-	//true if error, list of coaches if no error
-	let errorOrList = retrievePlayers(teamId);
-
-	response.json(errorOrList);
-
-}
+});
 
 
-function retrieveCoaches(teamId) {
-
-
-}
 
 function retrievePlayers(teamId) {
 
-	
+	let teamsRef = db.ref().child('teams');
+
+	coachesRef.orderByChild("teamId").equalTo(teamId).on("value", function(snapshot) {
+		console.log(snapshot.val());
+		return snapshot;
+	}, function(error) {
+		console.error(error);
+		return new Boolean(true);
+	});
 }
+
+
 
 
 
