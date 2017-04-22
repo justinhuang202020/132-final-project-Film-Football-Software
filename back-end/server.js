@@ -103,6 +103,21 @@ app.post('/getGames', function(request, response) {
 	});
 });
 
+app.post('/getCategoriesForPosition', function(request, response){
+	let positionId = request.body.positionId;
+	positionId = "4";
+	
+	let categoriesRef = db.ref().child('teams').child('team1').child('categories').child(positionId);
+
+	categoriesRef.once("value", function(snapshot) {
+		console.log(snapshot.val());
+		response.json(snapshot.val());
+	}, function(error) {
+		console.error(error);
+		response.json(new Boolean(true));
+	});
+});
+
 // app.post('/getPlayersForPosition', function(request, response) {
 
 // 	let positionId = request.body.positionId;
