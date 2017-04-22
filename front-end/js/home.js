@@ -1,4 +1,77 @@
+function addPlayerAccount(name, email,position, number, confirmEmail, pass, confirmPass) {
+  // const schoolName = $("#schoolName").val().trim();
+
+  if (pass ===confirmPass && email ===confirmEmail) {
+
+  //do the stuff with Firebase locally and not with the server? perhaps not
+  firebase.auth().createUserWithEmailAndPassword(email, pass).then(function() {
+    sendEmailVerification(email, name, position, number);
+
+  }, function(error) {
+
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  
+
+    alert(errorMessage);
+
+  });
+}
+  else {
+    alert("email or password doesn't match");
+  }
+}
+ function sendEmailVerification(email, name, position, number) {
+      console.log("enter");
+      // [START sendemailverification]
+      var user = firebase.auth().currentUser
+      user.sendEmailVerification().then(function() {
+        postRequestCreate(email, name, position, number);
+        alert("Email verification sent");
+        success = true;
+  // Email sent.
+}, function(error) {
+
+  user.delete().then(function() {
+    alert("email verifcation failed. Please sent email again");
+  }, function(error) {
+    alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-GAME-VUE");
+  });
+});
+  }
+  function postRequestCreate(email, name, position, number) {
+  // let parameters = {email: email, teamName: teamName, coachName:coachName, schoolName: $("#schoolName").val().trim()};
+
+// $.post('/createPlayer', parameters, function (errorOrTeamId){
+
+//   console.log(errorOrTeamId);
+
+  // if (errorOrTeamId != true) {
+  //   alert("team created");
+  //   let user = firebase.auth().currentUser;
+  //   user.displayName = errorOrTeamId;
+    firebase.auth().signOut().then(function() {
+  //     // Sign-out successful.
+    }).catch(function(error) {
+      alert(error.message);
+  });
+  // }
+  // else {
+  //   alert("error, please sign up again");
+  //   let user = firebase.auth().currentUser;
+
+  //   user.delete().then(function() {
+  //     console.log("error2");
+  //     alert("email verifcation failed. Please sent email again");
+  //   }, function(error) {
+  //     console.log("error3");
+  //     alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
+  //   });
+  // }
+// });
+}
 $(document).ready(function(){
+
 	function loadSkillgraph() {
    $(".skillData").each(function(index, element) {
 	    // element == this
@@ -22,6 +95,7 @@ $(document).ready(function(){
  $("#openTraitInputBtn").on('click', function(){
   $('#newTraitLi').removeClass('hidden');	
 });
+ 
 	//For Justin
 	$('#addTraitBtn').on('click', function(){
 		var traitText = $("#newTraitTxt").val();

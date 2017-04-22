@@ -200,5 +200,4 @@ $.post('/createTeam', parameters, function (errorOrTeamId){
 		alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-GAME-VUE");
 	});
 });
-      // [END sendemailverification]
   }
