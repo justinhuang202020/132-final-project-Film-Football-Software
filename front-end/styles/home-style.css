@@ -73,6 +73,9 @@ section {
 .navbar {
   background-color: #4FA2C2; 
   border-bottom-color: gray; 
+  -webkit-box-shadow: 0 8px 6px -6px #999;
+  -moz-box-shadow: 0 8px 6px -6px #999;
+  box-shadow: 0 8px 6px -6px #999;
 }
 
 #top-bar li a {
@@ -206,6 +209,31 @@ hr {
   margin-bottom: 20px; 
   height: 0;
 }
+
+#strength-weakness {
+  padding-top: 30px; 
+  padding-bottom: 30px; 
+}
+
+#strength-weakness hr {
+  background-color: #f2f2f2; 
+  border-color: #f2f2f2;
+  margin-bottom: 25px; 
+  height: 0;
+}
+
+#recent-uploads hr {
+  background-color: #f2f2f2; 
+  border-color: #f2f2f2;
+  margin-bottom: 20px; 
+  height: 0;
+}
+
+#recent-uploads {
+  padding-top: 100px; 
+  padding-bottom: 100px; 
+}
+
 /*
 #chart {
   height: 300px;
