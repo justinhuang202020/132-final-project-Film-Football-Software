@@ -76,6 +76,8 @@ section {
   -webkit-box-shadow: 0 8px 6px -6px #999;
   -moz-box-shadow: 0 8px 6px -6px #999;
   box-shadow: 0 8px 6px -6px #999;
+  position: fixed;
+  z-index: -1; 
 }
 
 #top-bar li a {
@@ -110,6 +112,7 @@ body {
   border-right-style: solid; 
   border-right-color: gray; 
   border-right-width: 1px; 
+  z-index: 1000; 
 }
 
 #sidebar h3 {
@@ -138,11 +141,11 @@ body {
     background-color: #4FA2C2;
 }
 
-.active { 
+#active { 
   background-color: #65B688; 
 }
 
-#home-nav a:hover { 
+#active a:hover { 
   background-color: #65B688; 
 }
 
