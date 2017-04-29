@@ -38,12 +38,10 @@ app.listen(8080, function(){
 
 
 //listening to the login test page
-app.get('/', function(request, response){
-	response.render('login_test.html');
-});
+
 
 //listening to the login page
-app.get('/login', function(request, response){
+app.get('/', function(request, response){
 	response.render('login.html');
 });
 
@@ -118,23 +116,6 @@ app.post('/getCategoriesForPosition', function(request, response){
 	});
 });
 
-// app.post('/getPlayersForPosition', function(request, response) {
-
-// 	let positionId = request.body.positionId;
-
-// 	let playersRef = db.ref().child('players');
-
-// 	playersRef.orderByChild("teamId").equalTo('team1').once("value", function(snapshot) {
-
-// 		let array  = snapshot.val();
-
-// 		console.log(snapshot.val());
-// 		response.json(snapshot.val());
-// 	}, function(error) {
-// 		console.error(error);
-// 		response.json(new Boolean(true));
-// 	});
-// });
 
 app.post('/getPlaysForGame', function(request, response) {
 	let gameId = request.body.gameId;
@@ -240,18 +221,17 @@ app.post('/createTeam', function(request, response) {
 	let coachName = request.body.coachName;
 	let schoolName = request.body.schoolName;
 
-	let errorOrTeamId = createTeam(email,teamName, coachName, schoolName);
+	createTeam(email,teamName, coachName, schoolName, function(newCoachId) {
+		response.json(newCoachId);
 
+	});
 
-	console.log("HERE" +errorOrTeamId);
-
-	response.json(errorOrTeamId);
 
 });
 
 
 //create a new team
-function createTeam(email, teamName, coachName, schoolName) {
+function createTeam(email, teamName, coachName, schoolName, callback) {
 
 	let teamData = {
 		admin: email,
@@ -261,18 +241,20 @@ function createTeam(email, teamName, coachName, schoolName) {
 
 	let newTeamRef = db.ref().child('teams').push();
 
-	newTeamRef.set(teamData, function(error) {
-		if (error) {
-			return new Boolean(true); 
-		} else {
-			return newTeamRef.key;
-		}
-	});
+	newTeamRef.set(teamData).then(function() {
+		//create new coach for admin// callback with that coach's id
+		let teamId = newTeamRef.key;
+		addCoach(teamId, email, coachName, 10, function(newCoachId) {
+			callback([newCoachId, teamId]);
+		});
 
+	}, function(error) {
+		callback(undefined);
+	});
 }
 
 
-function addPlayer(teamId, email, name, positionId) {
+function addPlayer(teamId, email, name, positionId, callback) {
 	//adding the player data to the database
 	let playerData = {
 		email: email,
@@ -284,16 +266,17 @@ function addPlayer(teamId, email, name, positionId) {
 	let newPlayerRef = db.ref().child('players').push();
 	let playerId = newPlayerRef.key;
 	
-	newPlayerRef.set(playerData, function(error) {
-		if (error) {
-			return new Boolean(true); 
-		} else {
-			return new Boolean(false);
-		}
+	newPlayerRef.set(playerData).then(function() {
+		callback(newPlayerRef.key);
+
+	}, function(error) {
+		callback(undefined);
 	});
+
+
 }
 
-function addCoach(teamId, email, name, positionId) {
+function addCoach(teamId, email, name, positionId, callback) {
 	let coachData = {
 		email: email,
 		name: name,
@@ -303,12 +286,11 @@ function addCoach(teamId, email, name, positionId) {
 
 	let newCoachRef = db.ref().child("coaches").push();
 	
-	newCoachRef.set(coachData, function(error) {
-		if (error) {
-			return new Boolean(true); 
-		} else {
-			return new Boolean(false);
-		}
+	newCoachRef.set(coachData).then(function() {
+		callback(newCoachRef.key);
+
+	}, function(error) {
+		callback(undefined);
 	});
 
 

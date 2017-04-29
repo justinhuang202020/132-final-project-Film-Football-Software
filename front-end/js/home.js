@@ -11,18 +11,18 @@ function addPlayerAccount(name, email,position, number, confirmEmail, pass, conf
 
     var errorCode = error.code;
     var errorMessage = error.message;
-  
+
 
     alert(errorMessage);
 
   });
 }
-  else {
-    alert("email or password doesn't match");
-  }
+else {
+  alert("email or password doesn't match");
 }
- function sendEmailVerification(email, name, position, number) {
-      console.log("enter");
+}
+function sendEmailVerification(email, name, position, number) {
+  console.log("enter");
       // [START sendemailverification]
       var user = firebase.auth().currentUser
       user.sendEmailVerification().then(function() {
@@ -38,8 +38,8 @@ function addPlayerAccount(name, email,position, number, confirmEmail, pass, conf
     alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-GAME-VUE");
   });
 });
-  }
-  function postRequestCreate(email, name, position, number) {
+    }
+    function postRequestCreate(email, name, position, number) {
   // let parameters = {email: email, teamName: teamName, coachName:coachName, schoolName: $("#schoolName").val().trim()};
 
 // $.post('/createPlayer', parameters, function (errorOrTeamId){
@@ -50,11 +50,11 @@ function addPlayerAccount(name, email,position, number, confirmEmail, pass, conf
   //   alert("team created");
   //   let user = firebase.auth().currentUser;
   //   user.displayName = errorOrTeamId;
-    firebase.auth().signOut().then(function() {
+  firebase.auth().signOut().then(function() {
   //     // Sign-out successful.
-    }).catch(function(error) {
-      alert(error.message);
-  });
+}).catch(function(error) {
+  alert(error.message);
+});
   // }
   // else {
   //   alert("error, please sign up again");
@@ -71,43 +71,46 @@ function addPlayerAccount(name, email,position, number, confirmEmail, pass, conf
 // });
 }
 $(document).ready(function(){
-	$.post('/getPositions', function(response){
-		var numbers = [1, 2, 3, 4, 5];
-		var option = '';
-		for(id in response){
-			var position = response[id];
-			if(position != "head" && position !=null){
-				option += '<option value="'+ position + '">' + position + '</option>';
-			}
-		}
-		$('#select-position').append(option);
-	});	
-	$("#select-position").change(function(e) {
-		console.log("getting categories");
-		$.post('/getCategoriesForPosition', function(response){
-			for(var trait in response){
-				var traitImportanceFullValue = (response[trait].importance - 1)*25;
-				console.log(traitImportanceFullValue);
-				var li = $("<li></li>");
-				var input = $("<input step='25'></input>");
-				input.attr("type", "range");
-				input.attr("step", 25);
-				input.attr("value", traitImportanceFullValue);
-				li.html(trait);
-				li.append(input);
-				$("#traits").append(li);
-			}
-		});
-	});
 
-	function loadSkillgraph() {
-   $(".skillData").each(function(index, element) {
-	    // element == this
-	    var mydata = $(element).data();
-	    var cnt = 0;
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+     $.post('/getPositions', function(response){
+      var numbers = [1, 2, 3, 4, 5];
+      var option = '';
+      for(id in response){
+       var position = response[id];
+       if(position != "head" && position !=null){
+        option += '<option value="'+ position + '">' + position + '</option>';
+      }
+    }
+    $('#select-position').append(option);
+  }); 
+     $("#select-position").change(function(e) {
+      console.log("getting categories");
+      $.post('/getCategoriesForPosition', function(response){
+       for(var trait in response){
+        var traitImportanceFullValue = (response[trait].importance - 1)*25;
+        console.log(traitImportanceFullValue);
+        var li = $("<li></li>");
+        var input = $("<input step='25'></input>");
+        input.attr("type", "range");
+        input.attr("step", 25);
+        input.attr("value", traitImportanceFullValue);
+        li.html(trait);
+        li.append(input);
+        $("#traits").append(li);
+      }
+    });
+    });
 
-	    //recursive call with a time delay so user can see graph draw.
-	    function go() {
+     function loadSkillgraph() {
+       $(".skillData").each(function(index, element) {
+      // element == this
+      var mydata = $(element).data();
+      var cnt = 0;
+
+      //recursive call with a time delay so user can see graph draw.
+      function go() {
         if (cnt++ < mydata['percent']) {
           setTimeout(go, 10);
         }
@@ -118,18 +121,18 @@ $(document).ready(function(){
       go();
 
     });
- }
- loadSkillgraph();
- $("#openTraitInputBtn").on('click', function(){
-  $('#newTraitLi').removeClass('hidden');	
-});
- 
-	//For Justin
-	$('#addTraitBtn').on('click', function(){
-		var traitText = $("#newTraitTxt").val();
-		var traitImportance = ($('#newTraitImportance').val()/25) + 1;
+     }
+     loadSkillgraph();
+     $("#openTraitInputBtn").on('click', function(){
+      $('#newTraitLi').removeClass('hidden'); 
+    });
+
+  //For Justin
+  $('#addTraitBtn').on('click', function(){
+    var traitText = $("#newTraitTxt").val();
+    var traitImportance = ($('#newTraitImportance').val()/25) + 1;
     var option = $("#select-position")[0].selectedIndex;
-        var traitImportanceFullValue = $('#newTraitImportance').val();
+    var traitImportanceFullValue = $('#newTraitImportance').val();
     var li = $("<li></li>");
     var input = $("<input step='25'></input>");
     input.attr("type", "range");
@@ -142,25 +145,40 @@ $(document).ready(function(){
       teamId: 'team1',
       positionId: 4, 
       importance: traitImportance,
-	  title: traitText
+      title: traitText
     }
     $.post('/createCategory', parameters, function (error){
       if(error){
-		  console.log(error);
-	  }
+        console.log(error);
+      }
     });
-	$('#newTraitLi').addClass('hidden');
-	$("#newTraitTxt").val("");
-	$('#newTraitImportance').val(50);
+    $('#newTraitLi').addClass('hidden');
+    $("#newTraitTxt").val("");
+    $('#newTraitImportance').val(50);
   });
+
+  $('[data-toggle=offcanvas]').click(function() {
+    $('.row-offcanvas').toggleClass('active');
+  });
+} else {
+    // No user is signed in.
+
+    window.location = "/";
+  }
 });
 
-  $(document).ready(function() {
-    $('[data-toggle=offcanvas]').click(function() {
-      $('.row-offcanvas').toggleClass('active');
-    });
-  });
 
+
+
+});
+
+function signOut() {
+  firebase.auth().signOut().then(function() {
+    window.location = "/";
+  }).catch(function(error) {
+    alert(error.message);
+  });
+}
 // chart 
 
 google.charts.load('current', {packages: ['corechart', 'line']});
