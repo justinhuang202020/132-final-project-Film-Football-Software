@@ -95,6 +95,10 @@ h4 {
 	padding-bottom: 10px; 
 }
 
+.social-box {
+	padding-bottom: 20px;
+}
+
 .panel-heading {
 	text-align: center; 
 }
@@ -107,13 +111,14 @@ h4 {
 
 .panel-heading a {
 	font-weight: bold;
-	font-size: 18px; 
+	font-size: 15px; 
 	text-decoration: none; 
+	color: gray;
 }
 
 .panel-heading a.active{
-	color: gray;
-	font-size: 15px;
+	font-size: 16px;
+	color: #428bca;
 }
 
 .panel-heading hr{
@@ -126,7 +131,7 @@ h4 {
 }
 
 #login-header {
-	padding-top: 10px; 
+	margin-top: -10px; 
 	color: gray;
 }
 
@@ -136,6 +141,7 @@ h4 {
 
 #register-header {
 	color: gray;
+	margin-top: -50px; 
 }
 
 #page2 {
@@ -240,6 +246,7 @@ h4 {
 	text-decoration: none;
 	transition: opacity .3s;
 }
+
 .demo a:hover {
 	opacity: .5;
 }
