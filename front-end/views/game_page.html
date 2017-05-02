@@ -90,7 +90,7 @@
 		        <li><a href="#about">Brown University Football Team</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li id="logout"><a href="login"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		        <li id="logout"><a  onclick = "signOut()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 		      </ul>
 		    </div><!--/.nav-collapse -->
 		</div><!--/.navbar -->
@@ -173,6 +173,16 @@
 			</div>
 		  </div>
 		  <script>
+		  function signOut() {
+  				firebase.auth().signOut().then(function() {
+    			window.location = "/";
+  				}).catch(function(error) {
+    				alert(error.message);
+  				});
+			}
+		  firebase.auth().onAuthStateChanged(function(user) {
+		
+			if (user) {
 			$("#gameForm").submit(function(e){
 				e.preventDefault();
 				let teamId = 'team1';
@@ -239,6 +249,12 @@
 				thumbnailFooterDiv.append(thumbnailScoreDiv);
 				$("#thumbnail-holder").append(widthDiv);
 			}
+		}
+		else {
+			window.location = "/";
+		}
+	});
 		  </script>
+		}
 	</body> 
 </html> 
