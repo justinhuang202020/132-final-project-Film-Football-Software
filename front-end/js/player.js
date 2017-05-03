@@ -40,5 +40,13 @@ $(document).ready(function(){
 		$.post('/createPlayer', parameters, function(error){
 			console.log(error);
 		});
+		// add player to html page 
+		new_player = "<tr>
+					<td>" + position + "</td>
+					<td>" + firstname + " " + lastname + "</td>
+					<td>" + email + "</td>
+					<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>
+				</tr>"; 
+		$('table').append(new_player);
 	});
 });
