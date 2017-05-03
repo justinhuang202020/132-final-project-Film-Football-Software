@@ -21,7 +21,16 @@ function addPlayerAccount(name, email,position, number, confirmEmail, pass, conf
     alert("email or password doesn't match");
   }
 }
+function signOut() {
+  firebase.auth().signOut().then(function() {
+    window.location = "/";
+  }).catch(function(error) {
+    alert(error.message);
+  });
+}
 $(document).ready(function(){
+	firebase.auth().onAuthStateChanged(function(user) {
+	if (user) {
 	console.log("player.js opened");
 	$("#addPlayerForm").submit(function(e){
 		e.preventDefault();
@@ -49,4 +58,9 @@ $(document).ready(function(){
 				</tr>"; 
 		$('table').append(new_player);
 	});
+	}
+	else {
+		window.location = "/"
+	}
+});
 });

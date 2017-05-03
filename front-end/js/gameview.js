@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	firebase.auth().onAuthStateChanged(function(user) {
+	if (user) {
 	setVideoSrc("https://firebasestorage.googleapis.com/v0/b/gamevue-c6394.appspot.com/o/videos%2F-KiGTKEA6mF0TYyRJ82S%2Fshe.mp4?alt=media&token=43558c7e-c2f4-4f3f-8eb5-f339b1edcdda");
 	var $video  = $('video'),
 		$vidContainer = $('.vid-player-sctn:first'),
@@ -126,4 +128,9 @@ $(document).ready(function(){
 			});
 		});
 	}
+}
+else {
+	window.location = '/';
+}
+});
 });
