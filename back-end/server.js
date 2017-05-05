@@ -9,7 +9,7 @@ admin.initializeApp({
 
 var db = admin.database();
 
-var express = require('express')
+var express = require('express');
 var app = express();
 
 //body parser
@@ -78,26 +78,24 @@ app.post('/getPositions', function(request, response) {
 	let positionsRef = db.ref().child('positions');
 
 	positionsRef.once("value", function(snapshot) {
-		console.log(snapshot.val());
 		response.json(snapshot.val());
 	}, function(error) {
-		console.error(error);
-		response.json(new Boolean(true));
+		response.json(undefined);
 	});
 });
 
 
 app.post('/getGames', function(request, response) {
 	let teamId = request.body.teamId;
+
+	teamId = "team1";
 	
 	let gamesRef = db.ref().child('games');
 
-	gamesRef.orderByChild("teamId").equalTo('team1').once("value", function(snapshot) {
-		console.log(snapshot.val());
+	gamesRef.orderByChild("teamId").equalTo(teamId).once("value", function(snapshot) {
 		response.json(snapshot.val());
 	}, function(error) {
-		console.error(error);
-		response.json(new Boolean(true));
+		response.json(undefined);
 	});
 });
 
@@ -108,11 +106,9 @@ app.post('/getCategoriesForPosition', function(request, response){
 	let categoriesRef = db.ref().child('teams').child('team1').child('categories').child(positionId);
 
 	categoriesRef.once("value", function(snapshot) {
-		console.log(snapshot.val());
 		response.json(snapshot.val());
 	}, function(error) {
-		console.error(error);
-		response.json(new Boolean(true));
+		response.json(undefined);
 	});
 });
 
@@ -124,14 +120,11 @@ app.post('/getPlaysForGame', function(request, response) {
 	let playsRef = db.ref().child('plays');
 
 	playsRef.orderByChild("gameId").equalTo(gameId).once("value", function(snapshot) {
-		console.log(snapshot.val());
 		response.json(snapshot.val());
 	}, function(error) {
-		console.error(error);
-		response.json(new Boolean(true));
+		response.json(undefined);
 	});
 });
-
 
 
 
@@ -149,9 +142,9 @@ app.post('/createCoach', function(request, response) {
 	let coachEmail = request.body.coachEmail;
 	let coachPositionId = request.body.coachPositionId;
 
-	let error = addCoach(teamId, coachEmail, coachName, coachPositionId);
-
-	response.json(error);
+	addCoach(teamId, coachEmail, coachName, coachPositionId, function(newCoachId) {
+		response.json(newCoachId);
+	});
 
 });
 
@@ -163,7 +156,9 @@ app.post('/createPlayer', function(request, response) {
 	let playerEmail = request.body.playerEmail;
 	let playerPositionId = request.body.playerPositionId;
 
-	let error = addPlayer(teamId, playerName, playerEmail, playerPositionId);
+	let error = addPlayer(teamId, playerName, playerEmail, playerPositionId, function(newPlayerId) {
+		response.json(newPlayerId);
+	});
 
 	response.json(error);
 
@@ -173,9 +168,10 @@ app.post('/createPlay', function(request, response){
 	let gameId = request.body.gameId;
 	let videoUrl = request.body.videoUrl;
 	
-	let error = addPlay(gameId, videoUrl);
+	addPlay(gameId, videoUrl, function(newPlayId) {
+		response.json(newPlayId);
+	});
 	
-	response.json(error);
 });
 
 app.post('/createGame', function(request, response){
@@ -193,12 +189,10 @@ app.post('/createGame', function(request, response){
 	
 	let newGameRef = db.ref().child('games').push();
 	
-	newGameRef.set(gameData,function(error){
-		if (error) {
-			response.json(new Boolean (true));
-		} else {
-			response.json(new Boolean (false));
-		}
+	newGameRef.set(gameData).then(function() {
+		response.json(newGameRef.key);
+	}, function(error){
+		response.json(undefined);
 	});	
 
 });
@@ -209,9 +203,9 @@ app.post('/createCategory', function(request, response){
 	let importance = request.body.importance;
 	let title = request.body.title;
 	
-	let error = addCategory(teamId, positionId, importance, title);
+	addCategory(teamId, positionId, importance, title);
 	
-	response.json(error);
+	response.json(new Boolean(true));
 });
 
 
@@ -226,6 +220,17 @@ app.post('/createTeam', function(request, response) {
 
 	});
 
+
+});
+
+app.post("/addGrade", function(request, response) {
+
+	let playId = request.body.play;
+	let grades = request.body.grades;
+	let playerId = request.body.playerId;
+	let teamId = request.body.teamId;
+
+	addGrades(playId, grades, playerId, teamId);
 
 });
 
@@ -267,7 +272,7 @@ function addPlayer(teamId, email, name, positionId, callback) {
 	let playerId = newPlayerRef.key;
 	
 	newPlayerRef.set(playerData).then(function() {
-		callback(newPlayerRef.key);
+		callback(playerId);
 
 	}, function(error) {
 		callback(undefined);
@@ -296,8 +301,7 @@ function addCoach(teamId, email, name, positionId, callback) {
 
 }
 
-function addPlay(gameId, videoUrl){
-	console.log("adding play...");
+function addPlay(gameId, videoUrl, callback){
 	let playData = {
 		gameId:gameId,
 		videoUrl:videoUrl
@@ -305,33 +309,31 @@ function addPlay(gameId, videoUrl){
 	
 	let newPlayRef = db.ref().child('plays').push();
 	
-	newPlayRef.set(playData, function(error){
-		if (error) {
-			return new Boolean(true); 
-		} else {
-			return new Boolean(false);
-		}
+	newPlayRef.set(playData).then(function(){
+		callback(newPlayRef.key);
+	}, function(error){
+		callback(undefined);
 	});
 }
 
-function addGrades(playId, grades, playerId){
+//no need for callback of any sorts
+function addGrades(playId, grades, playerId, teamId){
 	let gradeData = {
 		playId:playId,
 		grades:grades,
-		playerId:playerId
-	}
+		playerId:playerId,
+		teamId: teamId
+	};
 	
 	let newGradeRef = db.ref().child('grades').push();
 	
 	newGradeRef.set(gradeData, function(error){
-		if (error) {
-			return new Boolean(true); 
-		} else {
-			return new Boolean(false);
-		}
+		
 	});
 }
 
+//addCategory
+//no need for callback of any sorts
 function addCategory(teamId, positionId, importance, title){
 	let categoryData = {
 		importance:importance
