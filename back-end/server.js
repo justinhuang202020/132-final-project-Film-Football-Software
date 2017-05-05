@@ -201,7 +201,6 @@ app.post('/createCategory', function(request, response){
 	let teamId = request.body.teamId;
 	let positionId = request.body.positionId;
 	let importance = request.body.importance;
-	let title = request.body.title;
 	
 	addCategory(teamId, positionId, importance, title);
 	
@@ -219,7 +218,6 @@ app.post('/createTeam', function(request, response) {
 		response.json(newCoachId);
 
 	});
-
 
 });
 

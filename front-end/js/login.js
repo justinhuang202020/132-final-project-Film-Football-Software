@@ -172,17 +172,28 @@ function postRequestCreate(email, teamName, coachName, schoolName) {
 		console.log(coachIdTeamId);
 		newCoachId = coachIdTeamId[0];
 		teamId = coachIdTeamId[1];
-	// console.log("coach id " + newCoachID);
-	// console.log("teamID " + teamID);
 
-	if (newCoachId != undefined && teamId !=undefined) {
-		let user = firebase.auth().currentUser;
-		user.displayName = newCoachId;
-		user.photoUrl = teamId;
+		if (newCoachId != undefined && teamId !=undefined) {
+			console.log(newCoachId);
+			console.log(teamId);
+			let user = firebase.auth().currentUser;
 
-		alert("Team has been created. Login to access");
-		firebase.auth().signOut().then(function() {
-			window.location = "/";
+			user.updateProfile({
+				displayName: "*c*" + newCoachId,
+				photoUrl: teamId
+
+			});
+
+
+			// user.displayName = "*c*" + newCoachId;
+			// user.photoUrl = teamId;
+
+
+			console.log(user);
+
+			alert("Team has been created. Login to access");
+			firebase.auth().signOut().then(function() {
+				window.location = "/";
   		// Sign-out successful.
   	}).catch(function(error) {
   		alert(error.message);
@@ -208,7 +219,7 @@ function postRequestCreate(email, teamName, coachName, schoolName) {
      function sendEmailVerification(email, teamName, name) {
      	console.log("enter");
       // [START sendemailverification]
-      var user = firebase.auth().currentUser
+      var user = firebase.auth().currentUser;
       user.sendEmailVerification().then(function() {
       	postRequestCreate(email, teamName, name, schoolName);
       	alert("Email verification sent");
