@@ -90,6 +90,20 @@ section {
     letter-spacing: 3px; 
 }
 
+/* hide nav */
+#hidden-nav {
+  display: none;
+}
+
+@media all and (max-width: 765px) and (min-width: 20px) {
+  #hidden-nav {
+    display: block;
+  }
+  #team-name {
+    display: none; 
+  }
+}
+
 /**/
 
 body,html,.row-offcanvas {

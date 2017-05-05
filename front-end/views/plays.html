@@ -44,7 +44,12 @@
 		    </div>
 		    <div id="top-bar" class="collapse navbar-collapse">
 		      <ul class="nav navbar-nav">
-		        <li><a href="#about">Brown University Football Team</a></li>
+		        <li id="team-name"><a href="home">Brown University Football Team</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav" id="hidden-nav">
+		        <li><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+		        <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		        <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		        <li id="logout"><a href="login"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
@@ -67,7 +72,7 @@
 		          <hr>
 		          <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
-		          <!-- <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
+		          <!-- <li><a href="home"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
 		          <hr> -->
 		          <!--<li><a href="#"><span class="glyphicon glyphicon-upload"></span> Upload Video</a></li>
 		          <hr>-->
@@ -76,138 +81,99 @@
 		        </ul>
 		      </div>
 		  </div>
+
 		  <div id="main">
-		  	<h1>Plays</h1>
-		  	<table class="table-style-three">
-				<thead>
-				<tr>
-					<th>#</th>
-					<th><span class="glyphicon glyphicon-envelope text-right"></span> Email</th>
-					<th>Delete</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr>
-					<td><a href="#">1</a></td>
-					<td><a href="#">johndoe@gmail.com</a></td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>7</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>8</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>9</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>10</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				</tbody>
-			</table>
-			<hr>
-	      	<!-- Add a new play -->
-	      	<h4>Add a New Play</h4>
-			<!-- Button trigger modal -->
-			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-			  Add Play +
-			</button>
+
+		  <div class="row">
+			<h1 id="plays-header">
+				Plays
+			</h1>
+		  </div>
+		  <div id="thumbnail-holder" class="row">
+				<div class="col-sm-6 col-md-3">
+					<div class="thumbnail add-game-thumbnail text-center" data-toggle="modal" data-target="#addPlayModal">
+						<div class="thumbnail-content">
+							<span id="add-game-plus" class="glyphicon glyphicon-plus"></span>
+						</div>
+						<div class="thumbnail-footer">
+							<div class="add-game-txt">
+								Add New Play
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="addPlayModal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Add New Play</h4>
+				  </div>
+				  <div class="modal-body">
+					<h3>
+					To Add Plays to this game, upload the video(s) of the play(s) below.
+					</h3>
+					<form id="playForm">
+						<input id="videoUploadInput" type="file" name="filefield" multiple="multiple">
+						<button type="submit" class="btn btn-default">
+							Upload
+						</button>
+					</form>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
+
 		</div>
-
-
 
 	</body>
 	<style type="text/css">
-		table.table-style-three {
-			font-family: verdana, arial, sans-serif;
-			font-size: 13px;
-			color: #595959;
-			border-width: 1px;
-			border-color: gray;
-			border-collapse: collapse;
+		.thumbnail{
+			white-space:nowrap;
+			cursor:pointer;
 		}
-		table.table-style-three th {
-			border-width: 1px;
-			padding: 8px;
-			border-style: solid;
-			border-color: gray;
-			background-color: #4682B4;
-			color: #ffffff;
+		.thumbnail-content{
+			height: 85px;
 		}
-		table.table-style-three tr:hover td {
-			cursor: pointer;
-			/*background-color: #99ccff;*/
+		.thumbnail-footer{
+			height:50px;
+			line-height:50px;
 		}
-		table.table-style-three tr:nth-child(even) td{
-			background-color: #DFEBF1;
+		.add-game-txt{
+			font-size:20px;
 		}
-		/*table.table-style-three tr:nth-child(even):hover td{
-			background-color: #99ccff;
-		}*/
-		table.table-style-three td {
-			border-width: 1px;
-			padding: 8px;
-			border-style: solid;
-			border-color: gray;
-			background-color: #ffffff;
+		.thumbnail-opponent{
+			font-size: 24px;
+			height: 50px;
+			line-height: 50px;
 		}
-		table {
-			margin-left: auto;
- 			margin-right: auto;
- 			margin-bottom: 30px;
- 			margin-top: 20px; 
- 			/*box-shadow: 3px 3px 3px #999;*/
- 			-moz-box-shadow: 0 0 10px 10px #f2f2f2;
-			-webkit-box-shadow: 0 0 10px 10px #f2f2f2;
-			box-shadow: 0 0 10px 10px #d9d9d9;
+		.thumbnail-outcome{
+			font-size: 24px;
+			height: 35px;
+			line-height: 35px;
 		}
-		body {
-			background-color: #f2f2f2; 
+		.thumbnail-score{
+			font-size:34px;
+			height:50px;
 		}
-		#delete {
-			background-color: #f2f2f2; 
-			margin-right: auto;
-			margin-left: auto; 
-			border-radius: 5px;
-			border-width: 1px;
+		.color-win{
+			color:green;
 		}
-		#delete:hover {
-			background-color: #4682B4; 
-			color: white;
+		.color-lose{
+			color:red;
+		}
+		#add-game-plus{
+			line-height: 85px;
+			color: green;
+			font-size: 25px;
+		}
+		#plays-header{
+			margin-left:20px;
 		}
 	</style>
 </html>
