@@ -102,7 +102,27 @@
 						</div>
 					</div>
 				</div>
+				<!-- example play -->
+				<div class="col-sm-6 col-md-3">
+					<div class="thumbnail game-thumbnail text-center">
+						<div id="edit"><span class="glyphicon glyphicon-pencil text-center"></span></div>
+						<div class="thumbnail-content">
+							<div class="play-name">
+								<textarea readonly id="name-text" class="text-center">Play 1</textarea>
+							</div>
+							<div class="icon">
+								<span class="glyphicon glyphicon-film"></span>
+							</div>
+						</div>
+						<div class="thumbnail-footer">
+							<div class="click-play-txt">
+								Click to View
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
+
 
 			<div id="addPlayModal" class="modal fade" role="dialog">
 			  <div class="modal-dialog">
@@ -136,6 +156,7 @@
 		.thumbnail{
 			white-space:nowrap;
 			cursor:pointer;
+			position: relative;
 		}
 		.thumbnail-content{
 			height: 85px;
@@ -144,36 +165,95 @@
 			height:50px;
 			line-height:50px;
 		}
+		.click-play-txt{
+			font-size:15px;
+		}
 		.add-game-txt{
 			font-size:20px;
 		}
-		.thumbnail-opponent{
+		.play-name{
 			font-size: 24px;
 			height: 50px;
 			line-height: 50px;
+			font-weight: 500; 
 		}
-		.thumbnail-outcome{
-			font-size: 24px;
+		.icon {
+			font-size: 35px;
 			height: 35px;
 			line-height: 35px;
-		}
-		.thumbnail-score{
-			font-size:34px;
-			height:50px;
-		}
-		.color-win{
-			color:green;
-		}
-		.color-lose{
-			color:red;
+			color: #0059b3;
 		}
 		#add-game-plus{
 			line-height: 85px;
-			color: green;
+			color: #0059b3;
 			font-size: 25px;
 		}
 		#plays-header{
 			margin-left:20px;
 		}
+		#edit {
+			position: absolute;
+		    top: 0px;
+		    right: 0px;
+		    border-style: solid;
+		    border-color: lightgray; 
+		    border-radius: 2px; 
+		    border-width: 1px;
+		    width: 20px;
+		    height: 20px;
+		    margin: 2px;
+		}
+		#name-text {
+			border:none;
+			resize:none;
+			font-family:Arial;
+			width: 100%;
+			height: 100%;
+		}
 	</style>
+
+	<script>
+		$('#edit').click(function(){
+			if (confirm("Press okay to edit play name.") == true) {
+			    txt = "You pressed OK!";
+			    $('#name-text').removeAttr('readonly');
+			} else {
+			    txt = "You pressed Cancel!";
+			}
+		});
+
+		// when to submit this new name???? 
+		// on leave? 
+
+
+		// build a new play 
+		function buildGameEl(){
+			var gameName = "No Name"; 
+
+			'<div class="col-sm-6 col-md-3">
+			<div class="thumbnail game-thumbnail text-center">
+			<div id="edit"><span class="glyphicon glyphicon-pencil text-center"></span></div>
+			<div class="thumbnail-content">
+			<div class="play-name">
+				<textarea readonly id="name-text" class="text-center">Play 1</textarea>
+			</div>
+			<div class="icon">
+				<span class="glyphicon glyphicon-film"></span>
+			</div>
+			</div>
+			<div class="thumbnail-footer">
+				<div class="click-play-txt">
+					Click to View
+				</div>
+			</div>
+			</div>
+			</div>'
+
+			var div = $("<div></div>");
+			div.html(); 
+
+			$("#thumbnail-holder").append(widthDiv);
+		}
+	</script>
+
 </html>
