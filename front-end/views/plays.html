@@ -76,8 +76,138 @@
 		        </ul>
 		      </div>
 		  </div>
+		  <div id="main">
+		  	<h1>Plays</h1>
+		  	<table class="table-style-three">
+				<thead>
+				<tr>
+					<th>#</th>
+					<th><span class="glyphicon glyphicon-envelope text-right"></span> Email</th>
+					<th>Delete</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td><a href="#">1</a></td>
+					<td><a href="#">johndoe@gmail.com</a></td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>6</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>7</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>8</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>9</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				<tr>
+					<td>10</td>
+					<td>johndoe@gmail.com</td>
+					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+				</tr>
+				</tbody>
+			</table>
+			<hr>
+	      	<!-- Add a new play -->
+	      	<h4>Add a New Play</h4>
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+			  Add Play +
+			</button>
+		</div>
 
 
 
 	</body>
+	<style type="text/css">
+		table.table-style-three {
+			font-family: verdana, arial, sans-serif;
+			font-size: 13px;
+			color: #595959;
+			border-width: 1px;
+			border-color: gray;
+			border-collapse: collapse;
+		}
+		table.table-style-three th {
+			border-width: 1px;
+			padding: 8px;
+			border-style: solid;
+			border-color: gray;
+			background-color: #4682B4;
+			color: #ffffff;
+		}
+		table.table-style-three tr:hover td {
+			cursor: pointer;
+			/*background-color: #99ccff;*/
+		}
+		table.table-style-three tr:nth-child(even) td{
+			background-color: #DFEBF1;
+		}
+		/*table.table-style-three tr:nth-child(even):hover td{
+			background-color: #99ccff;
+		}*/
+		table.table-style-three td {
+			border-width: 1px;
+			padding: 8px;
+			border-style: solid;
+			border-color: gray;
+			background-color: #ffffff;
+		}
+		table {
+			margin-left: auto;
+ 			margin-right: auto;
+ 			margin-bottom: 30px;
+ 			margin-top: 20px; 
+ 			/*box-shadow: 3px 3px 3px #999;*/
+ 			-moz-box-shadow: 0 0 10px 10px #f2f2f2;
+			-webkit-box-shadow: 0 0 10px 10px #f2f2f2;
+			box-shadow: 0 0 10px 10px #d9d9d9;
+		}
+		body {
+			background-color: #f2f2f2; 
+		}
+		#delete {
+			background-color: #f2f2f2; 
+			margin-right: auto;
+			margin-left: auto; 
+			border-radius: 5px;
+			border-width: 1px;
+		}
+		#delete:hover {
+			background-color: #4682B4; 
+			color: white;
+		}
+	</style>
 </html>

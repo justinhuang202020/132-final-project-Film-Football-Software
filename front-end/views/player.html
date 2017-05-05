@@ -91,6 +91,10 @@
 			background-color: #4682B4; 
 			color: white;
 		}
+		#add-player-btn {
+			float:right;
+			margin-top: 20px; 
+		}
 	</style>
 
 	<body>
@@ -138,7 +142,14 @@
 		      </div>
 		  </div>
 		  <div id="main">
-		  	<h1>Players</h1>
+		  	<div class="row">
+			  	<h1 class="col-md-6">Players</h1>
+			  	<div class="col-md-6">
+				  	<button type="button" class="btn btn-primary btn-lg" id="add-player-btn" data-toggle="modal" data-target="#myModal">
+						Add Player +
+					</button>
+				</div>
+			</div>
 		  	<table class="table-style-three">
 				<thead>
 				<tr>
@@ -211,13 +222,6 @@
 				</tr>
 				</tbody>
 			</table>
-		      	<hr>
-		      	<!-- Add a new player -->
-		      	<h4>Add a New Player</h4>
-				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-				  Add Player +
-				</button>
 
 				<!-- Modal -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
