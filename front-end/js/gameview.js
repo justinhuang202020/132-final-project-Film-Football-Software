@@ -1,3 +1,10 @@
+function signOut() {
+  firebase.auth().signOut().then(function() {
+    window.location = "/";
+  }).catch(function(error) {
+    alert(error.message);
+  });
+}
 $(document).ready(function(){
 	firebase.auth().onAuthStateChanged(function(user) {
 	if (user) {

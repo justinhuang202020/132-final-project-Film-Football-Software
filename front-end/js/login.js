@@ -4,6 +4,13 @@ $(document).ready(function() {
 		if (user && user.emailVerified) {
 			window.location = "/home";					
 		} else {
+			document.querySelector('#reset').addEventListener('keypress', function (e) {
+				console.log("Hi");
+    		var key = e.which || e.keyCode;
+    		if (key === 13) {
+    				passwordReset(e);
+    			}
+			});
 			$('#olvidado').click(function(e) {
 				e.preventDefault();
 				$('div#form-olvidado').toggle('500');
@@ -16,6 +23,10 @@ $(document).ready(function() {
 				e.preventDefault();
 				login();
 			});
+			$('#btn-olvidado').on('click', function(e){
+				e.preventDefault();
+				passwordReset();
+			});
 		}
 
 
@@ -24,7 +35,22 @@ $(document).ready(function() {
 
 
 
+function passwordReset(e) {
+	if (e!==undefined) {
+		e.preventDefault();
+	}
+	let email = $("#reset").val();
+	console.log(email);
+	let  auth = firebase.auth();
 
+	auth.sendPasswordResetEmail(email).then(function() {
+  	alert("email sent!");
+  	window.location = "/";
+	}, function(error) {
+		console.log(error);
+  		alert(error);
+	});
+}
 	$(function() {
 		$('#login-form-link').click(function(e) {
 			e.preventDefault();
@@ -143,7 +169,7 @@ function drawBasic() {
 	let teamName = $("#teamName").val().trim();
 	// const schoolName = $("#schoolName").val().trim();
 
-	if (pass ===confirmPass && email ===confirmEmail) {
+	if (pass ===confirmPass && email ===confirmEmail && teamName.length !==0 && $("#schoolName").val().trim().length !==0) {
 
 	//do the stuff with Firebase locally and not with the server? perhaps not
 	firebase.auth().createUserWithEmailAndPassword(email, pass).then(function() {
@@ -160,7 +186,7 @@ function drawBasic() {
 	});
 }
 else {
-	alert("email or password doesn't match");
+	alert("email or password doesn't match or a field is blank");
 }
 }
 
