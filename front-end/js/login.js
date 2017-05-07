@@ -48,7 +48,7 @@ $(document).ready(function() {
 			window.location = "/";
 		}, function(error) {
 			console.log(error);
-			alert(error);
+			console.log(error);
 		});
 	}
 	$(function() {
@@ -190,64 +190,54 @@ else {
 }
 }
 
-function postRequestCreate(email, teamName, coachName, schoolName) {
-	let parameters = {email: email, teamName: teamName, coachName:coachName, schoolName: $("#schoolName").val().trim()};
+// function postRequestCreate(email, teamName, coachName, schoolName) {
+// 	let parameters = {email: email, teamName: teamName, coachName:coachName, schoolName: $("#schoolName").val().trim()};
 
-	$.post('/createTeam', parameters, function (coachIdTeamId){
+// 	$.post('/createTeam', parameters, function (coachIdTeamId){
 
-		console.log(coachIdTeamId);
-		newCoachId = coachIdTeamId[0];
-		teamId = coachIdTeamId[1];
+// 		console.log(coachIdTeamId);
+// 		newCoachId = coachIdTeamId[0];
+// 		teamId = coachIdTeamId[1];
 
-		if (newCoachId != undefined && teamId !=undefined) {
-			console.log(newCoachId);
-			console.log(teamId);
-			let user = firebase.auth().currentUser;
+// 		if (newCoachId != undefined && teamId !=undefined) {
+// 			console.log(newCoachId);
+// 			console.log(teamId);
+// 			let user = firebase.auth().currentUser;
 
-			user.updateProfile({
-				displayName: "*c*" + newCoachId,
-				photoUrl: teamId
+// 			user.updateProfile({
+// 				displayName: "c" + newCoachId,
+// 				photoURL: teamId
 
-			}).then(function() {
-  // Update successful.
-}, function(error) {
-  // An error happened.
-});
+// 			}).then(function() {
+//   // Update successful.
+// }, function(error) {
+//   // An error happened.
+// });
 
-			user.updateProfile({
-				displayName: "Jane Q. User",
-				photoURL: "https://example.com/jane-q-user/profile.jpg"
-			})
+// 			console.log(user);
 
+// 			alert("Team has been created. Login to access");
+// 			firebase.auth().signOut().then(function() {
+// 				window.location = "/";
+//   		// Sign-out successful.
+//   	}).catch(function(error) {
+//   		alert(error.message);
+//   	});
+//   }
+//   else {
+//   	alert("error, please sign up again");
+//   	let user = firebase.auth().currentUser;
 
-			// user.displayName = "*c*" + newCoachId;
-			// user.photoUrl = teamId;
-
-
-			console.log(user);
-
-			alert("Team has been created. Login to access");
-			firebase.auth().signOut().then(function() {
-				window.location = "/";
-  		// Sign-out successful.
-  	}).catch(function(error) {
-  		alert(error.message);
-  	});
-  }
-  else {
-  	alert("error, please sign up again");
-  	let user = firebase.auth().currentUser;
-
-  	user.delete().then(function() {
-  		console.log("error2");
-  		alert("email verifcation failed. Please sent email again");
-  	}, function(error) {
-  		console.log("error3");
-  		alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
-  	});
-  }
-});
-}
+//   	user.delete().then(function() {
+//   		console.log("error2");
+//   		alert("email verifcation failed. Please sent email again");
+//   	}, function(error) {
+//   		console.log("error3");
+//   		alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
+//   	});
+//   }
+// });
+// }
  /**
      * Sends an email verification to the user.
      */
@@ -318,7 +308,7 @@ function postRequestCreate(email, teamName, coachName, schoolName) {
   			window.location = "/";
   		}, function(error) {
   			console.log(error);
-  			alert(error);
+  			//alert(error);
   		});
   	}
   	$(function() {
@@ -416,13 +406,13 @@ function drawBasic() {
 					firebase.auth().signOut().then(function() {
   // Sign-out successful.
 }).catch(function(error) {
-	alert(error.message);
+	consol.log(error.message);
 });
 }
 }, function(error) {
 	var errorCode = error.code;
 	var errorMessage = error.message;
-	alert(errorMessage);
+	console.log(errorMessage);
   // ...
 });
 
@@ -451,7 +441,7 @@ function drawBasic() {
 		var errorMessage = error.message;
 
 
-		alert(errorMessage);
+		consol.log(errorMessage);
 
 	});
 }
@@ -476,7 +466,7 @@ function postRequestCreate(email, teamName, coachName, schoolName) {
 
 			user.updateProfile({
 				displayName: "c" + newCoachId, //for coaches add a c at the beginning
-				photoUrl: teamId
+				photoURL: teamId
 
 			}).then(function() {
 				console.log("successful");
@@ -485,7 +475,7 @@ function postRequestCreate(email, teamName, coachName, schoolName) {
 					window.location = "/";
   						// Sign-out successful.
   					}).catch(function(error) {
-  						alert(error.message);
+  						console.log(error.message);
   					});
   			// Update successful.
   		}, function(error) {

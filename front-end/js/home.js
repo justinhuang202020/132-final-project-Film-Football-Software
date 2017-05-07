@@ -177,6 +177,8 @@ function signOut() {
     window.location = "/";
   }).catch(function(error) {
     alert(error.message);
+    window.location = "/";
+
   });
 }
 // chart 

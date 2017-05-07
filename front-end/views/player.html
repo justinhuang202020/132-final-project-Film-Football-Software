@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>GameVue</title>
-		<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
-		<script>
+<head>
+	<meta charset="utf-8">
+	<title>GameVue</title>
+	<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
+	<script>
 		  // Initialize Firebase
 		  var config = {
-			apiKey: "AIzaSyCcn-PMVozRa8Gkem8JImkEBBIIiancl5k",
-			authDomain: "gamevue-c6394.firebaseapp.com",
-			databaseURL: "https://gamevue-c6394.firebaseio.com",
-			projectId: "gamevue-c6394",
-			storageBucket: "gamevue-c6394.appspot.com",
-			messagingSenderId: "351663205276"
+		  	apiKey: "AIzaSyCcn-PMVozRa8Gkem8JImkEBBIIiancl5k",
+		  	authDomain: "gamevue-c6394.firebaseapp.com",
+		  	databaseURL: "https://gamevue-c6394.firebaseio.com",
+		  	projectId: "gamevue-c6394",
+		  	storageBucket: "gamevue-c6394.appspot.com",
+		  	messagingSenderId: "351663205276"
 		  };
 		  firebase.initializeApp(config);
 		  </script>
-		<!-- add favicon -->
-		<script
+		  <!-- add favicon -->
+		  <script
 		  src="https://code.jquery.com/jquery-3.1.1.min.js"
 		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
 		  crossorigin="anonymous"></script>
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript" src="../js/player.js"></script>
-		<link rel="stylesheet" href="../styles/home-style.css" type="text/css"/>
-	</head>
+		  <!-- Latest compiled and minified CSS -->
+		  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		  <!-- jQuery library -->
+		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+		  <!-- Latest compiled JavaScript -->
+		  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		  <script type="text/javascript" src="../js/player.js"></script>
+		  <link rel="stylesheet" href="../styles/home-style.css" type="text/css"/>
+		</head>
 
-	<style type="text/css">
+		<style type="text/css">
 		table.table-style-three {
 			font-family: verdana, arial, sans-serif;
 			font-size: 13px;
@@ -59,203 +59,203 @@
 		}
 		/*table.table-style-three tr:nth-child(even):hover td{
 			background-color: #99ccff;
-		}*/
-		table.table-style-three td {
-			border-width: 1px;
-			padding: 8px;
-			border-style: solid;
-			border-color: gray;
-			background-color: #ffffff;
-		}
-		table {
-			margin-left: auto;
- 			margin-right: auto;
- 			margin-bottom: 30px;
- 			margin-top: 20px; 
- 			/*box-shadow: 3px 3px 3px #999;*/
- 			-moz-box-shadow: 0 0 10px 10px #f2f2f2;
-			-webkit-box-shadow: 0 0 10px 10px #f2f2f2;
-			box-shadow: 0 0 10px 10px #d9d9d9;
-		}
-		body {
-			background-color: #f2f2f2; 
-		}
-		#delete {
-			background-color: #f2f2f2; 
-			margin-right: auto;
-			margin-left: auto; 
-			border-radius: 5px;
-			border-width: 1px;
-		}
-		#delete:hover {
-			background-color: #4682B4; 
-			color: white;
-		}
-		#add-player-btn {
-			float:right;
-			margin-top: 20px; 
-		}
-	</style>
+			}*/
+			table.table-style-three td {
+				border-width: 1px;
+				padding: 8px;
+				border-style: solid;
+				border-color: gray;
+				background-color: #ffffff;
+			}
+			table {
+				margin-left: auto;
+				margin-right: auto;
+				margin-bottom: 30px;
+				margin-top: 20px; 
+				/*box-shadow: 3px 3px 3px #999;*/
+				-moz-box-shadow: 0 0 10px 10px #f2f2f2;
+				-webkit-box-shadow: 0 0 10px 10px #f2f2f2;
+				box-shadow: 0 0 10px 10px #d9d9d9;
+			}
+			body {
+				background-color: #f2f2f2; 
+			}
+			#delete {
+				background-color: #f2f2f2; 
+				margin-right: auto;
+				margin-left: auto; 
+				border-radius: 5px;
+				border-width: 1px;
+			}
+			#delete:hover {
+				background-color: #4682B4; 
+				color: white;
+			}
+			#add-player-btn {
+				float:right;
+				margin-top: 20px; 
+			}
+			</style>
 
-	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top">
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-		      <a class="navbar-brand" href="home">GameVue</a>
-		    </div>
-		    <div id="top-bar" class="collapse navbar-collapse">
-		      <ul class="nav navbar-nav">
-		        <li><a href="#about">Brown University Football Team</a></li>
-		      </ul>
-		      <ul class="nav navbar-nav" id="hidden-nav">
-		        <li><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-		        <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
-		        <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
-		      </ul>
-		      <ul class="nav navbar-nav navbar-right">
-		        <li id="logout"><a onclick = "signOut()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-		      </ul>
-		    </div><!--/.nav-collapse -->
-		</div><!--/.navbar -->
+			<body>
+				<div class="navbar navbar-inverse navbar-fixed-top">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="home">GameVue</a>
+					</div>
+					<div id="top-bar" class="collapse navbar-collapse">
+						<ul class="nav navbar-nav">
+							<li><a href="#about">Brown University Football Team</a></li>
+						</ul>
+						<ul class="nav navbar-nav" id="hidden-nav">
+							<li><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+							<li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+							<li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li id="logout"><a onclick = "signOut()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						</ul>
+					</div><!--/.nav-collapse -->
+				</div><!--/.navbar -->
 
-		<div class="row-offcanvas row-offcanvas-left">
-		  <div id="sidebar" class="sidebar-offcanvas">
-		      <div class="sidebar-headers">
-		      	<div id="side-bar-names">
-			        <h3>Navigate</h3>
-			        <h5>10 Games Total</h5>
-			    </div>
-		        <ul id="nav-side-list" class="nav nav-stacked">
-		          <hr>
-		          <li id="home-nav"><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-		          <hr>
-		          <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
-		          <hr>
-		          <li id="active"><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
-		          <hr>
+				<div class="row-offcanvas row-offcanvas-left">
+					<div id="sidebar" class="sidebar-offcanvas">
+						<div class="sidebar-headers">
+							<div id="side-bar-names">
+								<h3>Navigate</h3>
+								<h5>10 Games Total</h5>
+							</div>
+							<ul id="nav-side-list" class="nav nav-stacked">
+								<hr>
+								<li id="home-nav"><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+								<hr>
+								<li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+								<hr>
+								<li id="active"><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+								<hr>
 		          <!-- <li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
 		          <hr> -->
 		          <!--<li><a href="#"><span class="glyphicon glyphicon-upload"></span> Upload Video</a></li>
 		          <hr>-->
 		          <!-- <li><a href="#"><span class="glyphicon glyphicon-edit"></span> Settings</a></li>
 		          <hr> -->
-		        </ul>
-		      </div>
+		      </ul>
 		  </div>
-		  <div id="main">
-		  	<div class="row">
-			  	<h1 class="col-md-6">Players</h1>
-			  	<div class="col-md-6">
-				  	<button type="button" class="btn btn-primary btn-lg" id="add-player-btn" data-toggle="modal" data-target="#myModal">
+		</div>
+		<div id="main">
+			<div class="row">
+				<h1 class="col-md-6">Players</h1>
+				<div class="col-md-6">
+					<button type="button" class="btn btn-primary btn-lg" id="add-player-btn" data-toggle="modal" data-target="#myModal">
 						Add Player +
 					</button>
 				</div>
 			</div>
-		  	<table class="table-style-three">
+			<table class="table-style-three">
 				<thead>
-				<tr>
-					<th>Position</th>
-					<th>Name</th>
-					<th><span class="glyphicon glyphicon-envelope text-right"></span> Email</th>
-					<th>Delete</th>
-				</tr>
+					<tr>
+						<th>Position</th>
+						<th>Name</th>
+						<th><span class="glyphicon glyphicon-envelope text-right"></span> Email</th>
+						<th>Delete</th>
+					</tr>
 				</thead>
 				<tbody>
-				<tr>
-					<td>1</td>
-					<td>Doe</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>Jones</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>Smith</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>McArthur</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>Fuller</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>Watt</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>7</td>
-					<td>Watt</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>8</td>
-					<td>Watt</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>9</td>
-					<td>Watt</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
-				<tr>
-					<td>10</td>
-					<td>Watt</td>
-					<td>johndoe@gmail.com</td>
-					<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-				</tr>
+					<tr>
+						<td>1</td>
+						<td>Doe</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>Jones</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>Smith</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>McArthur</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td>Fuller</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>6</td>
+						<td>Watt</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>7</td>
+						<td>Watt</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>8</td>
+						<td>Watt</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>9</td>
+						<td>Watt</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
+					<tr>
+						<td>10</td>
+						<td>Watt</td>
+						<td>johndoe@gmail.com</td>
+						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
+					</tr>
 				</tbody>
 			</table>
 
-				<!-- Modal -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				        <h4 class="modal-title" id="myModalLabel">Add Player</h4>
-				      </div>
-				      <div class="modal-body">
-				        <form id="addPlayerForm">
-				        	<label for="recipient-name" class="control-label">First Name:</label>
-				            <input type="text" class="form-control" id="addPlayerFirst">
-						  <label for="recipient-name" class="control-label">Last Name:</label>
-				            <input type="text" class="form-control" id="addPlayerLast">
-							<label for="recipient-name" class="control-label">Position:</label>
-				            <input type="text" class="form-control" id="addPlayerPosition">
-				            <label for="recipient-name" class="control-label">Email:</label>
-				            <input type="text" class="form-control" id="addPlayerEmail">
-						</form> 
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				        <button type="button" class="btn btn-primary">Add Player</button>
-				      </div>
-				    </div>
-				  </div>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title" id="myModalLabel">Add Player</h4>
+						</div>
+						<div class="modal-body">
+							<form id="addPlayerForm">
+								<label for="recipient-name" class="control-label">First Name:</label>
+								<input type="text" class="form-control" id="addPlayerFirst">
+								<label for="recipient-name" class="control-label">Last Name:</label>
+								<input type="text" class="form-control" id="addPlayerLast">
+								<label for="recipient-name" class="control-label">Position:</label>
+								<input type="text" class="form-control" id="addPlayerPosition">
+								<label for="recipient-name" class="control-label">Email:</label>
+								<input type="text" class="form-control" id="addPlayerEmail">
+							</form> 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button onclick = "addPlayerFromForm()" type="button" class="btn btn-primary">Add Player</button>
+						</div>
+					</div>
 				</div>
-		  </div>
+			</div>
+		</div>
 	</body> 
 	<!-- javascript -->
 	<script>
@@ -263,10 +263,10 @@
 		$('table').on('click', 'button', function(e){
 			var r = confirm("Are you sure you want to delete this player?");
 			if (r == true) {
-			    $(this).closest('tr').remove(); 
+				$(this).closest('tr').remove(); 
 			} else {
-			    return false; 
+				return false; 
 			}
 		})
-	</script>
-</html> 
+		</script>
+		</html> 

@@ -2,15 +2,7 @@ var isCoach = false;
 var coachEmail = "";
 var coachPassword = "";
 var teamId = "";
-
-function addPlayerAccount(email, fullNamePassword) {
-
-  //do the stuff with Firebase locally and not with the server? perhaps not
-  firebase.auth().createUserWithEmailAndPassword(email, fullNamePassword).then(function() {
-  	sendEmailVerification(email, fullNamePassword);
-  }, function(error) {
-  });
-}
+var isAuthenticating = false;
 
 
 
@@ -18,7 +10,9 @@ function signOut() {
 	firebase.auth().signOut().then(function() {
 		window.location = "/";
 	}).catch(function(error) {
-		alert(error.message);
+		console.log(error.message);
+		window.location = "/";
+
 	});
 }
 
@@ -26,43 +20,63 @@ function signOut() {
 
 $(document).ready(function(){
 	firebase.auth().onAuthStateChanged(function(user) {
-		if (user != null && user.displayName.startsWith("c") || isCoach) {
-
-
-			isCoach = true;
+		if (user != null && user.displayName != null &&  user.displayName.startsWith("c") && !isAuthenticating) {
+			console.log(user);
+			isAuthenticating = true;
 			//password
-			let isDoneAuthenticating = false;
 			coachPassword = prompt("Managing players requires futher authentication. Please enter plassword Below");
 			coachEmail =  user.email;
-			teamId = user.photoUrl;
-
-			console.log(coachEmail);
-			console.log(coachPassword);
-
-			printStuffOut();
+			teamId = user.photoURL;
 
 
-			if(!isDoneAuthenticating) {
-				firebase.auth().signInWithEmailAndPassword(coachEmail, coachPassword).then(function() {
-					isDoneAuthenticating = true;
-				}, function(error) {
+			firebase.auth().signOut().then(function() {
+      						// Sign-out successful.
+      						firebase.auth().signInWithEmailAndPassword(coachEmail, coachPassword).then(function() {
 
-					console.log(error);
+      						}, function(error) {
 
-				});
-			}
+      							console.log(error.message);
+      							signOut();
+      						});
+
+
+      					}).catch(function(error) {
+      						console.log(error.message);
+      						signOut();
+      					});
+
+      				}
+      				else if(!isAuthenticating) {
+      					signOut();
+      				}
+      			});
+});
+
+
+
+
+
+
+
+function addPlayerFromForm() {
+
+
+	firebase.auth().signOut().then(function() {
 
 
 
 			//is a coach
-			$("#addPlayerForm").submit(function(e){
-				e.preventDefault();
-				var teamId = 'team1';
-				var firstname = $("#addPlayerFirst").val();
-				var lastname = $("#addPlayerLast").val();
-				var position = $("#addPlayerPosition").val();
-				var email = $("#addPlayerEmail").val();
-				addPlayerAccount(email, firstname + lastname);
+			var firstname = $("#addPlayerFirst").val();
+			var lastname = $("#addPlayerLast").val();
+			var position = $("#addPlayerPosition").val();
+			var email = $("#addPlayerEmail").val();
+
+			console.log("creating player");
+
+			firebase.auth().createUserWithEmailAndPassword(email, firstname+lastname).then(function() {
+				console.log("created player account");
+
+
 				var parameters = {
 					teamId:teamId,
 					playerName:firstname+lastname,
@@ -70,49 +84,81 @@ $(document).ready(function(){
 					playerPositionId:position
 				}
 				$.post('/createPlayer', parameters, function(playerId){
-					console.log(error);
-				});
-					// add player to html page 
-					new_player = "<tr>" +  
-					"<td>" + position + "</td>" +
-					"<td>" + firstname + " " + lastname + "</td>" +
-					"<td>" + email + "</td>" +
-					"<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>" + 
-					"</tr>"; 
-					$('table').append(new_player);
-				});
-		}
-		else {
-			signOut();
-		}
-	});
+
+
+										//add this to the current player firebase user
+										if(playerId != undefined) {
+
+											console.log("created the player Id in DB")
+											firebase.auth().currentUser.updateProfile({
+												displayName: "p" + playerId,
+												photoURL: teamId
+
+											}).then(function() {
+													// add player to html page 
+													new_player = "<tr>" +  
+													"<td>" + position + "</td>" +
+													"<td>" + firstname + " " + lastname + "</td>" +
+													"<td>" + email + "</td>" +
+													"<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>" + 
+													"</tr>"; 
+													$('table').append(new_player);
+
+													sendEmailVerification();
+												}, function(error) {
+													prompt(error);
+													//signOut();
+												});
+										} else {
+											signOut();
+										}
+
+
+
+
+									});
+
+
+}, function(error) {
+	prompt(error);
+				//signOut();
+			});
+
 });
+
+
+}
 
 
  /**
      * Sends an email verification to the user.
      */
-     function sendEmailVerification(email, password) {
-      // [START sendemailverification]
-      var user = firebase.auth().currentUser;
-      user.sendEmailVerification().then(function() {
-      	alert("Email verification sent");
-      }, function(error) {
+     function sendEmailVerification() {
+     	var user = firebase.auth().currentUser;
+     	user.sendEmailVerification().then(function() {
+     		alert("Email verification sent");
+
+     		// Sign-out successful.
+     		firebase.auth().signInWithEmailAndPassword(coachEmail, coachPassword).then(function() {
+     			console.log("coach signed back in");
+     		}, function(error) {
+
+     			console.log(error.message);
+     			signOut();
+     		});
+
+     	}, function(error) {
 
 
-      });
-  }
+     	});
+     }
 
 
 
-  function printStuffOut(){
-  	console("after authentication");
+     function printStuffOut(){
 
-  	console.log(firebase.auth().currentUser);
-  	console.log(teamId);
-  	console.log(coachPassword);
-  	console.log(coachEmail);
-
-
-  	prompt("hi bitchessszzzzz");
-  }
+     	console.log(firebase.auth().currentUser);
+     	console.log(teamId);
+     	console.log(coachPassword);
+     	console.log(coachEmail);
+     }
