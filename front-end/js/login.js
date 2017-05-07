@@ -6,6 +6,80 @@ $(document).ready(function() {
 	$('#acceso').click(function(e) {
 		e.preventDefault();
 		$('div#form-olvidado').toggle('500');
+
+	firebase.auth().onAuthStateChanged(function(user) {
+		if (user && user.emailVerified) {
+			window.location = "/home";					
+		} else {
+			document.querySelector('#reset').addEventListener('keypress', function (e) {
+				console.log("Hi");
+				var key = e.which || e.keyCode;
+				if (key === 13) {
+					passwordReset(e);
+				}
+			});
+			$('#olvidado').click(function(e) {
+				e.preventDefault();
+				$('div#form-olvidado').toggle('500');
+			});
+			$('#acceso').click(function(e) {
+				e.preventDefault();
+				$('div#form-olvidado').toggle('500');
+			});
+			$('#loginSubmitBtn').on('click', function(e){
+				e.preventDefault();
+				login();
+			});
+			$('#btn-olvidado').on('click', function(e){
+				e.preventDefault();
+				passwordReset();
+			});
+		}
+
+
+
+	});
+
+
+
+	function passwordReset(e) {
+		if (e!==undefined) {
+			e.preventDefault();
+		}
+		let email = $("#reset").val();
+		console.log(email);
+		let  auth = firebase.auth();
+
+		auth.sendPasswordResetEmail(email).then(function() {
+			alert("email sent!");
+			window.location = "/";
+		}, function(error) {
+			console.log(error);
+			alert(error);
+		});
+	}
+	$(function() {
+		$('#login-form-link').click(function(e) {
+			e.preventDefault();
+			$("#login-form").delay(100).fadeIn(100);
+			$("#register-form").fadeOut(100);
+			$('#register-form-link').removeClass('active');
+			$(this).addClass('active');
+		});
+		$("#register-form").submit(function(e){
+			e.preventDefault();
+		});
+		$("#login-form").submit(function(e){
+			e.preventDefault();
+		});
+		$('#register-form-link').click(function(e) {
+			console.log("click");
+			e.preventDefault();
+			$("#register-form").delay(100).fadeIn(100);
+			$("#login-form").fadeOut(100);
+			$('#login-form-link').removeClass('active');
+			$(this).addClass('active');
+		});
 	});
 	$('#loginSubmitBtn').on('click', function(e){
 		login();
@@ -128,7 +202,7 @@ function createAccount() {
 	let teamName = $("#teamName").val().trim();
 	// const schoolName = $("#schoolName").val().trim();
 
-	if (pass ===confirmPass && email ===confirmEmail) {
+	if (pass ===confirmPass && email ===confirmEmail && teamName.length !==0 && $("#schoolName").val().trim().length !==0) {
 
 	//do the stuff with Firebase locally and not with the server? perhaps not
 	firebase.auth().createUserWithEmailAndPassword(email, pass).then(function() {
@@ -145,7 +219,7 @@ function createAccount() {
 	});
 }
 else {
-	alert("email or password doesn't match");
+	alert("email or password doesn't match or a field is blank");
 }
 }
 
@@ -161,6 +235,41 @@ $.post('/createTeam', parameters, function (errorOrTeamId){
 		let user = firebase.auth().currentUser;
 		user.displayName = errorOrTeamId;
 		firebase.auth().signOut().then(function() {
+
+		console.log(coachIdTeamId);
+		newCoachId = coachIdTeamId[0];
+		teamId = coachIdTeamId[1];
+
+		if (newCoachId != undefined && teamId !=undefined) {
+			console.log(newCoachId);
+			console.log(teamId);
+			let user = firebase.auth().currentUser;
+
+			user.updateProfile({
+				displayName: "*c*" + newCoachId,
+				photoUrl: teamId
+
+			}).then(function() {
+  // Update successful.
+}, function(error) {
+  // An error happened.
+});
+
+			user.updateProfile({
+				displayName: "Jane Q. User",
+				photoURL: "https://example.com/jane-q-user/profile.jpg"
+			})
+
+
+			// user.displayName = "*c*" + newCoachId;
+			// user.photoUrl = teamId;
+
+
+			console.log(user);
+
+			alert("Team has been created. Login to access");
+			firebase.auth().signOut().then(function() {
+				window.location = "/";
   		// Sign-out successful.
 		}).catch(function(error) {
   		alert(error.message);
@@ -186,7 +295,7 @@ $.post('/createTeam', parameters, function (errorOrTeamId){
      function sendEmailVerification(email, teamName, name) {
      	console.log("enter");
       // [START sendemailverification]
-      var user = firebase.auth().currentUser
+      var user = firebase.auth().currentUser;
       user.sendEmailVerification().then(function() {
       	postRequestCreate(email, teamName, name, schoolName);
       	alert("Email verification sent");

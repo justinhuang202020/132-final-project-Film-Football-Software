@@ -74,36 +74,36 @@ $(document).ready(function(){
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-     $.post('/getPositions', function(response){
-      var numbers = [1, 2, 3, 4, 5];
-      var option = '';
-      for(id in response){
-       var position = response[id];
-       if(position != "head" && position !=null){
-        option += '<option value="'+ position + '">' + position + '</option>';
+      $.post('/getPositions', function(response){
+        var numbers = [1, 2, 3, 4, 5];
+        var option = '';
+        for(id in response){
+         var position = response[id];
+         if(position != "head" && position !=null){
+          option += '<option value="'+ position + '">' + position + '</option>';
+        }
       }
-    }
-    $('#select-position').append(option);
-  }); 
-     $("#select-position").change(function(e) {
-      console.log("getting categories");
-      $.post('/getCategoriesForPosition', function(response){
-       for(var trait in response){
-        var traitImportanceFullValue = (response[trait].importance - 1)*25;
-        console.log(traitImportanceFullValue);
-        var li = $("<li></li>");
-        var input = $("<input step='25'></input>");
-        input.attr("type", "range");
-        input.attr("step", 25);
-        input.attr("value", traitImportanceFullValue);
-        li.html(trait);
-        li.append(input);
-        $("#traits").append(li);
-      }
-    });
-    });
+      $('#select-position').append(option);
+    }); 
+      $("#select-position").change(function(e) {
+        console.log("getting categories");
+        $.post('/getCategoriesForPosition', function(response){
+         for(var trait in response){
+          var traitImportanceFullValue = (response[trait].importance - 1)*25;
+          console.log(traitImportanceFullValue);
+          var li = $("<li></li>");
+          var input = $("<input step='25'></input>");
+          input.attr("type", "range");
+          input.attr("step", 25);
+          input.attr("value", traitImportanceFullValue);
+          li.html(trait);
+          li.append(input);
+          $("#traits").append(li);
+        }
+      });
+      });
 
-     function loadSkillgraph() {
+      function loadSkillgraph() {
        $(".skillData").each(function(index, element) {
       // element == this
       var mydata = $(element).data();
