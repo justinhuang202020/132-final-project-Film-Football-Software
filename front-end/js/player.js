@@ -1,6 +1,7 @@
 var isCoach = false;
 var coachEmail = "";
 var coachPassword = "";
+var teamId = "";
 
 function addPlayerAccount(email, fullNamePassword) {
 
@@ -11,6 +12,8 @@ function addPlayerAccount(email, fullNamePassword) {
   });
 }
 
+
+
 function signOut() {
 	firebase.auth().signOut().then(function() {
 		window.location = "/";
@@ -18,27 +21,37 @@ function signOut() {
 		alert(error.message);
 	});
 }
+
+
+
 $(document).ready(function(){
 	firebase.auth().onAuthStateChanged(function(user) {
-		console.log(user);
-		if (user != null && user.displayName.includes("*c*") || isCoach) {
-			isCoach = true;
+		if (user != null && user.displayName.startsWith("c") || isCoach) {
 
+
+			isCoach = true;
 			//password
 			let isDoneAuthenticating = false;
-			coachPassword = prompt("Managing players requires futher authentication. Please enter plassword Below", "Password");
+			coachPassword = prompt("Managing players requires futher authentication. Please enter plassword Below");
 			coachEmail =  user.email;
+			teamId = user.photoUrl;
 
-			while(!isDoneAuthenticating) {
+			console.log(coachEmail);
+			console.log(coachPassword);
+
+			printStuffOut();
+
+
+			if(!isDoneAuthenticating) {
 				firebase.auth().signInWithEmailAndPassword(coachEmail, coachPassword).then(function() {
 					isDoneAuthenticating = true;
 				}, function(error) {
 
-					coachPassword = prompt("Wrong password. Managing players requires futher authentication. Please enter plassword Below", "Password");
+					console.log(error);
 
 				});
+			}
 
-			}	
 
 
 			//is a coach
@@ -56,21 +69,21 @@ $(document).ready(function(){
 					playerEmail:email,
 					playerPositionId:position
 				}
-				$.post('/createPlayer', parameters, function(error){
+				$.post('/createPlayer', parameters, function(playerId){
 					console.log(error);
 				});
-		// add player to html page 
-		new_player = "<tr>" +  
-		"<td>" + position + "</td>" +
-		"<td>" + firstname + " " + lastname + "</td>" +
-		"<td>" + email + "</td>" +
-		"<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>" + 
-		"</tr>"; 
-		$('table').append(new_player);
-	});
+					// add player to html page 
+					new_player = "<tr>" +  
+					"<td>" + position + "</td>" +
+					"<td>" + firstname + " " + lastname + "</td>" +
+					"<td>" + email + "</td>" +
+					"<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>" + 
+					"</tr>"; 
+					$('table').append(new_player);
+				});
 		}
 		else {
-			window.location = "/"
+			signOut();
 		}
 	});
 });
@@ -88,4 +101,18 @@ $(document).ready(function(){
 
 
       });
+  }
+
+
+
+  function printStuffOut(){
+  	console("after authentication");
+
+  	console.log(firebase.auth().currentUser);
+  	console.log(teamId);
+  	console.log(coachPassword);
+  	console.log(coachEmail);
+
+
+  	prompt("hi bitchessszzzzz");
   }
