@@ -34,6 +34,7 @@ $(document).ready(function(){
 	console.log("player.js opened");
 	$("#addPlayerForm").submit(function(e){
 		e.preventDefault();
+		console.log("HERE"); 
 		var teamId = 'team1';
 		var firstname = $("#addPlayerFirst").val();
 		var lastname = $("#addPlayerLast").val();
@@ -50,13 +51,13 @@ $(document).ready(function(){
 			console.log(error);
 		});
 		// add player to html page 
-		new_player = "<tr>
-					<td>" + position + "</td>
-					<td>" + firstname + " " + lastname + "</td>
-					<td>" + email + "</td>
-					<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>
-				</tr>"; 
-		$('table').append(new_player);
+		// new_player = "<tr>
+		// 			<td>" + position + "</td>
+		// 			<td>" + firstname + " " + lastname + "</td>
+		// 			<td>" + email + "</td>
+		// 			<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>
+		// 		</tr>"; 
+		// $('table').append(new_player);
 	});
 	}
 	else {
