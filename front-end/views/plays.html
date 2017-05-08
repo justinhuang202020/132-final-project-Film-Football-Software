@@ -213,47 +213,52 @@
 	</style>
 
 	<script>
-		$('#edit').click(function(){
-			if (confirm("Press okay to edit play name.") == true) {
+		// $('#edit').click(function(){
+		// 	if (confirm("Press okay to be able to edit the play name.") == true) {
+		// 	    txt = "You pressed OK!";
+		// 	    $('#name-text').removeAttr('readonly');
+		// 	} else {
+		// 	    txt = "You pressed Cancel!";
+		// 	}
+		// });
+
+		// when to submit this new name???? 
+		// on leave? 
+		window.onbeforeunload = function() {
+		    alert('Bye.');
+		}
+
+		$(document).on('click', '#edit', function(e) {
+			if (confirm("Press okay to be able to edit the play name.") == true) {
 			    txt = "You pressed OK!";
 			    $('#name-text').removeAttr('readonly');
 			} else {
 			    txt = "You pressed Cancel!";
 			}
-		});
-
-		// when to submit this new name???? 
-		// on leave? 
+		}; 
 
 
 		// build a new play 
-		function buildGameEl(){
-			var gameName = "No Name"; 
+		// function buildPlayEle(playName){
+		// 	var html1 = 
+		// 	'<div class="col-sm-6 col-md-3">
+		// 	<div class="thumbnail game-thumbnail text-center">
+		// 	<div id="edit"><span class="glyphicon glyphicon-pencil text-center"></span></div>
+		// 	<div class="thumbnail-content">
+		// 	<div class="play-name">
+		// 		<textarea readonly id="name-text" class="text-center">'; 
+		// 	var html2 = 
+		// 	'</textarea></div><div class="icon"><span class="glyphicon glyphicon-film"></span>
+		// 	</div></div><div class="thumbnail-footer">
+		// 	<div class="click-play-txt">Click to View</div></div></div></div>'; 
 
-			'<div class="col-sm-6 col-md-3">
-			<div class="thumbnail game-thumbnail text-center">
-			<div id="edit"><span class="glyphicon glyphicon-pencil text-center"></span></div>
-			<div class="thumbnail-content">
-			<div class="play-name">
-				<textarea readonly id="name-text" class="text-center">Play 1</textarea>
-			</div>
-			<div class="icon">
-				<span class="glyphicon glyphicon-film"></span>
-			</div>
-			</div>
-			<div class="thumbnail-footer">
-				<div class="click-play-txt">
-					Click to View
-				</div>
-			</div>
-			</div>
-			</div>'
+		// 	var divString = $("<div></div>");
+		// 	var widthDiv = $(divString);
+		// 		widthDiv.addClass("col-sm-6 col-md-3");
+		// 	widthDiv.html(html2 + playName + html2); 
 
-			var div = $("<div></div>");
-			div.html(); 
-
-			$("#thumbnail-holder").append(widthDiv);
-		}
+		// 	$("#thumbnail-holder").append(widthDiv);
+		// }; 
 	</script>
 
 </html>

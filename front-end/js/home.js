@@ -396,7 +396,7 @@ $(document).ready(function(){
 		});
     });
 
-     function loadSkillgraph() {
+      function loadSkillgraph() {
        $(".skillData").each(function(index, element) {
       // element == this
       var mydata = $(element).data();
@@ -511,10 +511,6 @@ $(document).ready(function(){
     window.location = "/";
   }
 });
-
-
-
-
 });
 
 function signOut() {
@@ -522,6 +518,8 @@ function signOut() {
     window.location = "/";
   }).catch(function(error) {
     alert(error.message);
+    window.location = "/";
+
   });
 }
 

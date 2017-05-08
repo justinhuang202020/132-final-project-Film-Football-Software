@@ -1,3 +1,12 @@
+function signOut() {
+	firebase.auth().signOut().then(function() {
+		window.location = "/";
+	}).catch(function(error) {
+		alert(error.message);
+		window.location = "/";
+
+	});
+}
 $(document).ready(function(){
 	firebase.auth().onAuthStateChanged(function(user) {
 	if (user) {
@@ -105,6 +114,7 @@ $(document).ready(function(){
 			}
 		}
 	});
+
 	$(window).resize(function(){
 		//set video player dimensions
 		var containerWidth = $vidContainer.parent().width();
@@ -379,7 +389,7 @@ $(document).ready(function(){
 	function uploadFile(gameId, file){
 		// Create the file metadata
 		var metadata = {
-		  contentType: file.type
+			contentType: file.type
 		};
 		// Create a root reference
 		var storageRef = firebase.storage().ref();
@@ -388,19 +398,19 @@ $(document).ready(function(){
 
 		// Listen for state changes, errors, and completion of the upload.
 		uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-		  function(snapshot) {
+			function(snapshot) {
 			// Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
 			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 			console.log('Upload is ' + progress + '% done');
 			switch (snapshot.state) {
 			  case firebase.storage.TaskState.PAUSED: // or 'paused'
-				console.log('Upload is paused');
-				break;
+			  console.log('Upload is paused');
+			  break;
 			  case firebase.storage.TaskState.RUNNING: // or 'running'
-				console.log('Upload is running');
-				break;
+			  console.log('Upload is running');
+			  break;
 			}
-		  }, function(error) {
+		}, function(error) {
 			console.log(error.code);
 		}, function() {
 			// Upload completed successfully, now we can get the download URL
@@ -419,5 +429,5 @@ $(document).ready(function(){
 else {
 	window.location = '/';
 }
-});
-});
+	});
+	});

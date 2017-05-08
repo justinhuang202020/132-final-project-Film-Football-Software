@@ -49,7 +49,7 @@
 		        <li><a href="#about" class="not-active">The easier way to manage practice film</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li id="login"><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+		        <!-- <li id="login"><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> -->
 		      </ul>
 		    </div><!--/.nav-collapse -->
 		</div><!--/.navbar -->
@@ -60,7 +60,7 @@
 					<div id="title-wrapper">
 						<h3 id="title">Take practice from the field to your computer</h3>
 						<h5>Register now to get started!</h5>
-						<a href="#page2"><button id="learn-more">LEARN MORE</button></a>
+						<a href="#page4"><button id="learn-more">LEARN MORE</button></a>
 					</div>
 					<!-- <h2>Features</h2>
 					<p>-Upload practice video</p>
@@ -199,9 +199,9 @@
 				          <span class="input-group-addon">
 				            <i class="glyphicon glyphicon-envelope"></i>
 				          </span>
-				          <input class="form-control" placeholder="Enter your email" name="email" type="email" required="">
+				          <input class="form-control" placeholder="Enter your email" name="email" type="email" id = "reset" required="">
 				        </div>
-				        <button type="submit" class="btn btn-primary btn-block" id="btn-olvidado">
+				        <button type="submit"  class="btn btn-primary btn-block" id="btn-olvidado">
 				          Continue 
 				        </button>
 				        <p class="help-block">
@@ -216,29 +216,50 @@
 				</div>
 			</div>
 		</div>
+			<section id="section02" class="demo">
+				<a href="#page4"><span></span></a>
+			</section>
 		</div>
 	</div>
+
 </div>
 
-	<section id="section02" class="demo">
-		<a href="#page2"><span></span></a>
-	</section>
-
-
-	<div id="page2">
-		<div class="col-md-6">
-			<div id="features-wrapper">
-				<div id="features-content">
-					<h2 class="text-center">Features</h2>
-					<h4>Bring practice online.</h4>
-					<p>Upload film and score individual plays based on personalized categories like 'Passes' and 'Tackles.'</p>
+	
+	<div id="page4">
+		<div class="row">
+			<div class="col-md-12">
+				<div id="progress-wrapper">
+					<div id="progress-content">
+						<h2 class="text-center">Monitor Your Team's Progress</h2>
+						<h4>Improve your season one game at a time.</h4>
+						<p>View graphs that show the aggregate score of each game your team plays.</p>
+					</div>
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div id="graph-wrapper">
+				<div id="graph"></div>
+			</div>
+		</div>
+	</div>
 
 
-		<div class="col-md-6">
-			<img id="view-img" src="../img/coach.png" class="img-fluid" alt="Responsive image" height="100%" width="100%">
+
+	<div id="page2">
+		<div class="row">
+			<div class="col-md-6">
+				<div id="features-wrapper">
+					<div id="features-content">
+						<h2>Watch Practices</h2>
+						<h4>Bring practice online.</h4>
+						<p>Upload film and score individual plays based on personalized categories like 'Passes' and 'Tackles.'</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<img id="view-img" src="../img/coach.png" class="img-thumbnail" height="500px" width="700px">
+			</div>
 		</div>
 	</div>
 
@@ -248,16 +269,16 @@
 			<div class="col-md-12">
 				<div id="progress-wrapper">
 					<div id="progress-content">
-						<h2 class="text-center">View Your Team's Progress</h2>
-						<h4>Improve your season one game at a time.</h4>
-						<p>Upload film and score individual plays based on personalized categories like 'Passes' and 'Tackles.'</p>
+						<h2 class="text-center">Keep Track of Your Plays</h2>
+						<h4>View game info at the touch of a button</h4>
+						<p>Remove and add plays at any time.</p>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div id="graph-wrapper">
-				<div id="graph"></div>
+			<div id="plays-wrapper" class="col-md-6 col-md-offset-3">
+				<div><img src="../img/plays.png" class="img-thumbnail" height="400px" width="600px"></div>
 			</div>
 		</div>
 	</div>

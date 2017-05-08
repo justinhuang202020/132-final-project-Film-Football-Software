@@ -251,11 +251,10 @@ app.post('/createPlayer', function(request, response) {
 	let playerEmail = request.body.playerEmail;
 	let playerPositionId = request.body.playerPositionId;
 
-	let error = addPlayer(teamId, playerName, playerEmail, playerPositionId, function(newPlayerId) {
+	addPlayer(teamId, playerName, playerEmail, playerPositionId, function(newPlayerId) {
 		response.json(newPlayerId);
 	});
 
-	response.json(error);
 
 });
 
