@@ -1,39 +1,37 @@
 $(document).ready(function() {
 
-	firebase.auth().onAuthStateChanged(function(user) {
-		if (user && user.emailVerified) {
-			window.location = "/home";					
-		} else {
-			document.querySelector('#reset').addEventListener('keypress', function (e) {
-				console.log("Hi");
-				var key = e.which || e.keyCode;
-				if (key === 13) {
-					passwordReset(e);
-				}
-			});
-			$('#olvidado').click(function(e) {
-				e.preventDefault();
-				$('div#form-olvidado').toggle('500');
-			});
-			$('#acceso').click(function(e) {
-				e.preventDefault();
-				$('div#form-olvidado').toggle('500');
-			});
-			$('#loginSubmitBtn').on('click', function(e){
-				e.preventDefault();
-				login();
-			});
-			$('#btn-olvidado').on('click', function(e){
-				e.preventDefault();
-				passwordReset();
-			});
-		}
+  	firebase.auth().onAuthStateChanged(function(user) {
+  		if (user && user.emailVerified) {
+  			window.location = "/home";					
+  		} else {
+  			document.querySelector('#reset').addEventListener('keypress', function (e) {
+  				console.log("Hi");
+  				var key = e.which || e.keyCode;
+  				if (key === 13) {
+  					passwordReset(e);
+  				}
+  			});
+  			$('#olvidado').click(function(e) {
+  				e.preventDefault();
+  				$('div#form-olvidado').toggle('500');
+  			});
+  			$('#acceso').click(function(e) {
+  				e.preventDefault();
+  				$('div#form-olvidado').toggle('500');
+  			});
+  			$('#loginSubmitBtn').on('click', function(e){
+  				e.preventDefault();
+  				login();
+  			});
+  			$('#btn-olvidado').on('click', function(e){
+  				e.preventDefault();
+  				passwordReset();
+  			});
+  		}
 
 
 
-	});
-
-
+  	});
 
 	function passwordReset(e) {
 		if (e!==undefined) {
@@ -181,7 +179,7 @@ function drawBasic() {
 		var errorMessage = error.message;
 
 
-		alert(errorMessage);
+		consol.log(errorMessage);
 
 	});
 }
@@ -205,25 +203,38 @@ function postRequestCreate(email, teamName, coachName, schoolName) {
 			let user = firebase.auth().currentUser;
 
 			user.updateProfile({
-				displayName: "*c*" + newCoachId,
-				photoUrl: teamId
+				displayName: "c" + newCoachId, //for coaches add a c at the beginning
+				photoURL: teamId
 
 			}).then(function() {
-  // Update successful.
-}, function(error) {
-  // An error happened.
-});
+				console.log("successful");
+				alert("Team has been created. Login to access");
+				firebase.auth().signOut().then(function() {
+					window.location = "/";
+  						// Sign-out successful.
+  					}).catch(function(error) {
+  						console.log(error.message);
+  					});
+  			// Update successful.
+  		}, function(error) {
+  			console.log(error);
+  		});
 
-			user.updateProfile({
-				displayName: "Jane Q. User",
-				photoURL: "https://example.com/jane-q-user/profile.jpg"
-			})
 
+		}
+		else {
+			alert("error, please sign up again");
+			let user = firebase.auth().currentUser;
 
-			// user.displayName = "*c*" + newCoachId;
-			// user.photoUrl = teamId;
-
-
+			user.delete().then(function() {
+				console.log("error2");
+				alert("email verifcation failed. Please sent email again");
+			}, function(error) {
+				console.log("error3");
+				alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
+			});
+		}
+	});
 			console.log(user);
 
 			alert("Team has been created. Login to access");
@@ -268,4 +279,6 @@ function postRequestCreate(email, teamName, coachName, schoolName) {
 		alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-GAME-VUE");
 	});
 });
+
+      // [END sendemailverification]
   }
