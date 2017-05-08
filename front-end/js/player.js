@@ -1,9 +1,10 @@
 var isCoach = false;
 var coachEmail = "";
 var coachPassword = "";
-var teamId = "";
 var isAuthenticating = false;
-
+var isSignedIn = true;
+var signedOut = false;
+var count = 0;
 
 
 function signOut() {
@@ -21,29 +22,15 @@ function signOut() {
 $(document).ready(function(){
 	firebase.auth().onAuthStateChanged(function(user) {
 		if (user != null && user.displayName != null &&  user.displayName.startsWith("c") && !isAuthenticating) {
-			console.log(user);
 			isAuthenticating = true;
-
-			if (user) {
-				console.log("player.js opened");
-				$("#addPlayerForm").submit(function(e){
-					e.preventDefault();
-					console.log("HERE"); 
-					var teamId = 'team1';
-					var firstname = $("#addPlayerFirst").val();
-					var lastname = $("#addPlayerLast").val();
-					var position = $("#addPlayerPosition").val();
-					var email = $("#addPlayerEmail").val();
-					addPlayerAccount(firstname+lastname, email, position, 1, email, firstname+lastname, firstname+lastname);
-					var parameters = {
-						teamId:teamId,
-						playerName:firstname+lastname,
-						playerEmail:email,
-						playerPositionId:position
-					}
-					$.post('/createPlayer', parameters, function(error){
-						console.log(error);
-					});
+			var coachParams = {
+				coachId:user.displayName.substring(1)
+			};
+			$.post('getCoach', coachParams, function(response){
+				var teamId = response.teamId;
+				localStorage.teamId = teamId;
+			});
+		}			
 		// add player to html page 
 		// new_player = "<tr>
 		// 			<td>" + position + "</td>
@@ -52,40 +39,34 @@ $(document).ready(function(){
 		// 			<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>
 		// 		</tr>"; 
 		// $('table').append(new_player);
-		if (user != null && user.displayName.startsWith("c") || isCoach) {
-
-
-			isCoach = true;
-			//password
-			coachPassword = prompt("Managing players requires futher authentication. Please enter plassword Below");
-			coachEmail =  user.email;
-			teamId = user.photoURL;
-
-
-			firebase.auth().signOut().then(function() {
-				// Sign-out successful.
-				firebase.auth().signInWithEmailAndPassword(coachEmail, coachPassword).then(function() {
-
-				}, function(error) {
-
+		if (isAuthenticating){
+			if(isSignedIn && !signedOut){
+				coachEmail =  coachEmail || user.email;
+				firebase.auth().signOut().then(function() {
+					isSignedIn = false;
+					signedOut = true;
+					loopPrompt();
+				}).catch(function(error) {
 					console.log(error.message);
-					signOut();
 				});
-
-
-			}).catch(function(error) {
-				console.log(error.message);
-				signOut();
-			});
-
+			}
 		}
 		else if(!isAuthenticating) {
 			signOut();
 		}
 	});
-			}
+	function loopPrompt(){
+		if(!isSignedIn){
+			coachPassword = prompt("Managing players requires futher authentication. Please enter password below.");
+			firebase.auth().signInWithEmailAndPassword(coachEmail, coachPassword).then(function() {
+				isSignedIn = true;
+			}, function(error) {
+				console.log(error.message);
+				loopPrompt();
+				//signOut();
+			});
 		}
-});
+	}
 });
 
 
@@ -95,10 +76,8 @@ $(document).ready(function(){
 
 
 function addPlayerFromForm() {
-
-
 	firebase.auth().signOut().then(function() {
-
+			
 
 
 			//is a coach
@@ -107,52 +86,44 @@ function addPlayerFromForm() {
 			var position = $("#addPlayerPosition").val();
 			var email = $("#addPlayerEmail").val();
 
-			console.log("creating player");
-
 			firebase.auth().createUserWithEmailAndPassword(email, firstname+lastname).then(function() {
-				console.log("created player account");
 
 
 				var parameters = {
-					teamId:teamId,
+					teamId:localStorage.teamId,
 					playerName:firstname+lastname,
 					playerEmail:email,
 					playerPositionId:position
 				}
 				$.post('/createPlayer', parameters, function(playerId){
+					//add this to the current player firebase user
+					if(playerId != undefined) {
 
+						firebase.auth().currentUser.updateProfile({
+							displayName: "p" + playerId
+						}).then(function() {
+								// add player to html page 
+								new_player = "<tr>" +  
+								"<td>" + position + "</td>" +
+								"<td>" + firstname + " " + lastname + "</td>" +
+								"<td>" + email + "</td>" +
+								"<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>" + 
+								"</tr>"; 
+								$('table').append(new_player);
 
-										//add this to the current player firebase user
-										if(playerId != undefined) {
-
-											console.log("created the player Id in DB")
-											firebase.auth().currentUser.updateProfile({
-												displayName: "p" + playerId,
-												photoURL: teamId
-
-											}).then(function() {
-													// add player to html page 
-													new_player = "<tr>" +  
-													"<td>" + position + "</td>" +
-													"<td>" + firstname + " " + lastname + "</td>" +
-													"<td>" + email + "</td>" +
-													"<td><button type='button' id='delete' class='col-md-12' align='center'><span class='glyphicon glyphicon-trash text-center'></span></button></td>" + 
-													"</tr>"; 
-													$('table').append(new_player);
-
-													sendEmailVerification();
-												}, function(error) {
-													prompt(error);
-													//signOut();
-												});
-										} else {
-											signOut();
-										}
+								sendEmailVerification();
+							}, function(error) {
+								prompt(error);
+								//signOut();
+							});
+					} else {
+						signOut();
+					}
 
 
 
 
-									});
+				});
 
 
 }, function(error) {

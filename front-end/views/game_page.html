@@ -210,23 +210,6 @@
 		
 			if (user) {
 			var userIsCoach = firebase.auth().currentUser.displayName[0]=='c';
-			console.log(userIsCoach);
-			$("#gameForm").submit(function(e){
-				e.preventDefault();
-				let teamId = 'team1';
-				let opponent = $("#opponentInput").val();
-				let opponentScore = $("#opponentScoreInput").val();
-				let teamScore = $("#teamScoreInput").val();
-				let parameters = {
-					teamId:teamId,
-					opponent:opponent,
-					opponentScore:opponentScore,
-					teamScore:teamScore
-				};
-				buildGameEl(opponent, opponentScore, teamScore);
-				$.post('/createGame', parameters, function(response){
-				});
-			});
 			if(userIsCoach){
 				var coachParams = {
 					 coachId: firebase.auth().currentUser.displayName.substring(1) 
@@ -252,6 +235,7 @@
 					 playerId: firebase.auth().currentUser.displayName.substring(1) 
 				  }
 				  $.post('/getPlayer', playerParams, function(response){
+				  console.log(response.teamId);
 					teamId = response.teamId;
 					var getGamesParam = {
 						teamId:teamId
@@ -275,7 +259,6 @@
 			
 			function buildGameEl(opponent, opponentScore, teamScore, id, isCoach){
 				firebase.auth().currentUser.photoURL = $(this)[0].id;
-				console.log(firebase.auth().currentUser);
 				var divString = '<div></div>';
 				var aString = '<a></a>';
 				var widthDiv = $(divString);

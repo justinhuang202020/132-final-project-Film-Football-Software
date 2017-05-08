@@ -127,8 +127,7 @@ app.post('/getRecentGames', function(request, response) {
 app.post('/getCategoriesForPosition', function(request, response){
 	let positionId = request.body.positionId;
 	let teamId = request.body.teamId;
-	console.log(positionId);
-	console.log(teamId);
+	console.log("getting categories...");
 	let categoriesRef = db.ref().child('teams').child(teamId).child('categories').child(positionId);
 
 	categoriesRef.once("value", function(snapshot) {
@@ -319,6 +318,8 @@ app.post('/createCategory', function(request, response){
 	let teamId = request.body.teamId;
 	let positionId = request.body.positionId;
 	let importance = request.body.importance;
+	let title = request.body.title;
+	
 	
 	addCategory(teamId, positionId, importance, title);
 	
@@ -377,7 +378,7 @@ function createTeam(email, teamName, coachName, schoolName, callback) {
 }
 
 
-function addPlayer(teamId, email, name, positionId, callback) {
+function addPlayer(teamId, name, email, positionId, callback) {
 	//adding the player data to the database
 	let playerData = {
 		email: email,

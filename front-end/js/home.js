@@ -79,7 +79,6 @@ var recentGamesDict = {};
 var grades = [];
 var timestampToGameIds = {};
 var userIsCoach;
-var teamId;
 $(document).ajaxStop(function(){
 	var recentGames;
 	$('#select-position-home').change(function(e){
@@ -94,6 +93,8 @@ $(document).ajaxStop(function(){
 		if(userIsCoach){
 			for(gameId in recentGamesDict){
 				var gameGrades = [];
+				console.log(positionToGrades);
+				console.log(recentGamesDict);
 				if(positionToGrades[positionId]){
 					for(var i = 0;i<positionToGrades[positionId][0].length;i++){
 						if(positionToGrades[positionId][1][i] == gameId){
@@ -115,17 +116,14 @@ $(document).ajaxStop(function(){
 			}
 		}
 		else{
-			timestamps.sort();
-			for(var i=0;i<5;i++){
+			timestamps.sort(function(a, b){return b-a});
+			for(var i=0;i<timestamps.length;i++){
 				if(gameIdToGames[timestampToGameIds[timestamps[i]]]){
 					var opponent = gameIdToGames[timestampToGameIds[timestamps[i]]].opponent;
 					var currGrades = gameIdToGrades[timestampToGameIds[timestamps[i]]];
 					var gameScore = calcGameScore(currGrades,!userIsCoach);
 					recentGames.push({opponent:opponent,gameScore:gameScore});
 				}
-				else{
-					recentGames.push({opponent:"Eastlake", gameScore:80});
-				} 
 			}
 			sw = getStrengthsAndWeaknesses(grades);
 		}
@@ -172,7 +170,7 @@ $(document).ajaxStop(function(){
 			for(gradeObj in allGrades){
 				var currGrades = allGrades[gradeObj].grades;
 				for(grade in currGrades){
-					var importance = parseInt(positionToTrait[3][grade].importance);
+					var importance = parseInt(positionToTrait[localStorage.positionId][grade].importance);
 					maxScore += parseInt(5*importance);
 					totalScore+= parseInt(currGrades[grade]*importance);
 				}
@@ -182,8 +180,9 @@ $(document).ajaxStop(function(){
 			for(var i=0;i<allGrades.length;i++){
 				var currGrades = allGrades[i];
 				for(grade in currGrades){
+					console.log(currGrades);
 					console.log(positionToTrait);
-					var importance = parseInt(positionToTrait[3][grade].importance);
+					var importance = parseInt(positionToTrait[$('#select-position-home')[0].selectedIndex+1][grade].importance);
 					maxScore += parseInt(5*importance);
 					totalScore+= parseInt(currGrades[grade]*importance);
 				}
@@ -302,28 +301,6 @@ $(document).ajaxStop(function(){
 		}
 		return {strengths:strengths,weaknesses:weaknesses};
 	}
-	$("#select-position").change(function(e) {
-		console.log(teamId);
-		 $("#traits").empty()
-		 var categoryParams = {
-			  teamId:teamId,
-			  positionId: $('#select-position')[0].selectedIndex
-		  };
-      $.post('/getCategoriesForPosition', function(response){
-		   for(var trait in response){
-			var traitImportanceFullValue = (response[trait].importance - 1)*25;
-			console.log(traitImportanceFullValue);
-			var li = $("<li></li>");
-			var input = $("<input step='25'></input>");
-			input.attr("type", "range");
-			input.attr("step", 25);
-			input.attr("value", traitImportanceFullValue);
-			li.html(trait);
-			li.append(input);
-			$("#traits").append(li);
-		  }
-		});
-    });
 	$(window).resize(function(){
         drawBasic();
     });
@@ -402,7 +379,6 @@ $(document).ready(function(){
 	$('#select-position-home').append(option);
   }); 
 	userIsCoach = (firebase.auth().currentUser.displayName[0] == 'c');
-
       function loadSkillgraph() {
        $(".skillData").each(function(index, element) {
       // element == this
@@ -428,7 +404,7 @@ $(document).ready(function(){
     });
 
   //For Justin
-  $('#addTraitBtn').on('click', function(){
+  $(document).on('click', '#addTraitBtn' , function(e) {
     var traitText = $("#newTraitTxt").val();
     var traitImportance = ($('#newTraitImportance').val()/25) + 1;
     var option = $("#select-position")[0].selectedIndex;
@@ -441,12 +417,14 @@ $(document).ready(function(){
     li.html(traitText);
     li.append(input);
     $("#traits").append(li);
+	var positionId = $("#select-position")[0].selectedIndex + 1;
     const parameters = {
-      teamId: 'team1',
-      positionId: 4, 
+      teamId: localStorage.teamId,
+      positionId: positionId, 
       importance: traitImportance,
       title: traitText
     }
+	console.log(parameters);
     $.post('/createCategory', parameters, function (error){
       if(error){
         console.log(error);
@@ -456,12 +434,37 @@ $(document).ready(function(){
     $("#newTraitTxt").val("");
     $('#newTraitImportance').val(50);
   });
+  $("#select-position").change(function(e) {
+		 var newtraitli = $('#newTraitLi');
+		 $("#traits").empty()
+		 newtraitli.addClass('hidden');
+		 $('#traits').append(newtraitli);
+		 var categoryParams = {
+			  teamId:localStorage.teamId,
+			  positionId: $('#select-position')[0].selectedIndex +1
+		  };
+      $.post('/getCategoriesForPosition', categoryParams, function(response){
+		  console.log('response');
+		   for(var trait in response){
+			var traitImportanceFullValue = (response[trait].importance - 1)*25;
+			console.log(traitImportanceFullValue);
+			var li = $("<li></li>");
+			var input = $("<input step='25'></input>");
+			input.attr("type", "range");
+			input.attr("step", 25);
+			input.attr("value", traitImportanceFullValue);
+			li.html(trait);
+			li.append(input);
+			$("#traits").append(li);
+		  }
+		});
+    });
   if(userIsCoach){
 	  var coachParams = {
 		 coachId: firebase.auth().currentUser.displayName.substring(1) 
 	  }
 	  $.post('/getCoach', coachParams, function(response){
-		  teamId = response.teamId;
+		  localStorage.teamId = response.teamId;
 		  var gradesParams = {
 			teamId:response.teamId  
 		  };
@@ -476,14 +479,22 @@ $(document).ready(function(){
 				positionToGrades[response[game].positionId][1].push(response[game].gameId);
 			  }
 		  });
-		  $.post('/getCategoriesForPosition', function(response){
-				for(trait in response){
-					positionToTrait[3] = response;
-				}
-		  });
+		  for(var i = 0; i <9;i++){
+			  var categoryParams = {
+				  teamId:response.teamId,
+				  positionId:i+1
+			  };
+			  var count = 0;
+			  $.post('/getCategoriesForPosition', categoryParams, function(response){
+				  count++;
+					for(trait in response){
+						positionToTrait[count] = response;
+					}
+			  });
+		  }
 		  var recentParams = {
-			  teamId:'team1',
-			  numGames:5
+			  teamId:response.teamId,
+			  numGames:20
 		  };
 		  $.post('/getRecentGames', recentParams, function(response){
 			recentGamesDict = response;
@@ -491,11 +502,13 @@ $(document).ready(function(){
 	  });
   }
   else{
+	  $('.home-coach-sctn').addClass('hidden');
 	  var getPlayerParams = {
 		playerId: firebase.auth().currentUser.displayName.substring(1)
 	  };
 	  $.post('/getPlayer', getPlayerParams, function(response){
-		  teamId = response.teamId;
+		  localStorage.teamId = response.teamId;
+		  localStorage.positionId = response.positionId;
 		  var getGradesParams = {
 			 playerId:firebase.auth().currentUser.displayName.substring(1)
 		  }
@@ -524,6 +537,7 @@ $(document).ready(function(){
 			  positionId:response.positionId
 		  };
 		  var positionId = response.positionId;
+		  
 		  $.post('/getCategoriesForPosition', categoryParams, function(response){
 				for(trait in response){
 					positionToTrait[positionId] = response;

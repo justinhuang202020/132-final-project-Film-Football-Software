@@ -24,6 +24,7 @@ $(document).ready(function(){
 	var playIdToPlay = {};
 	var playIdToGrades = {};
 	var traits = {};
+	var teamId;
 	var postParams = {
 		teamId:"id"
 	};
@@ -41,10 +42,17 @@ $(document).ready(function(){
 	} 
 	var userIsCoach = (firebase.auth().currentUser.displayName[0] == 'c');
 	if(userIsCoach){
+		var coachParams = {
+		 coachId: firebase.auth().currentUser.displayName.substring(1) 
+		}
+	  $.post('/getCoach', coachParams, function(response){
+		  teamId = response.teamId
+	  });
 		var playsParams = {
 			gameId:localStorage.gameId
 		}
 		$.post('/getPlaysForGame', playsParams, function(response){
+			console.log(response);
 			var playArray = [];
 			for(play in response){
 				response[play].playId = play;
@@ -66,6 +74,7 @@ $(document).ready(function(){
 			playerId: firebase.auth().currentUser.displayName.substring(1)
 		  };
 	  $.post('/getPlayer', getPlayerParams, function(response){
+		  teamId = response.teamId;
 		 var categoryParams = {
 		  teamId:response.teamId,
 		  positionId: response.positionId
@@ -116,7 +125,7 @@ $(document).ready(function(){
 		}
 		return Math.floor((totalScore/maxPotentialScore)*100);
 	}
-	$.post('getPlayersForTeam', postParams, function(response){
+	$.post('/getPlayersForTeam', postParams, function(response){
 		for(id in response){
 			var player = response[id];
 			player.playerId = id;
@@ -153,6 +162,11 @@ $(document).ready(function(){
 			$('.submit-player-grade-btn').removeClass('hidden');
 		}
 	});
+	$(document).on('click', '.position-trait' , function(e) {
+		var $activeTrait = $('.position-trait-active');
+		$activeTrait.removeClass("position-trait-active");
+		$(this).addClass("position-trait-active");
+	});
 	$(document).on('click', '.play' , function(e) {
 		$('.active').removeClass('active');
 		$(this).addClass('active');
@@ -168,7 +182,9 @@ $(document).ready(function(){
 			$('.play.active').removeClass('active');
 			newPlay.addClass('active');
 			setVideoSrc(playIdToPlay[newPlay[0].id]);
-			populateScoreSection(playIdToGrades[newPlay[0].id]);
+			if(!userIsCoach){
+				populateScoreSection(playIdToGrades[newPlay[0].id]);
+			}
 		}
 	});
 	$('.glyphicon-triangle-right').on('click', function(){
@@ -179,15 +195,19 @@ $(document).ready(function(){
 			$('.play.active').removeClass('active');
 			newPlay.addClass('active');
 			setVideoSrc(playIdToPlay[newPlay[0].id]);
-			populateScoreSection(playIdToGrades[newPlay[0].id]);
+			if(!userIsCoach){
+				populateScoreSection(playIdToGrades[newPlay[0].id]);
+			}
 		}
 	});
 	$(".submit-player-grade-btn .btn-custom").on('click', function(){
 		var grades  = {};
 		$('.position-trait').each(function(index){
 			var score = $(this).find(".position-trait-score").html();
-			var trait = $(this).find(".position-trait-text").html();
-			grades[trait] = score;
+			if(parseInt(score)){
+				var trait = $(this).find(".position-trait-text").html();
+				grades[trait] = score;
+			}
 		});
 		var playerList = positionToPlayerDict[$("#select-position")[0].selectedIndex];
 		var player = playerList[$("#select-player")[0].selectedIndex-1];
@@ -203,9 +223,7 @@ $(document).ready(function(){
 		}
 		$.post('/addGrade', gradeParams, function(response){
 		});
-		$('.position-traits-sctn').addClass('hidden');
-		$('.submit-player-grade-btn').addClass('hidden');
-		$('.score-buttons').addClass('hidden');
+		$('.grade-input-sctn').addClass('hidden');
 		$("#select-player")[0].selectedIndex = 0;
 	});
 	$(".position-trait").on('click', function(e){
@@ -229,15 +247,28 @@ $(document).ready(function(){
 		}
 		$("#select-player").append(option);
 		$('.select-player-sctn').removeClass('hidden');
+		$('.grade-input-sctn').addClass('hidden');
 	});
 	$("#select-player").change(function(e) {
-		populatePositionTraits($("#select-position")[0].selectedIndex);
-		$('.position-traits-sctn').removeClass('hidden');
-		$('.score-buttons').removeClass('hidden');
+		$('.position-traits').empty();
+		var categoryParams = {
+			teamId:teamId,
+			positionId:$("#select-position")[0].selectedIndex
+		}
+		$.post('/getCategoriesForPosition', categoryParams, function(response){
+			var count = 0;
+			   for(var trait in response){
+				addPositionTraitEl(trait, (count==0));
+				count++;
+			   }
+		   if(count > 0){
+			   $('.grade-input-sctn').removeClass('hidden');
+		   }
+		});
 	});
 	$("#playForm").submit(function(e){
 		e.preventDefault();
-		var gameId = 'game1';
+		var gameId = localStorage.gameId;
 		for(var i =0; i<$("#videoUploadInput").prop('files').length;i++){
 			var file = $("#videoUploadInput").prop('files')[i];
 			uploadFile(gameId, file);
@@ -250,16 +281,6 @@ $(document).ready(function(){
 		for(grade in grades){
 			addAttrEl(grades[grade], grade);
 		}
-	}
-	function populatePositionTraits(positionId){
-		$('.position-traits').empty();
-		$.post('/getCategoriesForPosition', function(response){
-			var count = 0;
-		   for(var trait in response){
-			addPositionTraitEl(trait, (count==0));
-			count++;
-		   }
-		});
 	}
 	function addPositionTraitEl(traitText, isActive){
 		var divString = '<div></div>';
