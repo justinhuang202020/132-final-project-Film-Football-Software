@@ -29,8 +29,6 @@ $(document).ready(function() {
   			});
   		}
 
-
-
   	});
 
 	function passwordReset(e) {
