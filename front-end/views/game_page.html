@@ -33,6 +33,7 @@
 			.thumbnail{
 				white-space:nowrap;
 				cursor:pointer;
+				color:black;
 			}
 			.thumbnail-content{
 				height: 85px;
@@ -178,6 +179,26 @@
 			</div>
 		  </div>
 		  <script>
+		  var teamId;
+		  $(document).ajaxStop(function(){
+			$("#gameForm").submit(function(e){
+				e.preventDefault();
+				let teamId = teamId;
+				let opponent = $("#opponentInput").val();
+				let opponentScore = $("#opponentScoreInput").val();
+				let teamScore = $("#teamScoreInput").val();
+				let parameters = {
+					teamId:teamId,
+					opponent:opponent,
+					opponentScore:opponentScore,
+					teamScore:teamScore
+				};
+				buildGameEl(opponent, opponentScore, teamScore);
+				$.post('/createGame', parameters, function(response){
+				});
+			});
+		  });
+		  $(document).ready(function(){
 		  function signOut() {
   				firebase.auth().signOut().then(function() {
     			window.location = "/";
@@ -188,6 +209,8 @@
 		  firebase.auth().onAuthStateChanged(function(user) {
 		
 			if (user) {
+			var userIsCoach = firebase.auth().currentUser.displayName[0]=='c';
+			console.log(userIsCoach);
 			$("#gameForm").submit(function(e){
 				e.preventDefault();
 				let teamId = 'team1';
@@ -204,21 +227,62 @@
 				$.post('/createGame', parameters, function(response){
 				});
 			});
-			$.post('/getGames', function(response){
-				for(id in response){
-					var game = response[id];
-					buildGameEl(game.opponent, game.opponentScore, game.teamScore);
-				}
+			if(userIsCoach){
+				var coachParams = {
+					 coachId: firebase.auth().currentUser.displayName.substring(1) 
+				  }
+				  $.post('/getCoach', coachParams, function(response){
+					teamId = response.teamId;
+					var getGamesParam = {
+						teamId:teamId
+					}
+					$.post('/getGames', getGamesParam, function(response){
+						for(id in response){
+							var game = response[id];
+							buildGameEl(game.opponent, game.opponentScore, game.teamScore, id, 1);
+						}
+						});
+						/*$.post('/getPlaysForGame', function(response){
+							console.log(response);
+						});*/
+				  });
+			}
+			else{
+				var playerParams = {
+					 playerId: firebase.auth().currentUser.displayName.substring(1) 
+				  }
+				  $.post('/getPlayer', playerParams, function(response){
+					teamId = response.teamId;
+					var getGamesParam = {
+						teamId:teamId
+					}
+					$.post('/getGames', getGamesParam, function(response){
+						for(id in response){
+							var game = response[id];
+							buildGameEl(game.opponent, game.opponentScore, game.teamScore, id, 0);
+						}
+						});
+						/*$.post('/getPlaysForGame', function(response){
+							console.log(response);
+						});*/
+				  });
+			}
+			
+			$(document).on('click', '.game-thumbnail' , function(){
+				localStorage.gameId = $(this)[0].id;
 			});
-			$.post('/getPlaysForGame', function(response){
-				console.log(response);
-			});
-			function buildGameEl(opponent, opponentScore, teamScore){
+			
+			
+			function buildGameEl(opponent, opponentScore, teamScore, id, isCoach){
+				firebase.auth().currentUser.photoURL = $(this)[0].id;
+				console.log(firebase.auth().currentUser);
 				var divString = '<div></div>';
+				var aString = '<a></a>';
 				var widthDiv = $(divString);
 				widthDiv.addClass("col-sm-6 col-md-3");
 				var thumbnailDiv = $(divString);
 				thumbnailDiv.addClass("thumbnail game-thumbnail text-center");
+				thumbnailDiv.attr('id', id);
 				var thumbnailContentDiv = $(divString);
 				thumbnailContentDiv.addClass("thumbnail-content");
 				var thumbnailOpponentDiv = $(divString);
@@ -254,13 +318,19 @@
 				thumbnailContentDiv.append(thumbnailOpponentDiv);
 				thumbnailContentDiv.append(thumbnailOutcomeDiv);
 				thumbnailFooterDiv.append(thumbnailScoreDiv);
-				$("#thumbnail-holder").append(widthDiv);
+				var a = $(aString);
+				var aTxt = (isCoach)?'coach':'player';
+				a[0].href = '/' + aTxt +'view';
+				a.append(widthDiv);
+				$("#thumbnail-holder").append(a);
 			}
 		}
 		else {
 			window.location = "/";
 		}
 	});
+		  });
+		  
 		  </script>
 		}
 	</body> 

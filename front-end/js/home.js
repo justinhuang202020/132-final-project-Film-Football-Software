@@ -24,7 +24,7 @@ else {
 function sendEmailVerification(email, name, position, number) {
   console.log("enter");
       // [START sendemailverification]
-      var user = firebase.auth().currentUser
+      var user = firebase.auth().currentUser;
       user.sendEmailVerification().then(function() {
         postRequestCreate(email, name, position, number);
         alert("Email verification sent");
@@ -78,7 +78,8 @@ var timestamps = [];
 var recentGamesDict = {};
 var grades = [];
 var timestampToGameIds = {};
-var userIsCoach = true;
+var userIsCoach;
+var teamId;
 $(document).ajaxStop(function(){
 	var recentGames;
 	$('#select-position-home').change(function(e){
@@ -102,7 +103,7 @@ $(document).ajaxStop(function(){
 				}
 				if(gameGrades.length > 0){
 					var opponent = recentGamesDict[gameId].opponent;
-					var gameScore = calcGameScore(gameGrades);
+					var gameScore = calcGameScore(gameGrades,!userIsCoach);
 					recentGames.push({opponent:opponent,gameScore:gameScore});
 				}
 			}
@@ -119,7 +120,7 @@ $(document).ajaxStop(function(){
 				if(gameIdToGames[timestampToGameIds[timestamps[i]]]){
 					var opponent = gameIdToGames[timestampToGameIds[timestamps[i]]].opponent;
 					var currGrades = gameIdToGrades[timestampToGameIds[timestamps[i]]];
-					var gameScore = calcGameScore(currGrades);
+					var gameScore = calcGameScore(currGrades,!userIsCoach);
 					recentGames.push({opponent:opponent,gameScore:gameScore});
 				}
 				else{
@@ -181,6 +182,7 @@ $(document).ajaxStop(function(){
 			for(var i=0;i<allGrades.length;i++){
 				var currGrades = allGrades[i];
 				for(grade in currGrades){
+					console.log(positionToTrait);
 					var importance = parseInt(positionToTrait[3][grade].importance);
 					maxScore += parseInt(5*importance);
 					totalScore+= parseInt(currGrades[grade]*importance);
@@ -300,6 +302,28 @@ $(document).ajaxStop(function(){
 		}
 		return {strengths:strengths,weaknesses:weaknesses};
 	}
+	$("#select-position").change(function(e) {
+		console.log(teamId);
+		 $("#traits").empty()
+		 var categoryParams = {
+			  teamId:teamId,
+			  positionId: $('#select-position')[0].selectedIndex
+		  };
+      $.post('/getCategoriesForPosition', function(response){
+		   for(var trait in response){
+			var traitImportanceFullValue = (response[trait].importance - 1)*25;
+			console.log(traitImportanceFullValue);
+			var li = $("<li></li>");
+			var input = $("<input step='25'></input>");
+			input.attr("type", "range");
+			input.attr("step", 25);
+			input.attr("value", traitImportanceFullValue);
+			li.html(trait);
+			li.append(input);
+			$("#traits").append(li);
+		  }
+		});
+    });
 	$(window).resize(function(){
         drawBasic();
     });
@@ -377,24 +401,7 @@ $(document).ready(function(){
     $('#select-position').append(option);
 	$('#select-position-home').append(option);
   }); 
-  
-     $("#select-position").change(function(e) {
-		 $("#traits").empty()
-      $.post('/getCategoriesForPosition', function(response){
-		   for(var trait in response){
-			var traitImportanceFullValue = (response[trait].importance - 1)*25;
-			console.log(traitImportanceFullValue);
-			var li = $("<li></li>");
-			var input = $("<input step='25'></input>");
-			input.attr("type", "range");
-			input.attr("step", 25);
-			input.attr("value", traitImportanceFullValue);
-			li.html(trait);
-			li.append(input);
-			$("#traits").append(li);
-		  }
-		});
-    });
+	userIsCoach = (firebase.auth().currentUser.displayName[0] == 'c');
 
       function loadSkillgraph() {
        $(".skillData").each(function(index, element) {
@@ -450,32 +457,49 @@ $(document).ready(function(){
     $('#newTraitImportance').val(50);
   });
   if(userIsCoach){
-      $.post('/getAllGradesForTeam', function(response){
-	      for(game in response){
-			if(!positionToGrades[response[game].positionId]){
-				positionToGrades[response[game].positionId] = [];
-				positionToGrades[response[game].positionId][0] = [];
-				positionToGrades[response[game].positionId][1] = [];
-			}
-			positionToGrades[response[game].positionId][0].push(response[game].grades);
-			positionToGrades[response[game].positionId][1].push(response[game].gameId);
-		  }
-	  });
-	  $.post('/getCategoriesForPosition', function(response){
-			for(trait in response){
-				positionToTrait[3] = response;
-			}
-	  });
-	  var recentParams = {
-		  teamId:'team1',
-		  numGames:5
-	  };
-	  $.post('/getRecentGames', recentParams, function(response){
-		recentGamesDict = response;
+	  var coachParams = {
+		 coachId: firebase.auth().currentUser.displayName.substring(1) 
+	  }
+	  $.post('/getCoach', coachParams, function(response){
+		  teamId = response.teamId;
+		  var gradesParams = {
+			teamId:response.teamId  
+		  };
+		  $.post('/getAllGradesForTeam', gradesParams, function(response){
+			  for(game in response){
+				if(!positionToGrades[response[game].positionId]){
+					positionToGrades[response[game].positionId] = [];
+					positionToGrades[response[game].positionId][0] = [];
+					positionToGrades[response[game].positionId][1] = [];
+				}
+				positionToGrades[response[game].positionId][0].push(response[game].grades);
+				positionToGrades[response[game].positionId][1].push(response[game].gameId);
+			  }
+		  });
+		  $.post('/getCategoriesForPosition', function(response){
+				for(trait in response){
+					positionToTrait[3] = response;
+				}
+		  });
+		  var recentParams = {
+			  teamId:'team1',
+			  numGames:5
+		  };
+		  $.post('/getRecentGames', recentParams, function(response){
+			recentGamesDict = response;
+		  });
 	  });
   }
   else{
-	  $.post('/getAllGradesForPlayer', function(response){
+	  var getPlayerParams = {
+		playerId: firebase.auth().currentUser.displayName.substring(1)
+	  };
+	  $.post('/getPlayer', getPlayerParams, function(response){
+		  teamId = response.teamId;
+		  var getGradesParams = {
+			 playerId:firebase.auth().currentUser.displayName.substring(1)
+		  }
+		  $.post('/getAllGradesForPlayer', getGradesParams, function(response){
 		   for(gradeId in response){
 			   grades.push(response[gradeId].grades);
 				var grade = response[gradeId];
@@ -494,11 +518,17 @@ $(document).ready(function(){
 					timestampToGameIds[response.timestamp] = response.gameId;
 				});
 			}
-	  });
-	  $.post('/getCategoriesForPosition', function(response){
-			for(trait in response){
-				positionToTrait[3] = response;
-			}
+		  });
+		  var categoryParams = {
+			  teamId:response.teamId,
+			  positionId:response.positionId
+		  };
+		  var positionId = response.positionId;
+		  $.post('/getCategoriesForPosition', categoryParams, function(response){
+				for(trait in response){
+					positionToTrait[positionId] = response;
+				}
+		  });
 	  });
   }
 

@@ -245,20 +245,6 @@ function postRequestCreate(email, teamName, coachName, schoolName) {
   		alert(error.message);
   	});
   }
-  else {
-  	alert("error, please sign up again");
-  	let user = firebase.auth().currentUser;
-
-  	user.delete().then(function() {
-  		console.log("error2");
-  		alert("email verifcation failed. Please sent email again");
-  	}, function(error) {
-  		console.log("error3");
-  		alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
-  	});
-  }
-});
-}
  /**
      * Sends an email verification to the user.
      */

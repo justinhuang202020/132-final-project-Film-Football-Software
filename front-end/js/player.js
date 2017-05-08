@@ -63,26 +63,29 @@ $(document).ready(function(){
 
 
 			firebase.auth().signOut().then(function() {
-      						// Sign-out successful.
-      						firebase.auth().signInWithEmailAndPassword(coachEmail, coachPassword).then(function() {
+				// Sign-out successful.
+				firebase.auth().signInWithEmailAndPassword(coachEmail, coachPassword).then(function() {
 
-      						}, function(error) {
+				}, function(error) {
 
-      							console.log(error.message);
-      							signOut();
-      						});
+					console.log(error.message);
+					signOut();
+				});
 
 
-      					}).catch(function(error) {
-      						console.log(error.message);
-      						signOut();
-      					});
+			}).catch(function(error) {
+				console.log(error.message);
+				signOut();
+			});
 
-      				}
-      				else if(!isAuthenticating) {
-      					signOut();
-      				}
-      			});
+		}
+		else if(!isAuthenticating) {
+			signOut();
+		}
+	});
+			}
+		}
+});
 });
 
 

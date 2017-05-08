@@ -87,8 +87,6 @@ app.post('/getPositions', function(request, response) {
 
 app.post('/getGames', function(request, response) {
 	let teamId = request.body.teamId;
-
-	teamId = "team1";
 	
 	let gamesRef = db.ref().child('games');
 
@@ -128,9 +126,10 @@ app.post('/getRecentGames', function(request, response) {
 
 app.post('/getCategoriesForPosition', function(request, response){
 	let positionId = request.body.positionId;
-	positionId = "4";
-	
-	let categoriesRef = db.ref().child('teams').child('team1').child('categories').child(positionId);
+	let teamId = request.body.teamId;
+	console.log(positionId);
+	console.log(teamId);
+	let categoriesRef = db.ref().child('teams').child(teamId).child('categories').child(positionId);
 
 	categoriesRef.once("value", function(snapshot) {
 		response.json(snapshot.val());
@@ -141,7 +140,6 @@ app.post('/getCategoriesForPosition', function(request, response){
 
 app.post('/getAllGradesForPlayer', function(request, response){
 	let playerId = request.body.playerId;
-	playerId = "player1Id";
 	
 	let gradesRef = db.ref().child('grades');
 	
@@ -169,8 +167,7 @@ app.post('/getGameGradesForPlayer', function(request, response){
 });
 
 app.post('/getAllGradesForTeam', function(request, response){
-	let teamID = request.body.teamId;
-	teamId = "team1";
+	let teamId = request.body.teamId;
 	
 	let gradesRef = db.ref().child('grades');
 	
@@ -204,6 +201,30 @@ app.post('/getPlay', function(request, response){
 		var play = snapshot.val();
 		play.playId = playId;
 		response.json(play);
+	}, function(error) {
+		response.json(undefined);
+	});
+});
+
+app.post('/getPlayer', function(request, response){
+	let playerId = request.body.playerId;
+	
+	let playsRef = db.ref().child('players').child(playerId);
+
+	playsRef.once("value", function(snapshot) {
+		response.json(snapshot.val());
+	}, function(error) {
+		response.json(undefined);
+	});
+});
+
+app.post('/getCoach', function(request, response){
+	let coachId = request.body.coachId;
+	
+	let playsRef = db.ref().child('coaches').child(coachId);
+
+	playsRef.once("value", function(snapshot) {
+		response.json(snapshot.val());
 	}, function(error) {
 		response.json(undefined);
 	});

@@ -7,7 +7,11 @@ function signOut() {
 
 	});
 }
+$(document).ajaxStop(function(){
+	
+});
 $(document).ready(function(){
+	console.log(localStorage.gameId);
 	firebase.auth().onAuthStateChanged(function(user) {
 	if (user) {
 	var $video  = $('video'),
@@ -35,10 +39,10 @@ $(document).ready(function(){
 		$('#select-position').append(option);
 	  }); 
 	} 
-	var userIsCoach = false;
+	var userIsCoach = (firebase.auth().currentUser.displayName[0] == 'c');
 	if(userIsCoach){
 		var playsParams = {
-			gameId:'game1'
+			gameId:localStorage.gameId
 		}
 		$.post('/getPlaysForGame', playsParams, function(response){
 			var playArray = [];
@@ -57,12 +61,21 @@ $(document).ready(function(){
 		});
 	}
 	else{
-		var gradesParams = {
-			gameId:'game1',
-			playerId:'player1Id'
-		}
-		$.post('/getCategoriesForPosition', function(response){
+		console.log(firebase.auth().currentUser);
+		var getPlayerParams = {
+			playerId: firebase.auth().currentUser.displayName.substring(1)
+		  };
+	  $.post('/getPlayer', getPlayerParams, function(response){
+		 var categoryParams = {
+		  teamId:response.teamId,
+		  positionId: response.positionId
+		};
+		$.post('/getCategoriesForPosition', categoryParams,  function(response){
 			traits = response;
+			var gradesParams = {
+				gameId:localStorage.gameId,
+				playerId:firebase.auth().currentUser.displayName.substring(1)
+			}
 			$.post('/getGameGradesForPlayer', gradesParams, function(gradesObj){
 				for(gradeId in gradesObj){
 					var grade = gradesObj[gradeId];
@@ -90,7 +103,8 @@ $(document).ready(function(){
 					});
 				}
 			});
-		});
+		}); 
+	  });
 	}
 	function calcPlayScore(grades){
 		var maxPotentialScore = 0;
