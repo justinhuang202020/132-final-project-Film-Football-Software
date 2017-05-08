@@ -1,13 +1,110 @@
 $(document).ready(function(){
 	firebase.auth().onAuthStateChanged(function(user) {
 	if (user) {
-	setVideoSrc("https://firebasestorage.googleapis.com/v0/b/gamevue-c6394.appspot.com/o/videos%2F-KiGTKEA6mF0TYyRJ82S%2Fshe.mp4?alt=media&token=43558c7e-c2f4-4f3f-8eb5-f339b1edcdda");
 	var $video  = $('video'),
 		$vidContainer = $('.vid-player-sctn:first'),
 		$leftSctn = $('.play-view-left-sctn'),
 		$rightSctn = $('.play-view-right-sctn'),
 		$window = $(window); 
-
+	var positionToPlayerDict = {};
+	var textToImportanceDict = {};
+	var playIdToPlay = {};
+	var playIdToGrades = {};
+	var traits = {};
+	var postParams = {
+		teamId:"id"
+	};
+	if($('#select-position')){
+		$.post('/getPositions', function(response){
+		  var option = '';
+		  for(id in response){
+		   var position = response[id];
+		   if(position != "head" && position !=null){
+			option += '<option value="'+ position + '">' + position + '</option>';
+		  }
+		}
+		$('#select-position').append(option);
+	  }); 
+	} 
+	var userIsCoach = false;
+	if(userIsCoach){
+		var playsParams = {
+			gameId:'game1'
+		}
+		$.post('/getPlaysForGame', playsParams, function(response){
+			var playArray = [];
+			for(play in response){
+				response[play].playId = play;
+				playIdToPlay[play] = response[play];
+				playArray.push(response[play]);
+			}
+			for(var i = 0; i<playArray.length;i++){
+				var play = playArray[i]
+				if(i==0){
+					setVideoSrc(play);
+				}
+				addCoachPlayEl(play.playId, play.playTitle, (i==0));
+			}
+		});
+	}
+	else{
+		var gradesParams = {
+			gameId:'game1',
+			playerId:'player1Id'
+		}
+		$.post('/getCategoriesForPosition', function(response){
+			traits = response;
+			$.post('/getGameGradesForPlayer', gradesParams, function(gradesObj){
+				for(gradeId in gradesObj){
+					var grade = gradesObj[gradeId];
+					playIdToGrades[grade.playId] = grade.grades;
+				}
+				var count = 0;
+				for(playId in playIdToGrades){
+					var initPlayId;
+					if(count == 0){
+						initPlayId = playId;
+						count++;
+					}
+					var playId
+					var playParams = {
+						playId:playId
+					}
+					$.post('/getPlay', playParams, function(playsObj){
+						if(playsObj.playId == initPlayId){
+							setVideoSrc(playsObj);
+							populateScoreSection(playIdToGrades[playsObj.playId]);
+						}
+						playIdToPlay[playsObj.playId] = playsObj;
+						var playScore = calcPlayScore(playIdToGrades[playsObj.playId]);
+						addPlayEl(playsObj.playId, playScore, playsObj.playTitle, (playsObj.playId == initPlayId));
+					});
+				}
+			});
+		});
+	}
+	function calcPlayScore(grades){
+		var maxPotentialScore = 0;
+		var totalScore = 0;
+		for(trait in grades){
+			var traitImportance = parseInt(traits[trait].importance);
+			maxPotentialScore += 5*traitImportance;
+			totalScore += traitImportance*parseInt(grades[trait]);
+		}
+		return Math.floor((totalScore/maxPotentialScore)*100);
+	}
+	$.post('getPlayersForTeam', postParams, function(response){
+		for(id in response){
+			var player = response[id];
+			player.playerId = id;
+			if(positionToPlayerDict[player.positionId]){
+				positionToPlayerDict[player.positionId].push(player);
+			}
+			else{
+				positionToPlayerDict[player.positionId] = [player];
+			}
+		}
+	});
 	$(window).resize(function(){
 		//set video player dimensions
 		var containerWidth = $vidContainer.parent().width();
@@ -32,8 +129,60 @@ $(document).ready(function(){
 			$('.submit-player-grade-btn').removeClass('hidden');
 		}
 	});
+	$(document).on('click', '.play' , function(e) {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+		setVideoSrc(playIdToPlay[$(this)[0].id]);
+		if(!userIsCoach){
+			populateScoreSection(playIdToGrades[$(this)[0].id]);
+		}
+	});
+	$('.glyphicon-triangle-left').on('click', function(){
+		var index = $('.play.active').index();
+		if(index!=0){
+			var newPlay = $('.play').eq(index-1);
+			$('.play.active').removeClass('active');
+			newPlay.addClass('active');
+			setVideoSrc(playIdToPlay[newPlay[0].id]);
+			populateScoreSection(playIdToGrades[newPlay[0].id]);
+		}
+	});
+	$('.glyphicon-triangle-right').on('click', function(){
+		var maxIndex = $('.play').length-1;
+		var index = $('.play.active').index();
+		if(index!=maxIndex){
+			var newPlay = $('.play').eq(index+1);
+			$('.play.active').removeClass('active');
+			newPlay.addClass('active');
+			setVideoSrc(playIdToPlay[newPlay[0].id]);
+			populateScoreSection(playIdToGrades[newPlay[0].id]);
+		}
+	});
 	$(".submit-player-grade-btn .btn-custom").on('click', function(){
-		console.log("push to server and refresh section");
+		var grades  = {};
+		$('.position-trait').each(function(index){
+			var score = $(this).find(".position-trait-score").html();
+			var trait = $(this).find(".position-trait-text").html();
+			grades[trait] = score;
+		});
+		var playerList = positionToPlayerDict[$("#select-position")[0].selectedIndex];
+		var player = playerList[$("#select-player")[0].selectedIndex-1];
+		var playId = $('.play.active')[0].id;
+		var gameId = playIdToPlay[$('.play.active')[0].id].gameId;
+		var gradeParams = {
+			gameId:gameId,
+			playId:playId,
+			grades:grades,
+			playerId:player.playerId,
+			positionId:player.positionId,
+			teamId:player.teamId
+		}
+		$.post('/addGrade', gradeParams, function(response){
+		});
+		$('.position-traits-sctn').addClass('hidden');
+		$('.submit-player-grade-btn').addClass('hidden');
+		$('.score-buttons').addClass('hidden');
+		$("#select-player")[0].selectedIndex = 0;
 	});
 	$(".position-trait").on('click', function(e){
 		var $activeTrait = $('.position-trait-active');
@@ -42,53 +191,190 @@ $(document).ready(function(){
 		$newTrait.addClass('position-trait-active');
 	});
 	$("#select-position").change(function(e) {
+		$("#select-player").empty();
+		$("#select-player").append("<option></option>");
+		var position = $("#select-position")[0].selectedIndex;
+		var positionPlayers = [];
+		if(positionToPlayerDict[position]){
+			positionPlayers = positionToPlayerDict[position];
+		}
+		var option = '';
+		for(var i=0;i<positionPlayers.length;i++){
+			var positionPlayer = positionPlayers[i].name;
+			option += '<option value="'+ positionPlayer + '">' + positionPlayer + '</option>';
+		}
+		$("#select-player").append(option);
 		$('.select-player-sctn').removeClass('hidden');
 	});
 	$("#select-player").change(function(e) {
+		populatePositionTraits($("#select-position")[0].selectedIndex);
 		$('.position-traits-sctn').removeClass('hidden');
 		$('.score-buttons').removeClass('hidden');
 	});
 	$("#playForm").submit(function(e){
 		e.preventDefault();
-		addPlayEl(100, "", "");
 		var gameId = 'game1';
 		for(var i =0; i<$("#videoUploadInput").prop('files').length;i++){
 			var file = $("#videoUploadInput").prop('files')[i];
 			uploadFile(gameId, file);
 		}
 	});
-	function addPlayEl(playScore, dAndD, description){
+	function populateScoreSection(grades){
+		var playScore = calcPlayScore(grades)
+		$('.score-sctn').empty();
+		addPlayScoreEl(playScore);
+		for(grade in grades){
+			addAttrEl(grades[grade], grade);
+		}
+	}
+	function populatePositionTraits(positionId){
+		$('.position-traits').empty();
+		$.post('/getCategoriesForPosition', function(response){
+			var count = 0;
+		   for(var trait in response){
+			addPositionTraitEl(trait, (count==0));
+			count++;
+		   }
+		});
+	}
+	function addPositionTraitEl(traitText, isActive){
+		var divString = '<div></div>';
+		var ulString = '<ul></ul>';
+		var liString = '<li></li>';
+		var li = $(liString);
+		var positionTraitDiv = $(divString);
+		var positionTraitClass = (isActive)?"position-trait position-trait-active":"position-trait";
+		positionTraitDiv.addClass(positionTraitClass);
+		var positionTraitScoreDiv = $(divString);
+		positionTraitScoreDiv.html("--");
+		positionTraitScoreDiv.addClass("position-trait-score");
+		positionTraitTextDiv = $(divString);
+		positionTraitTextDiv.html(traitText);
+		positionTraitTextDiv.addClass("position-trait-text");
+		positionTraitDiv.append(positionTraitScoreDiv);
+		positionTraitDiv.append(positionTraitTextDiv);
+		li.append(positionTraitDiv);
+		$('.position-traits').append(li);
+	}
+	function addPlayScoreEl(playScore){
+		var divString = '<div></div>';
+		var ulString = '<ul></ul>';
+		var liString = '<li></li>';
+		var sectionDiv = $(divString);
+		sectionDiv.addClass('play-score-sctn');
+		var scoreDiv = $(divString);
+		var scoreDivClassString = "";
+		if(playScore < 40){
+			scoreDivClassString = "play-score play-score-bad play-score-md";
+		}
+		else if(playScore < 70){
+			scoreDivClassString = "play-score play-score-avg play-score-md";
+		}
+		else{
+			scoreDivClassString = "play-score play-score-good play-score-md";
+		}
+		scoreDiv.addClass(scoreDivClassString);
+		scoreDiv.html(playScore);
+		sectionDiv.append(scoreDiv);
+		$('.score-sctn').append(sectionDiv);
+	}
+	function addAttrEl(score, text){
+		var divString = '<div></div>';
+		var spanString = '<span></span>';
+		var liString = '<li></li>';
+		var sectionDiv = $(divString);
+		sectionDiv.addClass("attr-score-sctn");
+		var attrScoreDiv = $(divString);
+		var playScoreClassString = "";
+		if(score < 2){
+			playScoreClassString = "attr-score play-score-bad";
+		}
+		else if(score < 4){
+			playScoreClassString = "attr-score play-score-avg";
+		}
+		else{
+			playScoreClassString = "attr-score play-score-good";
+		}
+		attrScoreDiv.addClass(playScoreClassString);
+		addAttrScoreCss(attrScoreDiv, score);
+		var attrTxtDiv = $(divString);
+		attrTxtDiv.addClass('attr-text');
+		var span = $(spanString);
+		span.html(text);
+		attrTxtDiv.append(span);
+		sectionDiv.append(attrScoreDiv);
+		sectionDiv.append(attrTxtDiv);
+		$('.score-sctn').append(sectionDiv);
+	}
+	function addCoachPlayEl(id, title, isActive){
 		var divString = '<div></div>';
 		var ulString = '<ul></ul>';
 		var liString = '<li></li>';
 		var playDiv = $(divString);
-		playDiv.addClass("well play col-md-12");
+		playDiv.attr('id', id);
+		var classString = (isActive)?"active well play col-md-12":"well play col-md-12";
+		playDiv.addClass(classString);
+		var titleDiv = $(divString);
+		titleDiv.addClass('play-title');
+		titleDiv.html(title);
+		playDiv.append(titleDiv);
+		$(".play-select-sctn").append(playDiv);
+	}
+	function addPlayEl(playId, playScore,playTitle, isActive){
+		console.log(isActive);
+		var divString = '<div></div>';
+		var ulString = '<ul></ul>';
+		var liString = '<li></li>';
+		var playDiv = $(divString);
+		var playDivClass = (isActive)?"active well play col-md-12":"well play col-md-12"
+		playDiv.addClass(playDivClass);
+		playDiv.attr('id',playId);
 		var ul = $(ulString);
 		ul.addClass("play-list");
 		var li1 = $(liString);
 		var playScoreDiv = $(divString);
-		playScoreDiv.addClass("play-score play-score-avg play-score-sm");
+		var playScoreClassString = "";
+		if(playScore < 40){
+			playScoreClassString = "play-score play-score-bad play-score-sm";
+		}
+		else if(playScore < 70){
+			playScoreClassString = "play-score play-score-avg play-score-sm";
+		}
+		else{
+			playScoreClassString = "play-score play-score-good play-score-sm";
+		}
+		playScoreDiv.addClass(playScoreClassString);
 		playScoreDiv.html(playScore);
 		var li2 = $(liString);
 		var playDdDiv = $(divString);
 		playDdDiv.addClass("play-dd");
-		playDdDiv.html(dAndD);
-		var li3 = $(liString);
-		var playResultDiv = $(divString);
-		playResultDiv.addClass("play-result");
-		playResultDiv.html(description);
+		playDdDiv.html(playTitle);
 		li1.append(playScoreDiv);
 		li2.append(playDdDiv);
-		li3.append(playResultDiv);
 		ul.append(li1);
 		ul.append(li2);
-		ul.append(li3);
 		playDiv.append(ul);
 		$(".play-select-sctn").append(playDiv);
 	}
-	function setVideoSrc(videoUrl){
-		$('.vid-player video source').attr('src', videoUrl);
-		$(".vid-player video")[0].load();
+	function addAttrScoreCss(el, score){
+		var height = 55;
+		var frac = score/5;
+		var elHeight = frac*55;
+		var marginHeight = 55-(frac*55);
+		el.css({
+			'margin-top': marginHeight,
+			'height': elHeight
+		});
+	}
+	function setVideoSrc(play){
+		//get video url and set here
+		var storageRef = firebase.storage().ref();
+		var videoRef = storageRef.child('videos/'+ play.gameId+"/" + play.fileName).getDownloadURL().then(function(url) {
+			$('.vid-player video source').attr('src', url);
+			$(".vid-player video")[0].load();
+		}).catch(function(error) {
+		  // Handle any errors
+		});
 	}
 	function uploadFile(gameId, file){
 		// Create the file metadata
@@ -121,10 +407,11 @@ $(document).ready(function(){
 			var downloadURL = uploadTask.snapshot.downloadURL;
 			var parameters = {
 				gameId:gameId,
-				videoUrl:downloadURL
+				fileName:file.name
 			};
-			$.post('/createPlay', parameters, function(error){
-				console.log(error);
+			$.post('/createPlay', parameters, function(response){
+				playIdToPlay[response.playId] = response;
+				addCoachPlayEl(response.playId,response.playTitle);
 			});
 		});
 	}

@@ -86,7 +86,19 @@
 		      	<div id="dashboard">
 					<div id="dash-title">Dashboard</div>
 				</div>
-				<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#categoryModal">View/Edit Categories</button>
+				<div class="row home-coach-sctn">
+					<div class="col-md-4 select-position-home-sctn">
+						<label id="select-position-home-label" for="select-position-home" class="col-md-3 col-form-label">Position:</label>
+						<div class="col-md-9">
+							<select class="form-control" id="select-position-home">
+							</select>
+						</div>
+					</div>
+					<div class="col-md-8 text-right">
+						<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#categoryModal">View/Edit Categories</button>
+					</div>
+					
+				</div>
 				<!--Category Modal-->
 				<div id="categoryModal" class="modal fade" role="dialog">
 				  <div class="modal-dialog">
@@ -156,79 +168,16 @@
 	                <div class="col-md-6">
 	                    <div class="sectionTitle text-center" id="strengths">Strengths</div>
 	                    <hr> 
-	                    <div class="well well-home">
-	                    	<div class="col-xs-4 text-center">
-	                    		<div class="strength-score">88</div>
-	                    		Patience
-	                    	</div>
-	                    	<div class="col-xs-4 text-center">
-	                    		<div class="strength-score">87</div>
-	                    		Pass-Rush
-	                    	</div>
-	                    	<div class="col-xs-4 text-center">
-	                    		<div class="strength-score">91</div>
-	                    		Pursuit
-	                    	</div>
+	                    <div class="well well-home strength-container">
 	                    </div>
 	                </div>
 
 	                <div class="col-md-6">
 	                    <div class="sectionTitle text-center" id="weaknesses">Weaknesses</div>
 	                    <hr> 
-	                    <div class="well well-home">
-	                    	<div class="col-xs-4 text-center">
-	                    		<div class="weakness-score">55</div>
-	                    		Tackles
-	                    	</div>
-	                    	<div class="col-xs-4 text-center">
-	                    		<div class="weakness-score">63</div>
-	                    		Man-on-Man Coverage
-	                    	</div>
-	                    	<div class="col-xs-4 text-center">
-	                    		<div class="weakness-score">60</div>
-	                    		Field Goals
-	                    	</div>
+	                    <div class="well well-home weakness-container">
 	                    </div> 
 	                </div>
 	            </div>
-            <!-- recent uploads -->
-				<div id="recent-uploads">
-					<div class="sectionTitle" id="recent-title">Recent Uploads</div> 
-					<hr>
-					<!-- Make collapsable?? -->
-					<div class="col-md-4 text-center">
-						<h4 class="text-center"><a href="player_view.html">Brown vs. Eastlake</a></h4>
-					      	<h5 class="text-center">Best Plays</h5>
-								<button type="button" class="btn btn-success btn-circle">93</button>
-								<button type="button" class="btn btn-success btn-circle">90</button>
-								<button type="button" class="btn btn-success btn-circle">88</button>
-					      	<h5 class="text-center">Worst Plays</h5>
-					      		<button type="button" class="btn btn-danger btn-circle">60</button>
-								<button type="button" class="btn btn-danger btn-circle">71</button>
-								<button type="button" class="btn btn-danger btn-circle">55</button>
-					</div>
-					<div class="col-md-4 text-center">
-						<h4 class="text-center"><a href="player_view.html">Brown vs. Westwood</a></h4>
-				      	<h5 class="text-center">Best Plays</h5>
-							<button type="button" class="btn btn-success btn-circle">93</button>
-							<button type="button" class="btn btn-success btn-circle">90</button>
-							<button type="button" class="btn btn-success btn-circle">88</button>
-				      	<h5 class="text-center">Worst Plays</h5>
-				      		<button type="button" class="btn btn-danger btn-circle">60</button>
-							<button type="button" class="btn btn-danger btn-circle">71</button>
-							<button type="button" class="btn btn-danger btn-circle">55</button>
-					</div>
-					<div class="col-md-4 text-center">
-						<h4 class="text-center"><a href="player_view.html">Brown vs. well well-homeesley</a></h4>
-				      	<h5 class="text-center">Best Plays</h5>
-							<button type="button" class="btn btn-success btn-circle">93</button>
-							<button type="button" class="btn btn-success btn-circle">90</button>
-							<button type="button" class="btn btn-success btn-circle">88</button>
-				      	<h5 class="text-center">Worst Plays</h5>
-				      		<button type="button" class="btn btn-danger btn-circle">60</button>
-							<button type="button" class="btn btn-danger btn-circle">71</button>
-							<button type="button" class="btn btn-danger btn-circle">55</button>
-					</div>
-			</div>
 	</body> 
 </html> 

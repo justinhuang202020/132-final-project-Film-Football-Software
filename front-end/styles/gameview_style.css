@@ -40,14 +40,14 @@
 		text-align: center;
 	}
 	.play-score-good{
-		background-color:green;
+		background-color:#5cb85c;
 	}
 	.play-score-avg{
-		background-color: yellow;
+		background-color: #ffdf00;
 		color: black;
 	}
 	.play-score-bad{
-		background-color:red;
+		background-color:#d9534f;
 	}
 	.play-score-sm{
 		height:55px;
@@ -95,6 +95,11 @@
 		padding-right:2px;
 		overflow-y:scroll;
 	}
+	.play-title{
+		text-align:center;
+		width:100%;
+		padding:15px;
+	}
 	.play{
 		width: 100%;
 		margin-bottom: 2.5px;
@@ -102,6 +107,7 @@
 		padding-right: 10px;
 		padding-top: 5px;
 		padding-bottom: 5px;
+		cursor:pointer;
 	}
 	.play div{
 		display:inline-block;
@@ -109,6 +115,7 @@
 	.play-dd{
 		font-size:18px;
 		line-height:65px;
+		padding-left:30px;
 	}
 	.position-player-dropdowns{
 	
