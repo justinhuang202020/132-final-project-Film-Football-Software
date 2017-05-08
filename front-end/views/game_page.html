@@ -201,8 +201,7 @@
 					teamScore:teamScore
 				};
 				buildGameEl(opponent, opponentScore, teamScore);
-				$.post('/createGame', parameters, function(error){
-					console.log(error);
+				$.post('/createGame', parameters, function(response){
 				});
 			});
 			$.post('/getGames', function(response){
@@ -210,6 +209,9 @@
 					var game = response[id];
 					buildGameEl(game.opponent, game.opponentScore, game.teamScore);
 				}
+			});
+			$.post('/getPlaysForGame', function(response){
+				console.log(response);
 			});
 			function buildGameEl(opponent, opponentScore, teamScore){
 				var divString = '<div></div>';

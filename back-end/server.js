@@ -14,8 +14,8 @@ var app = express();
 
 //body parser
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
 //for HTML templating and rendering
 var engines = require('consolidate');
@@ -99,6 +99,33 @@ app.post('/getGames', function(request, response) {
 	});
 });
 
+app.post('/getGame', function(request, response) {
+	let gameId = request.body.gameId;
+	
+	let gamesRef = db.ref().child('games').child(gameId);
+
+	gamesRef.once("value", function(snapshot) {
+		var game = snapshot.val();
+		game.gameId = gameId;
+		response.json(game);
+	}, function(error) {
+		response.json(undefined);
+	});
+});
+
+app.post('/getRecentGames', function(request, response) {
+	let teamId = request.body.teamId;
+	let numGames = parseInt(request.body.numGames);
+	
+	let gamesRef = db.ref().child('games');
+
+	gamesRef.orderByChild("teamId").limitToLast(numGames).equalTo(teamId).once("value", function(snapshot) {
+		response.json(snapshot.val());
+	}, function(error) {
+		response.json(undefined);
+	});
+});
+
 app.post('/getCategoriesForPosition', function(request, response){
 	let positionId = request.body.positionId;
 	positionId = "4";
@@ -112,10 +139,52 @@ app.post('/getCategoriesForPosition', function(request, response){
 	});
 });
 
+app.post('/getAllGradesForPlayer', function(request, response){
+	let playerId = request.body.playerId;
+	playerId = "player1Id";
+	
+	let gradesRef = db.ref().child('grades');
+	
+	gradesRef.orderByChild('playerId').equalTo(playerId).once('value', function(snapshot){
+		let gradeObject = snapshot.val();
+		response.json(gradeObject);
+	},function(error){
+		response.json(undefined);
+	});
+});
+
+app.post('/getGameGradesForPlayer', function(request, response){
+	let playerId = request.body.playerId;
+	let gameId = request.body.gameId;
+	let gamePlayer = gameId + playerId;
+	
+	let gradesRef = db.ref().child('grades');
+	
+	gradesRef.orderByChild('gamePlayer').equalTo(gamePlayer).once('value', function(snapshot){
+		let gradeObject = snapshot.val();
+		response.json(gradeObject);
+	},function(error){
+		response.json(undefined);
+	});
+});
+
+app.post('/getAllGradesForTeam', function(request, response){
+	let teamID = request.body.teamId;
+	teamId = "team1";
+	
+	let gradesRef = db.ref().child('grades');
+	
+	gradesRef.orderByChild('teamId').equalTo(teamId).once('value', function(snapshot){
+		let gradeObject = snapshot.val();
+		response.json(gradeObject);
+	},function(error){
+		response.json(undefined);
+	});
+});
+
 
 app.post('/getPlaysForGame', function(request, response) {
 	let gameId = request.body.gameId;
-	gameId = "game1";
 	
 	let playsRef = db.ref().child('plays');
 
@@ -126,6 +195,32 @@ app.post('/getPlaysForGame', function(request, response) {
 	});
 });
 
+app.post('/getPlay', function(request, response){
+	let playId = request.body.playId;
+	
+	let playsRef = db.ref().child('plays').child(playId);
+
+	playsRef.once("value", function(snapshot) {
+		var play = snapshot.val();
+		play.playId = playId;
+		response.json(play);
+	}, function(error) {
+		response.json(undefined);
+	});
+});
+
+app.post('/getPlayersForTeam', function(request, response){
+	let teamId = request.body.teamId;
+	teamId = "team1"
+	
+	let playersRef = db.ref().child('players');
+	
+	playersRef.orderByChild("teamId").equalTo(teamId).once("value", function(snapshot) {
+		response.json(snapshot.val());
+	}, function(error) {
+		response.json(undefined);
+	});
+});
 
 
 ///////////////////////////RETRIEVAL FUNCTIONS ABOVE //////////////////////////////////////////////////
@@ -165,9 +260,9 @@ app.post('/createPlayer', function(request, response) {
 
 app.post('/createPlay', function(request, response){
 	let gameId = request.body.gameId;
-	let videoUrl = request.body.videoUrl;
+	let fileName = request.body.fileName;
 	
-	addPlay(gameId, videoUrl, function(newPlayId) {
+	addPlay(gameId, fileName, function(newPlayId) {
 		response.json(newPlayId);
 	});
 	
@@ -178,12 +273,15 @@ app.post('/createGame', function(request, response){
 	let opponent = request.body.opponent;
 	let teamScore = request.body.teamScore;
 	let opponentScore = request.body.opponentScore;
+	let timestamp = Date.now();
 
 	let gameData = {
 		opponent:opponent,
 		teamId:teamId,
 		teamScore:teamScore,
-		opponentScore:opponentScore
+		opponentScore:opponentScore,
+		numPlays:0,
+		timestamp:timestamp
 	};
 	
 	let newGameRef = db.ref().child('games').push();
@@ -221,13 +319,15 @@ app.post('/createTeam', function(request, response) {
 });
 
 app.post("/addGrade", function(request, response) {
-
-	let playId = request.body.play;
+	let gameId = request.body.gameId;
+	let playId = request.body.playId;
 	let grades = request.body.grades;
 	let playerId = request.body.playerId;
+	let positionId = request.body.positionId;
 	let teamId = request.body.teamId;
+	let gamePlayer = gameId + playerId;
 
-	addGrades(playId, grades, playerId, teamId);
+	addGrades(gameId, playId, grades, playerId, positionId, teamId, gamePlayer);
 
 });
 
@@ -298,34 +398,55 @@ function addCoach(teamId, email, name, positionId, callback) {
 
 }
 
-function addPlay(gameId, videoUrl, callback){
-	let playData = {
-		gameId:gameId,
-		videoUrl:videoUrl
-	};
+function addPlay(gameId, fileName, callback){
 	
-	let newPlayRef = db.ref().child('plays').push();
-	
-	newPlayRef.set(playData).then(function(){
-		callback(newPlayRef.key);
-	}, function(error){
-		callback(undefined);
+	let gamesRef = db.ref().child('games').child(gameId);
+
+	gamesRef.orderByChild("numPlays").once("value", function(snapshot) {
+		let numPlays = snapshot.val().numPlays + 1;
+		let playTitle = 'Play ' +numPlays;
+		let playData = {
+			gameId:gameId,
+			playTitle:playTitle,
+			fileName:fileName
+		};
+		
+		let newPlayRef = db.ref().child('plays').push();
+		
+		newPlayRef.set(playData).then(function(){
+			playData.playId = newPlayRef.key;
+			callback(playData);
+		}, function(error){
+			callback(undefined);
+		});
+		gamesRef.update({
+		  "numPlays": numPlays
+		});
+	}, function(error) {
+		response.json(undefined);
 	});
 }
 
 //no need for callback of any sorts
-function addGrades(playId, grades, playerId, teamId){
+function addGrades(gameId, playId, grades, playerId, positionId, teamId, gamePlayer){
 	let gradeData = {
+		gameId:gameId,
 		playId:playId,
 		grades:grades,
 		playerId:playerId,
-		teamId: teamId
+		positionId:positionId,
+		teamId: teamId,
+		gamePlayer:gamePlayer
 	};
 	
 	let newGradeRef = db.ref().child('grades').push();
 	
 	newGradeRef.set(gradeData, function(error){
-		
+		if (error) {
+			return new Boolean(true); 
+		} else {
+			return new Boolean(false);
+		}
 	});
 }
 

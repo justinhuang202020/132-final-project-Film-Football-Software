@@ -36,26 +36,41 @@ section {
   height: 180px;
 }
 
+.play-score-good{
+	background-color:#5cb85c;
+	border: 3px solid #5cb85c;
+}
+.play-score-avg{
+	background-color: #ffdf00;
+	border: 3px solid #ffdf00;
+	color: black;
+}
+.play-score-bad{
+	background-color:#d9534f;
+	border: 3px solid #d9534f;
+}
+.home-coach-sctn > div{
+	margin-top:15px;
+}
+.select-position-home-sctn label{
+	line-height:34px;
+}
 .weakness-score {
-  background-color: #d9534f; 
-  height: 100px;
-  text-align: center; 
-  margin: auto;
-    width: 50%;
-    border: 3px solid #d9534f;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
     padding: 10px;
     color: white;
+    width: 50%;
 }
 
 .strength-score {
-  background-color: #5cb85c; 
-  height: 100px;
-  text-align: center; 
-  margin: auto;
-    width: 50%;
-    border: 3px solid #5cb85c;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
     padding: 10px;
     color: white;
+    width: 50%;
 }
 
 #recent-title {
