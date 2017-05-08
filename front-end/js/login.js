@@ -1,11 +1,4 @@
 $(document).ready(function() {
-	$('#olvidado').click(function(e) {
-		e.preventDefault();
-		$('div#form-olvidado').toggle('500');
-	});
-	$('#acceso').click(function(e) {
-		e.preventDefault();
-		$('div#form-olvidado').toggle('500');
 
 	firebase.auth().onAuthStateChanged(function(user) {
 		if (user && user.emailVerified) {
@@ -81,33 +74,7 @@ $(document).ready(function() {
 			$(this).addClass('active');
 		});
 	});
-	$('#loginSubmitBtn').on('click', function(e){
-		login();
-	});
-});
 
-$(function() {
-	$('#login-form-link').click(function(e) {
-		e.preventDefault();
-		$("#login-form").delay(100).fadeIn(100);
-		$("#register-form").fadeOut(100);
-		$('#register-form-link').removeClass('active');
-		$(this).addClass('active');
-	});
-	$("#register-form").submit(function(e){
-		e.preventDefault();
-	});
-	$("#login-form").submit(function(e){
-		e.preventDefault();
-	});
-	$('#register-form-link').click(function(e) {
-		console.log("click");
-		e.preventDefault();
-		$("#register-form").delay(100).fadeIn(100);
-		$("#login-form").fadeOut(100);
-		$('#login-form-link').removeClass('active');
-		$(this).addClass('active');
-	});
 });
 
 // graph
@@ -116,82 +83,82 @@ google.charts.setOnLoadCallback(drawBasic);
 
 function drawBasic() {
 
-      var data = new google.visualization.DataTable();
-      data.addColumn('number', 'Game');
-      data.addColumn('number', 'Overall Score');
+	var data = new google.visualization.DataTable();
+	data.addColumn('number', 'Game');
+	data.addColumn('number', 'Overall Score');
 
-      data.addRows([
-        [1, 66],   [2, 70],  [3, 86],  [4, 88],  [5, 96]
-      ]);
+	data.addRows([
+		[1, 66],   [2, 70],  [3, 86],  [4, 88],  [5, 96]
+		]);
 
-      var options = {
-        pointSize: 8, 
-        resize: true,
-        backgroundColor: {fill: 'transparent'},
-        chartArea: {backgroundColor: '#a6a6a6'}, 
-        series: {
-            0: { lineWidth: 4,
-                color: '#538cc6' },
-        }, 
-        hAxis: {
-          baselineColor: 'white',
-          gridlines: {count: 0},
-          titleTextStyle: { color: 'white' }, 
-          textStyle: {
-            color: 'white'
-          }, 
-          ticks: [1, 2, 3, 4, 5]
-        },
-        vAxis: {
-          baselineColor: 'white',
-          textStyle: {color: 'white'}, 
-          titleTextStyle: { color: 'white' } 
-        }, 
-        legend: {
-            position: 'none'
-        },
-        titleTextStyle: { 
-          color: 'white',
-          fontSize: 20,
-          bold: false,
-          italic: false }
-      };
+	var options = {
+		pointSize: 8, 
+		resize: true,
+		backgroundColor: {fill: 'transparent'},
+		chartArea: {backgroundColor: '#a6a6a6'}, 
+		series: {
+			0: { lineWidth: 4,
+				color: '#538cc6' },
+			}, 
+			hAxis: {
+				baselineColor: 'white',
+				gridlines: {count: 0},
+				titleTextStyle: { color: 'white' }, 
+				textStyle: {
+					color: 'white'
+				}, 
+				ticks: [1, 2, 3, 4, 5]
+			},
+			vAxis: {
+				baselineColor: 'white',
+				textStyle: {color: 'white'}, 
+				titleTextStyle: { color: 'white' } 
+			}, 
+			legend: {
+				position: 'none'
+			},
+			titleTextStyle: { 
+				color: 'white',
+				fontSize: 20,
+				bold: false,
+				italic: false }
+			};
 
-      var chart = new google.visualization.AreaChart(document.getElementById('graph'));
+			var chart = new google.visualization.AreaChart(document.getElementById('graph'));
 
-      chart.draw(data, options);
-    }
+			chart.draw(data, options);
+		}
 
-$(window).resize(function(){
-  drawBasic();
-});
+		$(window).resize(function(){
+			drawBasic();
+		});
 
-function login() {
-	console.log("logging in...");
-	let email = $("#login_email").val().trim();
-	let password = $("#login_password").val();
-	firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
-  if (firebase.auth().currentUser.emailVerified) {
-  	alert("signed in");
-  }
-  else {
-  	alert("Email has not been verified");
-  	firebase.auth().signOut().then(function() {
+		function login() {
+			console.log("logging in...");
+			let email = $("#login_email").val().trim();
+			let password = $("#login_password").val();
+			firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+				if (firebase.auth().currentUser.emailVerified) {
+					window.location = "/home";
+				}
+				else {
+					alert("Email has not been verified");
+					firebase.auth().signOut().then(function() {
   // Sign-out successful.
 }).catch(function(error) {
-  alert(error.message);
+	alert(error.message);
 });
-  }
+}
 }, function(error) {
-  var errorCode = error.code;
-  var errorMessage = error.message;
-  alert(errorMessage);
+	var errorCode = error.code;
+	var errorMessage = error.message;
+	alert(errorMessage);
   // ...
 });
 
-}
-function createAccount() {
-	
+		}
+		function createAccount() {
+
 	//extract the values from the submit forms
 	// Get the value from a dropdown select directly
 	let name = $("#firstName").val().trim() + " " + $("#lastName").val().trim();
@@ -212,7 +179,7 @@ function createAccount() {
 
 		var errorCode = error.code;
 		var errorMessage = error.message;
-	
+
 
 		alert(errorMessage);
 
@@ -226,15 +193,7 @@ else {
 function postRequestCreate(email, teamName, coachName, schoolName) {
 	let parameters = {email: email, teamName: teamName, coachName:coachName, schoolName: $("#schoolName").val().trim()};
 
-$.post('/createTeam', parameters, function (errorOrTeamId){
-
-	console.log(errorOrTeamId);
-
-	if (errorOrTeamId != true) {
-		alert("team created");
-		let user = firebase.auth().currentUser;
-		user.displayName = errorOrTeamId;
-		firebase.auth().signOut().then(function() {
+	$.post('/createTeam', parameters, function (coachIdTeamId){
 
 		console.log(coachIdTeamId);
 		newCoachId = coachIdTeamId[0];
@@ -271,22 +230,22 @@ $.post('/createTeam', parameters, function (errorOrTeamId){
 			firebase.auth().signOut().then(function() {
 				window.location = "/";
   		// Sign-out successful.
-		}).catch(function(error) {
+  	}).catch(function(error) {
   		alert(error.message);
-	});
-	}
-	else {
-		alert("error, please sign up again");
-		let user = firebase.auth().currentUser;
+  	});
+  }
+  else {
+  	alert("error, please sign up again");
+  	let user = firebase.auth().currentUser;
 
-		user.delete().then(function() {
-			console.log("error2");
-			alert("email verifcation failed. Please sent email again");
-		}, function(error) {
-			console.log("error3");
-			alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
-		});
-	}
+  	user.delete().then(function() {
+  		console.log("error2");
+  		alert("email verifcation failed. Please sent email again");
+  	}, function(error) {
+  		console.log("error3");
+  		alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-VUE-GAME");
+  	});
+  }
 });
 }
  /**
@@ -309,5 +268,4 @@ $.post('/createTeam', parameters, function (errorOrTeamId){
 		alert("Unfortunately there has been an internal error. Please sign up with a different email or call customer service 1800-GAME-VUE");
 	});
 });
-      // [END sendemailverification]
   }
