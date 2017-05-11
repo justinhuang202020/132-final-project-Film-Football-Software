@@ -223,7 +223,7 @@
 		  firebase.auth().onAuthStateChanged(function(user) {
 		
 			if (user) {
-			var userIsCoach = firebase.auth().currentUser.displayName[0]=='c';
+			var userIsCoach = firebase.auth().currentUser.displayName=='c';
 			if(userIsCoach){
 				var coachParams = {
 					 coachId: firebase.auth().currentUser.displayName.substring(1) 
