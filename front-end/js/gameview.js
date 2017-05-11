@@ -292,6 +292,7 @@ $(document).ready(function(){
 	});
 	$("#playForm").submit(function(e){
 		e.preventDefault();
+		$('#addPlayModal').modal('hide');
 		var gameId = localStorage.gameId;
 		for(var i =0; i<$("#videoUploadInput").prop('files').length;i++){
 			var file = $("#videoUploadInput").prop('files')[i];

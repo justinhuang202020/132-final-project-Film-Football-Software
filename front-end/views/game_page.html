@@ -195,10 +195,11 @@
 		  </div>
 		  <script>
 		  var teamId;
-		  $(document).ajaxStop(function(){
-			$("#gameForm").submit(function(e){
+		  $(document).ready(function(){
+		  $("#gameForm").submit(function(e){
 				e.preventDefault();
-				let teamId = teamId;
+				$('#addGameModal').modal('hide');
+				let teamId = localStorage.teamId;
 				let opponent = $("#opponentInput").val();
 				let opponentScore = $("#opponentScoreInput").val();
 				let teamScore = $("#teamScoreInput").val();
@@ -212,8 +213,6 @@
 				$.post('/createGame', parameters, function(response){
 				});
 			});
-		  });
-		  $(document).ready(function(){
 		  function signOut() {
   				firebase.auth().signOut().then(function() {
     			window.location = "/";
@@ -292,7 +291,14 @@
 				$(this).find('.thumbnail-hover').hide();
 			});
 			
-			function buildGameEl(opponent, opponentScore, teamScore, id, isCoach){
+			
+		}
+		else {
+			window.location = "/";
+		}
+	});
+		  });
+		  function buildGameEl(opponent, opponentScore, teamScore, id, isCoach){
 				firebase.auth().currentUser.photoURL = $(this)[0].id;
 				var divString = '<div></div>';
 				var btnString = '<button type="button"></button>'
@@ -355,13 +361,6 @@
 				thumbnailFooterDiv.append(thumbnailScoreDiv);			
 				$("#thumbnail-holder").append(widthDiv);
 			}
-		}
-		else {
-			window.location = "/";
-		}
-	});
-		  });
-		  
 		  </script>
 	</body> 
 </html> 

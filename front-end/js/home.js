@@ -239,8 +239,6 @@ $(document).ajaxStop(function(){
 		var weaknesses = [];
 		for(trait in maxTotalForTraits){
 			var ratio = totalForTraits[trait]/maxTotalForTraits[trait];
-			console.log(trait);
-			console.log(ratio);
 			if(strengths.length < 3){
 				var toPush = {
 					trait:trait,
@@ -427,6 +425,7 @@ $(document).ready(function(){
     $('#newTraitImportance').val(50);
   });
   if(userIsCoach){
+	  console.log("is coach");
 	  var coachParams = {
 		 coachId: firebase.auth().currentUser.displayName.substring(1) 
 	  }
