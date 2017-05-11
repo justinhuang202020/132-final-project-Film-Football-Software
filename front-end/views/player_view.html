@@ -58,15 +58,14 @@
 		      <div class="sidebar-headers">
 		      	<div id="side-bar-names">
 			        <h3>Navigate</h3>
-			        <h5>10 Games Total</h5>
 			    </div>
 		        <ul id="nav-side-list" class="nav nav-stacked">
 		          <hr>
 		          <li id="home-nav"><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		          <hr>
-		          <li id="active" ><a href="#"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		          <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
 		          <hr>
-		          <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+		          <li class="player-nav"><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
 		          <!--<li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
 		          <hr>-->
@@ -83,7 +82,7 @@
 				<div class="col-md-5">
 					<ul class="play-details-list">
 						<li class="opponent-name">
-							<span>vs. Eastlake<span>
+							<span><span>
 						</li>
 					</ul>
 				</div>
@@ -92,7 +91,9 @@
 				<div class="col-md-9 play-view-left-sctn">
 					<div class="row">
 						<div class="col-md-12">
-							<div class="well score-sctn">	
+							<div class="well score-sctn">
+								<div class="no-grades-error hidden">Your coach hasn't submitted any grades for you for this game. Let them know to give you some grades!
+								</div>
 							</div>
 						</div>
 					</div>

@@ -58,13 +58,12 @@
 		      <div class="sidebar-headers">
 		      	<div id="side-bar-names">
 			        <h3>Navigate</h3>
-			        <h5>10 Games Total</h5>
 			    </div>
 		        <ul id="nav-side-list" class="nav nav-stacked">
 		          <hr>
 		          <li id="home-nav"><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		          <hr>
-		          <li id="active" ><a href="#"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		          <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
 		          <hr>
 		          <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
@@ -107,12 +106,12 @@
 				<div class="col-md-5">
 					<ul class="play-details-list">
 						<li class="opponent-name">
-							<span>vs. Eastlake<span>
+							<span><span>
 						</li>
 					</ul>
 				</div>
 				<div class="col-md-4 col-md-offset-3 text-center" style="line-height:64px;">
-					<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addPlayModal">
+					<button id="addPlayBtn" class="btn btn-primary" type="button" data-toggle="modal" data-target="#addPlayModal">
 						Add Plays to Game
 					</button>
 				</div>
@@ -139,6 +138,8 @@
 											</select>
 										</div>
 									</div>
+								</div>
+								<div class="no-trait-error hidden">You haven't set any categories for this position yet. To set a new category, go to the homepage.
 								</div>
 								<div class="grade-input-sctn hidden">
 									<div class="row position-traits-sctn">

@@ -1,11 +1,13 @@
 	.play-details-list{
 		list-style-type:none;
 		padding-top: 10px;
-		padding-bottom: 10px;
 		padding-left: 0px;
 	}
 	.play-details-list li{
 		display:inline;
+	}
+	.opponent-name span{
+		font-size:40px;
 	}
 	.position-traits{
 		list-style-type:none;
@@ -31,8 +33,8 @@
 	.score-sctn{
 		padding-left: 45px;
 		padding-right: 45px;
-		padding-top: 5px;
-		padding-bottom: 5px;
+		padding-top: 15px;
+		padding-bottom: 25px;
 	}
 	.play-score{
 		border-radius: 100%;

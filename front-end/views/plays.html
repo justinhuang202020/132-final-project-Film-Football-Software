@@ -3,16 +3,16 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>GameVue</title>
+		<title>playVue</title>
 		<script src="https://www.gstatic.com/firebasejs/3.7.8/firebase.js"></script>
 		<script>
 		  // Initialize Firebase
 		  var config = {
 			apiKey: "AIzaSyCcn-PMVozRa8Gkem8JImkEBBIIiancl5k",
-			authDomain: "gamevue-c6394.firebaseapp.com",
-			databaseURL: "https://gamevue-c6394.firebaseio.com",
-			projectId: "gamevue-c6394",
-			storageBucket: "gamevue-c6394.appspot.com",
+			authDomain: "playvue-c6394.firebaseapp.com",
+			databaseURL: "https://playvue-c6394.firebaseio.com",
+			projectId: "playvue-c6394",
+			storageBucket: "playvue-c6394.appspot.com",
 			messagingSenderId: "351663205276"
 		  };
 		  firebase.initializeApp(config);
@@ -29,7 +29,7 @@
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript" src="../js/plays.js"></script>
+		<!--<script type="text/javascript" src="../js/plays.js"></script>-->
 		<link rel="stylesheet" href="../styles/home-style.css" type="text/css"/>
 	</head>
 	<body>
@@ -48,11 +48,11 @@
 		      </ul>
 		      <ul class="nav navbar-nav" id="hidden-nav">
 		        <li><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-		        <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		        <li><a href="playpage"><span class="glyphicon glyphicon-film"></span> plays</a></li>
 		        <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li id="logout"><a href="login"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		        <li id="logout"><a onclick = "signOut()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 		      </ul>
 		    </div><!--/.nav-collapse -->
 		</div><!--/.navbar -->
@@ -62,13 +62,12 @@
 		      <div class="sidebar-headers">
 		      	<div id="side-bar-names">
 			        <h3>Navigate</h3>
-			        <h5>10 Games Total</h5>
 			    </div>
 		        <ul id="nav-side-list" class="nav nav-stacked">
 		          <hr>
 		          <li id="home-nav"><a href="home"><span class="glyphicon glyphicon-home"></span> Home</a></li>
 		          <hr>
-		          <li><a href="gamepage" id="active"><span class="glyphicon glyphicon-film"></span> Games</a></li>
+		          <li><a href="gamepage"><span class="glyphicon glyphicon-film"></span> Games</a></li>
 		          <hr>
 		          <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
@@ -91,32 +90,13 @@
 		  </div>
 		  <div id="thumbnail-holder" class="row">
 				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail add-game-thumbnail text-center" data-toggle="modal" data-target="#addPlayModal">
+					<div class="thumbnail add-play-thumbnail text-center" data-toggle="modal" data-target="#addPlayModal">
 						<div class="thumbnail-content">
-							<span id="add-game-plus" class="glyphicon glyphicon-plus"></span>
+							<span id="add-play-plus" class="glyphicon glyphicon-plus"></span>
 						</div>
 						<div class="thumbnail-footer">
-							<div class="add-game-txt">
+							<div class="add-play-txt">
 								Add New Play
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- example play -->
-				<div class="col-sm-6 col-md-3">
-					<div class="thumbnail game-thumbnail text-center">
-						<div id="edit"><span class="glyphicon glyphicon-pencil text-center"></span></div>
-						<div class="thumbnail-content">
-							<div class="play-name">
-								<textarea readonly id="name-text" class="text-center">Play 1</textarea>
-							</div>
-							<div class="icon">
-								<span class="glyphicon glyphicon-film"></span>
-							</div>
-						</div>
-						<div class="thumbnail-footer">
-							<div class="click-play-txt">
-								Click to View
 							</div>
 						</div>
 					</div>
@@ -133,7 +113,7 @@
 				  </div>
 				  <div class="modal-body">
 					<h3>
-					To Add Plays to this game, upload the video(s) of the play(s) below.
+					To Add Plays to this play, upload the video(s) of the play(s) below.
 					</h3>
 					<form id="playForm">
 						<input id="videoUploadInput" type="file" name="filefield" multiple="multiple">
@@ -168,7 +148,7 @@
 		.click-play-txt{
 			font-size:15px;
 		}
-		.add-game-txt{
+		.add-play-txt{
 			font-size:20px;
 		}
 		.play-name{
@@ -183,7 +163,7 @@
 			line-height: 35px;
 			color: #0059b3;
 		}
-		#add-game-plus{
+		#add-play-plus{
 			line-height: 85px;
 			color: #0059b3;
 			font-size: 25px;
@@ -191,7 +171,7 @@
 		#plays-header{
 			margin-left:20px;
 		}
-		#edit {
+		.edit {
 			position: absolute;
 		    top: 0px;
 		    right: 0px;
@@ -209,56 +189,99 @@
 			font-family:Arial;
 			width: 100%;
 			height: 100%;
+			overflow:hidden;
 		}
 	</style>
 
 	<script>
-		// $('#edit').click(function(){
-		// 	if (confirm("Press okay to be able to edit the play name.") == true) {
-		// 	    txt = "You pressed OK!";
-		// 	    $('#name-text').removeAttr('readonly');
-		// 	} else {
-		// 	    txt = "You pressed Cancel!";
-		// 	}
-		// });
-
-		// when to submit this new name???? 
-		// on leave? 
-		window.onbeforeunload = function() {
-		    alert('Bye.');
-		}
-
-		$(document).on('click', '#edit', function(e) {
-			if (confirm("Press okay to be able to edit the play name.") == true) {
-			    txt = "You pressed OK!";
-			    $('#name-text').removeAttr('readonly');
-			} else {
-			    txt = "You pressed Cancel!";
+		
+		var teamId;
+		  $(document).ready(function(){
+		  function signOut() {
+  				firebase.auth().signOut().then(function() {
+    			window.location = "/";
+  				}).catch(function(error) {
+    				alert(error.message);
+  				});
 			}
+		  firebase.auth().onAuthStateChanged(function(user) {
+			var userIsCoach = (firebase.auth().currentUser.displayName[0] == 'c');
+			if (user && userIsCoach) {
+				var playsParam = {
+					gameId:localStorage.gameId
+				}
+				$.post('/getPlaysForGame', playsParam, function(response){
+					for(id in response){
+						var play = response[id];
+						buildPlayEl(play.playTitle, play.playId);
+					}
+				});
+				$(document).on('click', '.icon' , function(){
+					localStorage.playId = $(this)[0].id;
+					document.location.href = '/coachview';
+				});
+				$(document).on('focusout', '.name-text', function(){
+					var playTitle = $(this).val();
+					var playId = $(this).parent().parent().find('.icon')[0].id;
+					var updateParams = {
+						playTitle:playTitle,
+						playId:playId
+					};
+					if(playTitle.length > 0){
+						$.post('/updatePlayName', updateParams, function(response){
+						});
+					}
+				});
+				$(document).on('click', '.edit', function(e) {
+					$(this).parent().parent().find('textarea').removeAttr('readonly');
+				}); 
+		 function buildPlayEl(playName, id){
+		 	var divString = '<div></div>';
+			var spanDiv = '<span></span>';
+			var textDiv = '<textarea readonly id="name-text"></textarea>';
+		 	var widthDiv = $(divString);
+		 	widthDiv.addClass("col-sm-6 col-md-3");
+		 	var thumbnailDiv = $(divString);
+			thumbnailDiv.addClass('thumbnail play-thumbnail text-center');
+			widthDiv.append(thumbnailDiv);
+			var editDiv  = $(divString);
+			editDiv.addClass('edit');
+			var editSpan = $(spanDiv);
+			editSpan.addClass('glyphicon glyphicon-pencil text-center');
+			editDiv.append(editSpan);
+			thumbnailDiv.append(editDiv);
+			var contentDiv = $(divString);
+			contentDiv.addClass('thumbnail-content');
+			thumbnailDiv.append(contentDiv);
+			var nameDiv = $(divString);
+			nameDiv.addClass('play-name');
+			contentDiv.append(nameDiv);
+			var textArea = $(textDiv);
+			textArea.addClass("text-center name-text");
+			textArea.html(playName);
+			nameDiv.append(textArea);
+			var iconDiv = $(divString);
+			iconDiv.addClass('icon');
+			iconDiv.attr('id', id);
+			contentDiv.append(iconDiv);
+			var iconSpan = $(spanDiv);
+			iconSpan.addClass('glyphicon glyphicon-film');
+			iconDiv.append(iconSpan);
+			var footerDiv = $(divString);
+			footerDiv.addClass('thumbnail-footer');
+			thumbnailDiv.append(footerDiv);
+			var clickPlay = $(divString);
+			clickPlay.addClass('click-play-txt');
+			clickPlay.html('Click To View');
+			footerDiv.append(clickPlay);
+		 	$("#thumbnail-holder").append(widthDiv);
 		}; 
-
-
-		// build a new play 
-		// function buildPlayEle(playName){
-		// 	var html1 = 
-		// 	'<div class="col-sm-6 col-md-3">
-		// 	<div class="thumbnail game-thumbnail text-center">
-		// 	<div id="edit"><span class="glyphicon glyphicon-pencil text-center"></span></div>
-		// 	<div class="thumbnail-content">
-		// 	<div class="play-name">
-		// 		<textarea readonly id="name-text" class="text-center">'; 
-		// 	var html2 = 
-		// 	'</textarea></div><div class="icon"><span class="glyphicon glyphicon-film"></span>
-		// 	</div></div><div class="thumbnail-footer">
-		// 	<div class="click-play-txt">Click to View</div></div></div></div>'; 
-
-		// 	var divString = $("<div></div>");
-		// 	var widthDiv = $(divString);
-		// 		widthDiv.addClass("col-sm-6 col-md-3");
-		// 	widthDiv.html(html2 + playName + html2); 
-
-		// 	$("#thumbnail-holder").append(widthDiv);
-		// }; 
+			}
+			else {
+				window.location = "/";
+			}
+		  });
+		  });
 	</script>
 
 </html>

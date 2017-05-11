@@ -34,6 +34,7 @@
 				white-space:nowrap;
 				cursor:pointer;
 				color:black;
+				position:relative;
 			}
 			.thumbnail-content{
 				height: 85px;
@@ -58,6 +59,21 @@
 			.thumbnail-score{
 				font-size:34px;
 				height:50px;
+			}
+			.thumbnail-hover{
+				height: 100%;
+				width: 100%;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				display:none;
+				background-color: rgba(169, 169, 169, .8);
+			}
+			.hover-buttons{
+				line-height:145px;
+			}
+			.hover-buttons > button{
+				margin:5px;
 			}
 			.color-win{
 				color:green;
@@ -96,7 +112,7 @@
 		        <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li id="logout"><a  onclick = "signOut()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+		        <li id="logout"><a onclick = "signOut()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 		      </ul>
 		    </div><!--/.nav-collapse -->
 		</div><!--/.navbar -->
@@ -106,7 +122,6 @@
 		      <div class="sidebar-headers">
 		      	<div id="side-bar-names">
 			        <h3>Navigate</h3>
-			        <h5>10 Games Total</h5>
 			    </div>
 		        <ul id="nav-side-list" class="nav nav-stacked">
 		          <hr>
@@ -114,7 +129,7 @@
 		          <hr>
 		          <li id="active" ><a href="#"><span class="glyphicon glyphicon-film"></span> Games</a></li>
 		          <hr>
-		          <li><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
+		          <li class="player-nav"><a href="players"><span class="glyphicon glyphicon-user"></span> Players</a></li>
 		          <hr>
 		          <!--<li><a href="#"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
 		          <hr>-->
@@ -225,17 +240,14 @@
 							buildGameEl(game.opponent, game.opponentScore, game.teamScore, id, 1);
 						}
 						});
-						/*$.post('/getPlaysForGame', function(response){
-							console.log(response);
-						});*/
 				  });
 			}
 			else{
+				$(".player-nav").addClass("hidden");
 				var playerParams = {
 					 playerId: firebase.auth().currentUser.displayName.substring(1) 
 				  }
 				  $.post('/getPlayer', playerParams, function(response){
-				  console.log(response.teamId);
 					teamId = response.teamId;
 					var getGamesParam = {
 						teamId:teamId
@@ -254,12 +266,36 @@
 			
 			$(document).on('click', '.game-thumbnail' , function(){
 				localStorage.gameId = $(this)[0].id;
+				localStorage.playId = '';
 			});
-			
+			$(document).on('click', '.watch-game', function(){
+				if(userIsCoach){
+					document.location.href = '/coachview';
+				}
+				else{
+					document.location.href = '/playerview';
+				}
+			});
+			$(document).on('click', '.manage-play', function(){
+				if(userIsCoach){
+					document.location.href = '/plays';
+				}
+				else{
+					document.location.href = '/plays';
+				}
+			});
+			$(document).on('mouseover', '.game-thumbnail', function(){
+				console.log("hovered");
+				$(this).find('.thumbnail-hover').show();
+			});
+			$(document).on('mouseleave', '.game-thumbnail', function(){
+				$(this).find('.thumbnail-hover').hide();
+			});
 			
 			function buildGameEl(opponent, opponentScore, teamScore, id, isCoach){
 				firebase.auth().currentUser.photoURL = $(this)[0].id;
 				var divString = '<div></div>';
+				var btnString = '<button type="button"></button>'
 				var aString = '<a></a>';
 				var widthDiv = $(divString);
 				widthDiv.addClass("col-sm-6 col-md-3");
@@ -295,17 +331,29 @@
 				thumbnailOutcomeDiv.html(outcomeString);
 				var thumbnailScoreString = ""+teamScore + "-" + opponentScore+"";
 				thumbnailScoreDiv.html(thumbnailScoreString);
+				var hoverDiv = $(divString);
+				hoverDiv.addClass('thumbnail-hover');
+				var hoverButtonsDiv = $(divString);
+				hoverButtonsDiv.addClass('hover-buttons');
+				var gameBtn = $(btnString);
+				gameBtn.addClass('watch-game btn btn-primary btn-sm');
+				gameBtn.html("Watch Game");
+				var playBtn = $(btnString);
+				playBtn.addClass('manage-play btn btn-secondary btn-sm');
+				playBtn.html("Manage Plays");
+				hoverButtonsDiv.append(gameBtn);
+				if(isCoach){
+					hoverButtonsDiv.append(playBtn);
+				}
+				hoverDiv.append(hoverButtonsDiv);
+				thumbnailDiv.append(hoverDiv);
 				widthDiv.append(thumbnailDiv);
 				thumbnailDiv.append(thumbnailContentDiv);
 				thumbnailDiv.append(thumbnailFooterDiv);
 				thumbnailContentDiv.append(thumbnailOpponentDiv);
 				thumbnailContentDiv.append(thumbnailOutcomeDiv);
-				thumbnailFooterDiv.append(thumbnailScoreDiv);
-				var a = $(aString);
-				var aTxt = (isCoach)?'coach':'player';
-				a[0].href = '/' + aTxt +'view';
-				a.append(widthDiv);
-				$("#thumbnail-holder").append(a);
+				thumbnailFooterDiv.append(thumbnailScoreDiv);			
+				$("#thumbnail-holder").append(widthDiv);
 			}
 		}
 		else {
@@ -315,6 +363,5 @@
 		  });
 		  
 		  </script>
-		}
 	</body> 
 </html> 

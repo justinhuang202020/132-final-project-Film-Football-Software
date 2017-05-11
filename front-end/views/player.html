@@ -127,7 +127,6 @@
 						<div class="sidebar-headers">
 							<div id="side-bar-names">
 								<h3>Navigate</h3>
-								<h5>10 Games Total</h5>
 							</div>
 							<ul id="nav-side-list" class="nav nav-stacked">
 								<hr>
@@ -147,6 +146,21 @@
 		  </div>
 		</div>
 		<div id="main">
+			<div id="passwordModal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+				<div class="modal-content">
+				  <div class="modal-body text-center">
+					<h5>
+					Managing players requires additional authentication. Please enter password below
+					</h5>
+					<input id="passwordInput" type="password"></input>
+					<br>
+					<br>
+					<button id="submitPassword" type="button" class="btn btn-primary">Manage Players</button>
+				  </div>
+				</div>
+			  </div>
+			</div>
 			<div class="row">
 				<h1 class="col-md-6">Players</h1>
 				<div class="col-md-6">
@@ -161,70 +175,9 @@
 						<th>Position</th>
 						<th>Name</th>
 						<th><span class="glyphicon glyphicon-envelope text-right"></span> Email</th>
-						<th>Delete</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td>Doe</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>Jones</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>Smith</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>McArthur</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>Fuller</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td>Watt</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>7</td>
-						<td>Watt</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>8</td>
-						<td>Watt</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>9</td>
-						<td>Watt</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td>Watt</td>
-						<td>johndoe@gmail.com</td>
-						<td><button type="button" id="delete" class="col-md-12" align="center"><span class="glyphicon glyphicon-trash text-center"></span></button></td>
-					</tr>
 				</tbody>
 			</table>
 			<!-- Modal -->
@@ -242,30 +195,18 @@
 								<label for="recipient-name" class="control-label">Last Name:</label>
 								<input type="text" class="form-control" id="addPlayerLast">
 								<label for="recipient-name" class="control-label">Position:</label>
-								<input type="text" class="form-control" id="addPlayerPosition">
+								<select type="text" class="form-control" id="addPlayerPosition"></select>
 								<label for="recipient-name" class="control-label">Email:</label>
 								<input type="text" class="form-control" id="addPlayerEmail">
 							</form> 
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button onclick = "addPlayerFromForm()" type="button" class="btn btn-primary">Add Player</button>
+							<button id="addPlayerBtn" onclick = "addPlayerFromForm()" type="button" class="btn btn-primary">Add Player</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</body> 
-	<!-- javascript -->
-	<script>
-		// delete a player from the table 
-		$('table').on('click', 'button', function(e){
-			var r = confirm("Are you sure you want to delete this player?");
-			if (r == true) {
-				$(this).closest('tr').remove(); 
-			} else {
-				return false; 
-			}
-		})
-		</script>
 		</html> 

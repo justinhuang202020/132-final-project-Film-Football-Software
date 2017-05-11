@@ -82,8 +82,12 @@ var userIsCoach;
 $(document).ajaxStop(function(){
 	var recentGames;
 	$('#select-position-home').change(function(e){
-		populatePage(userIsCoach);
+		populatePage();
 	});
+	$("#select-position").change(function(e) {
+		loadCategoriesForAdd($(this)[0].selectedIndex +1);
+    });
+	loadCategoriesForAdd($('#select-position')[0].selectedIndex +1);
 	function populatePage(){
 		$('.strength-container').empty();
 		$('.weakness-container').empty();
@@ -93,8 +97,6 @@ $(document).ajaxStop(function(){
 		if(userIsCoach){
 			for(gameId in recentGamesDict){
 				var gameGrades = [];
-				console.log(positionToGrades);
-				console.log(recentGamesDict);
 				if(positionToGrades[positionId]){
 					for(var i = 0;i<positionToGrades[positionId][0].length;i++){
 						if(positionToGrades[positionId][1][i] == gameId){
@@ -138,6 +140,24 @@ $(document).ajaxStop(function(){
 		//draw chart
 		drawBasic();
 	}
+	function loadCategoriesForAdd(positionId){
+		var newtraitli = $('#newTraitLi');
+		$("#traits").empty()
+		newtraitli.addClass('hidden');
+		$('#traits').append(newtraitli);
+		var traits = positionToTrait[positionId];
+		for(trait in traits){
+			var traitImportanceFullValue = (traits[trait].importance - 1)*25;
+			var li = $("<li></li>");
+			var input = $("<input step='25'></input>");
+			input.attr("type", "range");
+			input.attr("step", 25);
+			input.attr("value", traitImportanceFullValue);
+			li.html(trait);
+			li.append(input);
+			$("#traits").append(li);
+		 }
+	}
 	function buildStrengthWeaknessEl(text, score, isStrength){
 		var strengthOrWeakness = (isStrength)?'strength':'weakness';
 		var divString = '<div></div>';
@@ -149,7 +169,7 @@ $(document).ajaxStop(function(){
 		if(score < .40){
 			playScoreClassString = strengthOrWeakness+"-score play-score-bad";
 		}
-		else if(score < 70){
+		else if(score < .70){
 			playScoreClassString = strengthOrWeakness+"-score play-score-avg";
 		}
 		else{
@@ -180,8 +200,6 @@ $(document).ajaxStop(function(){
 			for(var i=0;i<allGrades.length;i++){
 				var currGrades = allGrades[i];
 				for(grade in currGrades){
-					console.log(currGrades);
-					console.log(positionToTrait);
 					var importance = parseInt(positionToTrait[$('#select-position-home')[0].selectedIndex+1][grade].importance);
 					maxScore += parseInt(5*importance);
 					totalScore+= parseInt(currGrades[grade]*importance);
@@ -206,59 +224,45 @@ $(document).ajaxStop(function(){
 		for(var i = 0; i< swGrades.length; i++){
 			var grade = swGrades[i];
 			for(category in grade){
-				if(!maxTotalForTraits[category]){
-					maxTotalForTraits[category] = 0;
-					totalForTraits[category] = 0;
+				if(grade[category]){
+					if(!maxTotalForTraits[category]){
+						maxTotalForTraits[category] = 0;
+						totalForTraits[category] = 0;
+					}
+					maxTotalForTraits[category] += parseInt(5);
+					totalForTraits[category] += parseInt(grade[category]);
 				}
-				maxTotalForTraits[category] += parseInt(5);
-				totalForTraits[category] += parseInt(grade[category]);
+				
 			}
 		}
 		var strengths = [];
-		var strengthsMax = 0;
-		var strengthMaxEl;
-		var strengthsMin = Infinity;
-		var strengthMinEl;
 		var weaknesses = [];
-		var weaknessesMax = 0;
-		var weaknessMaxEl;
-		var weaknessesMin = Infinity;
-		var weaknessMinEl;
 		for(trait in maxTotalForTraits){
 			var ratio = totalForTraits[trait]/maxTotalForTraits[trait];
+			console.log(trait);
+			console.log(ratio);
 			if(strengths.length < 3){
 				var toPush = {
 					trait:trait,
 					ratio:ratio
 				};
-				if(ratio<strengthsMin){
-					strengthsMin =ratio;
-					strengthMinEl = toPush;
-				}
-				if(ratio > strengthsMax){
-					strengthsMax = ratio;
-					strengthMaxEl = toPush;
-				}
 				strengths.push(toPush);
 			}
 			else{
-				if(ratio > strengthsMin){
-					strengths.splice(strengths.indexOf(strengthMinEl),1);
+				var minStrength = Infinity;
+				var minIdx;
+				for(var i = 0; i<strengths.length;i++){
+					if(strengths[i].ratio < minStrength){
+						minStrength = strengths[i].ratio;
+						minIdx = i;
+					}
+				}
+				if(ratio > minStrength){
 					var toPush = {
 						trait:trait,
 						ratio:ratio
 					};
-					var smallerElement = toPush;
-					var otherElement = strengths[Math.abs(strengths.indexOf(strengthMaxEl) - 1 )];
-					if(ratio > strengthsMax){
-						smallerElement = strengthMaxEl;
-						strengthsMax = ratio;
-						strengthMaxEl = toPush;
-					}
-					if(smallerElement.ratio < otherElement.ratio){
-						strenghtsMin = smallerElement.ratio;
-						strenghtMinEl = smallerElement;
-					}
+					strengths.splice(minIdx,1);
 					strengths.push(toPush);
 				}
 			}
@@ -267,34 +271,23 @@ $(document).ajaxStop(function(){
 					trait:trait,
 					ratio:ratio
 				};
-				if(ratio<weaknessesMin){
-					weaknessesMin =ratio;
-					weaknessMinEl = toPush;
-				}
-				if(ratio > weaknessesMax){
-					weaknessesMax = ratio;
-					weaknessMaxEl = toPush;
-				}
 				weaknesses.push(toPush);
 			}
 			else{
-				if(ratio < weaknessesMax){
-					weaknesses.splice(strengths.indexOf(weaknessMaxEl),1);
+				var maxWeakness = 0;
+				var maxIdx;
+				for(var i = 0; i<weaknesses.length;i++){
+					if(weaknesses[i].ratio > maxWeakness){
+						maxWeakness = weaknesses[i].ratio;
+						maxIdx = i;
+					}
+				}
+				if(ratio < maxWeakness){
 					var toPush = {
 						trait:trait,
 						ratio:ratio
 					};
-					var largerElement = toPush;
-					var otherElement = strengths[Math.abs(strengths.indexOf(weaknessMaxEl) - 1 )];
-					if(ratio < weaknessesMin){
-						largerElement = weaknessMinEl;
-						weaknessesMin= ratio;
-						weaknessMinEl = toPush;
-					}
-					if(largerElement.ratio > otherElement.ratio){
-						weaknessesMax = largerElement.ratio;
-						weaknessMaxEl = largerElement;
-					}
+					weaknesses.splice(maxIdx,1);
 					weaknesses.push(toPush);
 				}
 			}
@@ -424,7 +417,6 @@ $(document).ready(function(){
       importance: traitImportance,
       title: traitText
     }
-	console.log(parameters);
     $.post('/createCategory', parameters, function (error){
       if(error){
         console.log(error);
@@ -434,31 +426,6 @@ $(document).ready(function(){
     $("#newTraitTxt").val("");
     $('#newTraitImportance').val(50);
   });
-  $("#select-position").change(function(e) {
-		 var newtraitli = $('#newTraitLi');
-		 $("#traits").empty()
-		 newtraitli.addClass('hidden');
-		 $('#traits').append(newtraitli);
-		 var categoryParams = {
-			  teamId:localStorage.teamId,
-			  positionId: $('#select-position')[0].selectedIndex +1
-		  };
-      $.post('/getCategoriesForPosition', categoryParams, function(response){
-		  console.log('response');
-		   for(var trait in response){
-			var traitImportanceFullValue = (response[trait].importance - 1)*25;
-			console.log(traitImportanceFullValue);
-			var li = $("<li></li>");
-			var input = $("<input step='25'></input>");
-			input.attr("type", "range");
-			input.attr("step", 25);
-			input.attr("value", traitImportanceFullValue);
-			li.html(trait);
-			li.append(input);
-			$("#traits").append(li);
-		  }
-		});
-    });
   if(userIsCoach){
 	  var coachParams = {
 		 coachId: firebase.auth().currentUser.displayName.substring(1) 
@@ -502,6 +469,7 @@ $(document).ready(function(){
 	  });
   }
   else{
+	  $(".player-nav").addClass("hidden");
 	  $('.home-coach-sctn').addClass('hidden');
 	  var getPlayerParams = {
 		playerId: firebase.auth().currentUser.displayName.substring(1)

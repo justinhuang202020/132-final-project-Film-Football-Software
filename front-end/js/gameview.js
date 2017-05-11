@@ -10,10 +10,16 @@ function signOut() {
 $(document).ajaxStop(function(){
 	
 });
-$(document).ready(function(){
-	console.log(localStorage.gameId);
+$(document).ready(function(){	
 	firebase.auth().onAuthStateChanged(function(user) {
+	var userIsCoach = (firebase.auth().currentUser.displayName[0] == 'c');
 	if (user) {
+	var getGameParams = {
+		gameId:localStorage.gameId
+	};
+	$.post('/getGame', getGameParams, function(response){
+		$('.opponent-name span').html('vs. '+response.opponent);
+	});
 	var $video  = $('video'),
 		$vidContainer = $('.vid-player-sctn:first'),
 		$leftSctn = $('.play-view-left-sctn'),
@@ -26,7 +32,7 @@ $(document).ready(function(){
 	var traits = {};
 	var teamId;
 	var postParams = {
-		teamId:"id"
+		teamId:localStorage.teamId
 	};
 	if($('#select-position')){
 		$.post('/getPositions', function(response){
@@ -40,7 +46,6 @@ $(document).ready(function(){
 		$('#select-position').append(option);
 	  }); 
 	} 
-	var userIsCoach = (firebase.auth().currentUser.displayName[0] == 'c');
 	if(userIsCoach){
 		var coachParams = {
 		 coachId: firebase.auth().currentUser.displayName.substring(1) 
@@ -52,7 +57,6 @@ $(document).ready(function(){
 			gameId:localStorage.gameId
 		}
 		$.post('/getPlaysForGame', playsParams, function(response){
-			console.log(response);
 			var playArray = [];
 			for(play in response){
 				response[play].playId = play;
@@ -60,16 +64,29 @@ $(document).ready(function(){
 				playArray.push(response[play]);
 			}
 			for(var i = 0; i<playArray.length;i++){
-				var play = playArray[i]
-				if(i==0){
-					setVideoSrc(play);
+				var play = playArray[i];
+				var active = false;
+				if(localStorage.playId ===''){
+					if(i==0){
+						active = true;
+						setVideoSrc(play);
+					}
 				}
-				addCoachPlayEl(play.playId, play.playTitle, (i==0));
+				else{
+					if(play.playId ===localStorage.playId){
+						active = true;
+						setVideoSrc(playIdToPlay[localStorage.playId]);
+					}
+				}
+				addCoachPlayEl(play.playId, play.playTitle, active);
 			}
 		});
 	}
 	else{
-		console.log(firebase.auth().currentUser);
+		if($('#addPlayBtn')){
+			$('#addPlayBtn').hide();
+		}
+		$(".player-nav").addClass("hidden");
 		var getPlayerParams = {
 			playerId: firebase.auth().currentUser.displayName.substring(1)
 		  };
@@ -86,6 +103,9 @@ $(document).ready(function(){
 				playerId:firebase.auth().currentUser.displayName.substring(1)
 			}
 			$.post('/getGameGradesForPlayer', gradesParams, function(gradesObj){
+				if(!gradesObj){
+					$('.no-grades-error').removeClass("hidden");
+				}
 				for(gradeId in gradesObj){
 					var grade = gradesObj[gradeId];
 					playIdToGrades[grade.playId] = grade.grades;
@@ -248,6 +268,7 @@ $(document).ready(function(){
 		$("#select-player").append(option);
 		$('.select-player-sctn').removeClass('hidden');
 		$('.grade-input-sctn').addClass('hidden');
+		$('.no-trait-error').addClass('hidden');
 	});
 	$("#select-player").change(function(e) {
 		$('.position-traits').empty();
@@ -263,6 +284,9 @@ $(document).ready(function(){
 			   }
 		   if(count > 0){
 			   $('.grade-input-sctn').removeClass('hidden');
+		   }
+		   else{
+			$('.no-trait-error').removeClass('hidden');
 		   }
 		});
 	});
@@ -366,7 +390,6 @@ $(document).ready(function(){
 		$(".play-select-sctn").append(playDiv);
 	}
 	function addPlayEl(playId, playScore,playTitle, isActive){
-		console.log(isActive);
 		var divString = '<div></div>';
 		var ulString = '<ul></ul>';
 		var liString = '<li></li>';
@@ -402,10 +425,10 @@ $(document).ready(function(){
 		$(".play-select-sctn").append(playDiv);
 	}
 	function addAttrScoreCss(el, score){
-		var height = 55;
+		var height = 72;
 		var frac = score/5;
-		var elHeight = frac*55;
-		var marginHeight = 55-(frac*55);
+		var elHeight = frac*height;
+		var marginHeight = height-(frac*height);
 		el.css({
 			'margin-top': marginHeight,
 			'height': elHeight

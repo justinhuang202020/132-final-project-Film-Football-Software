@@ -70,6 +70,11 @@ app.get('/players', function(request, response){
 	response.render('player.html');
 });
 
+//listening to the plays page
+app.get('/plays', function(request, response){
+	response.render('plays.html');
+});
+
 
 ////////////////////////// RETRIEVAL FUNCTIONS BELOW //////////////////////////////////////////////////
 
@@ -185,7 +190,12 @@ app.post('/getPlaysForGame', function(request, response) {
 	let playsRef = db.ref().child('plays');
 
 	playsRef.orderByChild("gameId").equalTo(gameId).once("value", function(snapshot) {
-		response.json(snapshot.val());
+		var plays = snapshot.val();
+		for(id in plays){
+			var play = plays[id];
+			play.playId = id;
+		}
+		response.json(plays);
 	}, function(error) {
 		response.json(undefined);
 	});
@@ -231,12 +241,16 @@ app.post('/getCoach', function(request, response){
 
 app.post('/getPlayersForTeam', function(request, response){
 	let teamId = request.body.teamId;
-	teamId = "team1"
 	
 	let playersRef = db.ref().child('players');
 	
 	playersRef.orderByChild("teamId").equalTo(teamId).once("value", function(snapshot) {
-		response.json(snapshot.val());
+		var players = snapshot.val();
+		for(id in players){
+			var player = players[id];
+			player.playerId = id;
+		}
+		response.json(players);
 	}, function(error) {
 		response.json(undefined);
 	});
@@ -250,6 +264,21 @@ app.post('/getPlayersForTeam', function(request, response){
 
 
 ////////////////////////// CREATION FUNCTIONS BELOW //////////////////////////////////////////////////
+app.post('/updatePlayName', function(request, response){
+	let playId = request.body.playId;
+	let playTitle = request.body.playTitle;
+	
+	let playsRef = db.ref().child('plays').child(playId);
+	
+	playsRef.update({playTitle:playTitle});
+	
+	playsRef.once("value", function(snapshot) {
+		response.json(snapshot.val());
+	}, function(error) {
+		response.json(undefined);
+	});
+});
+
 app.post('/createCoach', function(request, response) {
 
 	let teamId = request.body.teamId;
@@ -285,7 +314,6 @@ app.post('/createPlay', function(request, response){
 	addPlay(gameId, fileName, function(newPlayId) {
 		response.json(newPlayId);
 	});
-	
 });
 
 app.post('/createGame', function(request, response){
